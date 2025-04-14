@@ -67,11 +67,11 @@ new class extends Component
                             <x-dropdown align="left" width="48" position="top">
                                 <x-slot name="trigger">
                                     <div class="w-full flex items-center text-sm text-gray-700 cursor-pointer">
-                                        <svg class="h-7 w-7 m-1 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg class="h-6 w-6 mr-2 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
                                                   d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.657 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
                                         </svg>
-                                        <span class="flex-grow"
+                                        <span class="flex-grow text-base"
                                             x-data="{ name: @js(auth()->user()->name) }"
                                             x-text="name"
                                             x-on:profile-updated.window="name = $event.detail.name"
