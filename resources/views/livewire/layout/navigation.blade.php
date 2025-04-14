@@ -22,54 +22,77 @@ new class extends Component
         <div class="flex justify-between h-16">
             <div class="flex min-h-screen bg-gray-50">
                 <!-- Sidebar -->
-                <div class="w-64 p-4 bg-gray-50 hidden sm:block">
-                    <div class="h-16 flex items-center justify-center border-b">
-                        <a href="{{ route('dashboard') }}" wire:navigate>
-                            <x-application-logo class="h-9 w-auto text-gray-800" />
-                        </a>
-                    </div>
-            
-                    <nav class="mt-2 space-y-2">
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
-                            {{ __('Dashboard') }}
-                        </x-nav-link>
-                    </nav>
-
-                    <nav class="mt-2 space-y-2">
-                        <x-nav-link>
-                            {{ __('Buku') }}
-                        </x-nav-link>
-                    </nav>
-            
-                    <div class="relative w-full px-2 pt-4">
-                        <x-dropdown align="left" width="48" position="top">
-                            <x-slot name="trigger">
-                                <button class="w-full flex justify-between items-center text-sm text-gray-700 px-3 py-2 border rounded-md bg-white hover:bg-gray-100 transition">
-                                    <span
-                                        x-data="{ name: @js(auth()->user()->name) }"
-                                        x-text="name"
-                                        x-on:profile-updated.window="name = $event.detail.name">
-                                    </span>
-                                    <svg class="h-4 w-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                                    </svg>
-                                </button>
-                            </x-slot>
-                    
-                            <x-slot name="content">
-                                <x-dropdown-link :href="route('profile')" wire:navigate>
-                                    {{ __('Profile') }}
-                                </x-dropdown-link>
-                    
-                                <!-- Authentication -->
-                                <button wire:click="logout" class="w-full text-start">
-                                    <x-dropdown-link class="text-red-500 hover:text-red-700">
-                                        {{ __('Log Out') }}
+                <div class="w-64 p-4 bg-gray-50 hidden sm:block fixed inset-0 bottom-0">
+                    <div class="flex flex-col h-full justify-between">
+                        <div>
+                            <div class="h-16 flex items-center justify-center border-b">
+                                <a href="{{ route('dashboard') }}" wire:navigate>
+                                    <x-application-logo class="h-9 w-auto text-gray-800" />
+                                </a>
+                            </div>
+                
+                            <nav class="mt-2 space-y-2">
+                                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
+                                    {{ __('Dashboard') }}
+                                </x-nav-link>
+                            </nav>
+                
+                            <nav class="mt-2 space-y-2">
+                                <x-nav-link>
+                                    {{ __('Buku') }}
+                                </x-nav-link>
+                            </nav>
+                
+                            <nav class="mt-2 space-y-2">
+                                <x-nav-link>
+                                    {{ __('Peminjaman') }}
+                                </x-nav-link>
+                            </nav>
+                
+                            <nav class="mt-2 space-y-2">
+                                <x-nav-link>
+                                    {{ __('Terlambat') }}
+                                </x-nav-link>
+                            </nav>
+                
+                            <nav class="mt-2 space-y-2">
+                                <x-nav-link>
+                                    {{ __('Broadcast') }}
+                                </x-nav-link>
+                            </nav>
+                        </div>
+                
+                        <!-- Profile Dropdown Moved to the Bottom -->
+                        <div class="relative w-full px-2 pt-4 mt-auto">
+                            <x-dropdown align="left" width="48" position="top">
+                                <x-slot name="trigger">
+                                    <button class="w-full flex justify-between items-center text-sm text-gray-700 px-3 py-2 border rounded-md bg-white hover:bg-gray-100 transition">
+                                        <span
+                                            x-data="{ name: @js(auth()->user()->name) }"
+                                            x-text="name"
+                                            x-on:profile-updated.window="name = $event.detail.name">
+                                        </span>
+                                        <svg class="h-4 w-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                        </svg>
+                                    </button>
+                                </x-slot>
+                
+                                <x-slot name="content">
+                                    <x-dropdown-link :href="route('profile')" wire:navigate>
+                                        {{ __('Profile') }}
                                     </x-dropdown-link>
-                                </button>
-                            </x-slot>
-                        </x-dropdown>
-                    </div>                    
+                
+                                    <!-- Authentication -->
+                                    <button wire:click="logout" class="w-full text-start">
+                                        <x-dropdown-link class="text-red-500 hover:text-red-700">
+                                            {{ __('Log Out') }}
+                                        </x-dropdown-link>
+                                    </button>
+                                </x-slot>
+                            </x-dropdown>
+                        </div>
+                    </div>
                 </div>
             
                 <!-- Main Content Wrapper -->
