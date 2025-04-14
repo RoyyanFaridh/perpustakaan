@@ -66,24 +66,30 @@ new class extends Component
                         <div class="relative w-full px-2 pt-4 mt-auto">
                             <x-dropdown align="left" width="48" position="top">
                                 <x-slot name="trigger">
-                                    <button class="w-full flex justify-between items-center text-sm text-gray-700 px-3 py-2 border rounded-md bg-white hover:bg-gray-100 transition">
-                                        <span
+                                    <div class="w-full flex items-center text-sm text-gray-700 cursor-pointer">
+                                        <svg class="h-7 w-7 m-1 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                                                  d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.657 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        </svg>
+                                        <span class="flex-grow"
                                             x-data="{ name: @js(auth()->user()->name) }"
                                             x-text="name"
-                                            x-on:profile-updated.window="name = $event.detail.name">
-                                        </span>
-                                        <svg class="h-4 w-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                                        </svg>
-                                    </button>
+                                            x-on:profile-updated.window="name = $event.detail.name"
+                                        ></span>
+                                        <div class="w-6 h-6 flex items-center justify-center rounded-full bg-white border hover:bg-gray-100 transition">
+                                            <svg class="h-4 w-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                      d="M19 9l-7 7-7-7" />
+                                            </svg>
+                                        </div>
+                                    </div>
                                 </x-slot>
-                
+                        
                                 <x-slot name="content">
                                     <x-dropdown-link :href="route('profile')" wire:navigate>
                                         {{ __('Profile') }}
                                     </x-dropdown-link>
-                
-                                    <!-- Authentication -->
+                        
                                     <button wire:click="logout" class="w-full text-start">
                                         <x-dropdown-link class="text-red-500 hover:text-red-700">
                                             {{ __('Log Out') }}
@@ -91,7 +97,7 @@ new class extends Component
                                     </button>
                                 </x-slot>
                             </x-dropdown>
-                        </div>
+                        </div>                                                                        
                     </div>
                 </div>
             
