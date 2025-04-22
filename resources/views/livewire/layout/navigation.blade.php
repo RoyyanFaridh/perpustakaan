@@ -36,29 +36,35 @@ new class extends Component
                                     {{ __('Dashboard') }}
                                 </x-nav-link>
                             </nav>
+
+                            <nav class="mt-2 space-y-2">
+                                <x-nav-link :href="route('anggota.index')" :active="request()->routeIs('anggota.*')" wire:navigate>
+                                    {{ __('Anggota') }}
+                                </x-nav-link>                                
+                            </nav>
                 
                             <nav class="mt-2 space-y-2">
-                                <x-nav-link>
+                                <x-nav-link :href="route('buku.index')" :active="request()->routeIs('buku.*')" wire:navigate>
                                     {{ __('Buku') }}
-                                </x-nav-link>
+                                </x-nav-link>                                
                             </nav>
                 
                             <nav class="mt-2 space-y-2">
-                                <x-nav-link>
+                                <x-nav-link :href="route('peminjaman.index')" :active="request()->routeIs('peminjaman.*')" wire:navigate>
                                     {{ __('Peminjaman') }}
-                                </x-nav-link>
+                                </x-nav-link>   
                             </nav>
                 
                             <nav class="mt-2 space-y-2">
-                                <x-nav-link>
+                                <x-nav-link :href="route('terlambat.index')" :active="request()->routeIs('terlambat.*')" wire:navigate>
                                     {{ __('Terlambat') }}
-                                </x-nav-link>
+                                </x-nav-link>   
                             </nav>
                 
                             <nav class="mt-2 space-y-2">
-                                <x-nav-link>
+                                <x-nav-link :href="route('broadcast.index')" :active="request()->routeIs('broadcast.*')" wire:navigate>
                                     {{ __('Broadcast') }}
-                                </x-nav-link>
+                                </x-nav-link>   
                             </nav>
                         </div>
                 
