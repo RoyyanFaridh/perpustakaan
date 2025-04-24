@@ -36,12 +36,12 @@ class HomeController extends Controller
         // Mengambil data untuk card statistics
         $totalKoleksiBuku = Buku::count();  // Total koleksi buku
         $totalAnggota = Anggota::count();  // Total anggota
-        $totalPeminjamanBuku = Peminjaman::count();  // Total peminjaman buku
-        $totalKeterlambatanPengembalian = Peminjaman::where('status', 'terlambat')->count();  // Total keterlambatan pengembalian
+        $totalPeminjaman = Peminjaman::count();  // Total peminjaman buku
+        $totalKeterlambatan = Peminjaman::where('status', 'terlambat')->count();  // Total keterlambatan pengembalian
 
         return view('pages.dashboard', compact(
             'bulanLabels', 'jumlahPengunjung',
-            'totalKoleksiBuku', 'totalAnggota', 'totalPeminjamanBuku', 'totalKeterlambatanPengembalian'
+            'totalKoleksiBuku', 'totalAnggota', 'totalPeminjaman', 'totalKeterlambatan'
         ));
     }
 }

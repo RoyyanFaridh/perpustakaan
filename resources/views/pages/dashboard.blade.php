@@ -12,39 +12,40 @@
             </div>
     
             <!-- Wrapper untuk Card -->
-            <div class="d-flex mb-4" style="display: flex; gap: 20px; justify-content: space-between;">
-                <!-- Card 1: Total Koleksi Buku -->
-                <div class="card border border-gray-300 shadow-sm" style="flex: 1 1 23%; box-sizing: border-box;">
-                    <div class="card-body">
-                        <h5 class="card-title">Total Koleksi Buku</h5>
-                        <p class="card-text">{{ $totalKoleksiBuku }}</p>
-                    </div>
-                </div>
-    
-                <!-- Card 2: Total Anggota -->
-                <div class="card border border-gray-300 shadow-sm" style="flex: 1 1 23%; box-sizing: border-box;">
-                    <div class="card-body">
-                        <h5 class="card-title">Total Anggota</h5>
-                        <p class="card-text">{{ $totalAnggota }}</p>
-                    </div>
-                </div>
-    
-                <!-- Card 3: Total Peminjaman Buku -->
-                <div class="card border border-gray-300 shadow-sm" style="flex: 1 1 23%; box-sizing: border-box;">
-                    <div class="card-body">
-                        <h5 class="card-title">Total Peminjaman Buku</h5>
-                        <p class="card-text">{{ $totalPeminjamanBuku }}</p>
-                    </div>
-                </div>
-    
-                <!-- Card 4: Total Keterlambatan Pengembalian -->
-                <div class="card border border-gray-300 shadow-sm" style="flex: 1 1 23%; box-sizing: border-box;">
-                    <div class="card-body">
-                        <h5 class="card-title">Total Keterlambatan Pengembalian Buku</h5>
-                        <p class="card-text">{{ $totalKeterlambatanPengembalian }}</p>
-                    </div>
-                </div>
+            <div class="flex flex-wrap gap-4 mb-4">
+                <x-card 
+                title="Total Koleksi Buku"
+                bgColor="#ED5565" 
+                :value="number_format($totalKoleksiBuku, 0, ',', '.')"
+                periode="Maret 2025"
+                :delta="8"
+                />
+
+                <x-card 
+                title="Total Anggota"
+                bgColor="#1C84C6"  
+                :value="number_format($totalAnggota, 0, ',', '.')"
+                periode="Maret 2025"
+                :delta="8" 
+                />
+
+                <x-card 
+                title="Total Peminjaman"
+                bgColor="#23C6C8"  
+                :value="number_format($totalPeminjaman, 0, ',', '.')"
+                periode="Maret 2025"
+                :delta="8" 
+                />
+
+                <x-card 
+                title="Total Keterlambatan"
+                bgColor="#1AB394"  
+                :value="number_format($totalKeterlambatan, 0, ',', '.')"
+                periode="Maret 2025"
+                :delta="8" 
+                />
             </div>
+            
         </div>
     
         {{-- Chart --}}
