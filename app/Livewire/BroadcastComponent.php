@@ -26,6 +26,6 @@ class BroadcastComponent extends Component
 
     public function render()
     {
-        return view('livewire.broadcast.index', ['broadcast' => Broadcast::all()]);
+        return view('pages.broadcast.index', ['broadcast' => Broadcast::all()]);
     }
 }

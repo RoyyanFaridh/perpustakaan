@@ -28,6 +28,6 @@ class AnggotaComponent extends Component
 
     public function render()
     {
-        return view('livewire.anggota.index', ['anggota' => Anggota::all()]);
+        return view('pages.anggota.index', ['anggota' => Anggota::all()]);
     }
 }

@@ -26,43 +26,43 @@ new class extends Component
                     <div class="flex flex-col h-full justify-between">
                         <div>
                             <div class="h-16 flex items-center justify-center border-b">
-                                <a href="{{ route('dashboard') }}" wire:navigate>
+                                <a href="{{ route('dashboard') }}">
                                     <x-application-logo class="h-9 w-auto text-gray-800" />
                                 </a>
                             </div>
                 
                             <nav class="mt-2 space-y-2">
-                                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
+                                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                                     {{ __('Dashboard') }}
                                 </x-nav-link>
                             </nav>
 
                             <nav class="mt-2 space-y-2">
-                                <x-nav-link :href="route('anggota.index')" :active="request()->routeIs('anggota.*')" wire:navigate>
+                                <x-nav-link :href="route('anggota.index')" :active="request()->routeIs('anggota.*')">
                                     {{ __('Anggota') }}
                                 </x-nav-link>                                
                             </nav>
                 
                             <nav class="mt-2 space-y-2">
-                                <x-nav-link :href="route('buku.index')" :active="request()->routeIs('buku.*')" wire:navigate>
+                                <x-nav-link :href="route('buku.index')" :active="request()->routeIs('buku.*')">
                                     {{ __('Buku') }}
                                 </x-nav-link>                                
                             </nav>
                 
                             <nav class="mt-2 space-y-2">
-                                <x-nav-link :href="route('peminjaman.index')" :active="request()->routeIs('peminjaman.*')" wire:navigate>
+                                <x-nav-link :href="route('peminjaman.index')" :active="request()->routeIs('peminjaman.*')">
                                     {{ __('Peminjaman') }}
                                 </x-nav-link>   
                             </nav>
                 
                             <nav class="mt-2 space-y-2">
-                                <x-nav-link :href="route('terlambat.index')" :active="request()->routeIs('terlambat.*')" wire:navigate>
+                                <x-nav-link :href="route('terlambat.index')" :active="request()->routeIs('terlambat.*')">
                                     {{ __('Terlambat') }}
                                 </x-nav-link>   
                             </nav>
                 
                             <nav class="mt-2 space-y-2">
-                                <x-nav-link :href="route('broadcast.index')" :active="request()->routeIs('broadcast.*')" wire:navigate>
+                                <x-nav-link :href="route('broadcast.index')" :active="request()->routeIs('broadcast.*')">
                                     {{ __('Broadcast') }}
                                 </x-nav-link>   
                             </nav>

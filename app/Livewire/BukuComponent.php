@@ -13,7 +13,7 @@ class BukuComponent extends Component  // Ganti nama class menjadi BukuComponent
     public function render()
     {
         $this->buku = BukuModel::all();  // Gunakan BukuModel untuk referensi ke Model Buku
-        return view('livewire.buku.index');
+        return view('pages.buku.index');
     }
 
     // Fungsi untuk menyimpan buku
