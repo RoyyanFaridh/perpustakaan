@@ -20,4 +20,4 @@
         <button type="submit">Simpan</button>
     </form>
 </div>
-<?php /**PATH C:\Users\ASUS\perpustakaan_smp\resources\views/livewire/terlambat/index.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\Users\ASUS\perpustakaan_smp\resources\views/pages/terlambat/index.blade.php ENDPATH**/ ?>

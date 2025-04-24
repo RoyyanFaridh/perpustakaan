@@ -24,4 +24,4 @@
         <button type="submit">Pinjam</button>
     </form>
 </div>
-<?php /**PATH C:\Users\ASUS\perpustakaan_smp\resources\views/livewire/peminjaman/index.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\Users\ASUS\perpustakaan_smp\resources\views/pages/peminjaman/index.blade.php ENDPATH**/ ?>

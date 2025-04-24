@@ -30,6 +30,6 @@ class PeminjamanComponent extends Component
 
     public function render()
     {
-        return view('livewire.peminjaman.index', ['peminjaman' => Peminjaman::all()]);
+        return view('pages.peminjaman.index', ['peminjaman' => Peminjaman::all()]);
     }
 }

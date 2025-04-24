@@ -10,7 +10,7 @@
 <?php $component->withAttributes([]); ?>
      <?php $__env->slot('header', null, []); ?> 
         <h2 class="font-semibold text-md text-gray-500 leading-tight">
-            <?php echo e(__('> Broadcast')); ?>
+            <?php echo e(__('> Terlambat')); ?>
 
         </h2>
      <?php $__env->endSlot(); ?>
@@ -21,9 +21,9 @@
 $__split = function ($name, $params = []) {
     return [$name, $params];
 };
-[$__name, $__params] = $__split('broadcast-component');
+[$__name, $__params] = $__split('terlambat-component');
 
-$__html = app('livewire')->mount($__name, $__params, 'lw-3702831540-0', $__slots ?? [], get_defined_vars());
+$__html = app('livewire')->mount($__name, $__params, 'lw-1709006555-0', $__slots ?? [], get_defined_vars());
 
 echo $__html;
 
@@ -45,4 +45,4 @@ if (isset($__slots)) unset($__slots);
 <?php $component = $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
 <?php unset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
 <?php endif; ?>
-<?php /**PATH C:\Users\ASUS\perpustakaan_smp\resources\views/broadcast.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\Users\ASUS\perpustakaan_smp\resources\views/pages/terlambat.blade.php ENDPATH**/ ?>

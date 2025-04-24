@@ -83,4 +83,4 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
         </form>
     </div>
 </div>
-<?php /**PATH C:\Users\ASUS\perpustakaan_smp\resources\views/livewire/buku/index.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\Users\ASUS\perpustakaan_smp\resources\views/pages/buku/index.blade.php ENDPATH**/ ?>

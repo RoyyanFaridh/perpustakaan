@@ -28,6 +28,6 @@ class TerlambatComponent extends Component
 
     public function render()
     {
-        return view('livewire.terlambat.index', ['terlambat' => Terlambat::all()]);
+        return view('pages.terlambat.index', ['terlambat' => Terlambat::all()]);
     }
 }
