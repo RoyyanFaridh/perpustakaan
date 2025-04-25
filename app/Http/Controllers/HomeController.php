@@ -6,6 +6,7 @@ use App\Models\Buku; // Model Buku untuk total koleksi buku
 use App\Models\Anggota; // Model Anggota untuk total anggota
 use App\Models\Peminjaman; // Model Peminjaman untuk total peminjaman
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Carbon;
 
 class HomeController extends Controller
 {
@@ -15,33 +16,52 @@ class HomeController extends Controller
     }
 
     public function dashboard()
-    {
-        // Ambil data pengunjung per bulan untuk dua tahun terakhir
-        $pengunjungPerBulan = DB::table('pengunjung')
-            ->select(DB::raw("strftime('%m', tanggal) as bulan"), DB::raw("strftime('%Y', tanggal) as tahun"), DB::raw('count(*) as jumlah'))
-            ->whereBetween('tanggal', ['2023-01-01 00:00:00', '2025-12-31 23:59:59'])
-            ->groupBy(DB::raw("strftime('%Y', tanggal), strftime('%m', tanggal)"))
-            ->orderBy('tahun', 'asc')
-            ->orderBy('bulan', 'asc')
-            ->get();
+{
+    $bulanLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
 
-        // Format data untuk chart
-        $bulanLabels = [];
-        $jumlahPengunjung = [];
-        foreach ($pengunjungPerBulan as $data) {
-            $bulanLabels[] = $data->tahun . '-' . str_pad($data->bulan, 2, '0', STR_PAD_LEFT); // Label bulan format YYYY-MM
-            $jumlahPengunjung[] = $data->jumlah;
+    $tahunSekarang = Carbon::now()->year;
+    $tahunSebelumnya = $tahunSekarang - 1;
+
+    $jumlahPengunjungTahunIni = array_fill(0, 12, 0);
+    $jumlahPengunjungTahunLalu = array_fill(0, 12, 0);
+
+    $pengunjungPerBulan = DB::table('pengunjung')
+        ->select(
+            DB::raw("CAST(strftime('%m', tanggal) AS INTEGER) as bulan"),
+            DB::raw("strftime('%Y', tanggal) as tahun"),
+            DB::raw("count(*) as jumlah")
+        )
+        ->whereYear('tanggal', $tahunSekarang)
+        ->orWhereYear('tanggal', $tahunSebelumnya)
+        ->groupBy(DB::raw("strftime('%Y', tanggal), strftime('%m', tanggal)"))
+        ->orderBy('tahun')
+        ->orderBy('bulan')
+        ->get();
+
+    foreach ($pengunjungPerBulan as $data) {
+        $index = $data->bulan - 1;
+        if ($data->tahun == $tahunSebelumnya) {
+            $jumlahPengunjungTahunLalu[$index] = $data->jumlah;
+        } elseif ($data->tahun == $tahunSekarang) {
+            $jumlahPengunjungTahunIni[$index] = $data->jumlah;
         }
-
-        // Mengambil data untuk card statistics
-        $totalKoleksiBuku = Buku::count();  // Total koleksi buku
-        $totalAnggota = Anggota::count();  // Total anggota
-        $totalPeminjaman = Peminjaman::count();  // Total peminjaman buku
-        $totalKeterlambatan = Peminjaman::where('status', 'terlambat')->count();  // Total keterlambatan pengembalian
-
-        return view('pages.dashboard', compact(
-            'bulanLabels', 'jumlahPengunjung',
-            'totalKoleksiBuku', 'totalAnggota', 'totalPeminjaman', 'totalKeterlambatan'
-        ));
     }
+
+    $totalKoleksiBuku = Buku::count();
+    $totalAnggota = Anggota::count();
+    $totalPeminjaman = Peminjaman::count();
+    $totalKeterlambatan = Peminjaman::where('status', 'terlambat')->count();
+
+    return view('pages.dashboard', compact(
+        'bulanLabels',
+        'jumlahPengunjungTahunIni',
+        'jumlahPengunjungTahunLalu',
+        'tahunSekarang',
+        'tahunSebelumnya',
+        'totalKoleksiBuku',
+        'totalAnggota',
+        'totalPeminjaman',
+        'totalKeterlambatan'
+    ));
+}
 }
