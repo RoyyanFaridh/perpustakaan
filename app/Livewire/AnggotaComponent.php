@@ -3,31 +3,25 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use Livewire\WithPagination;
 use App\Models\Anggota;
 
 class AnggotaComponent extends Component
 {
-    public $nama, $alamat, $kelas;
+    use WithPagination;
 
-    protected $rules = [
-        'nama' => 'required',
-        'alamat' => 'required',
-        'kelas' => 'required',
-    ];
+    protected $paginationTheme = 'tailwind';
 
-    public function store()
+    public function delete($id)
     {
-        $this->validate();
-        Anggota::create([
-            'nama' => $this->nama,
-            'alamat' => $this->alamat,
-            'kelas' => $this->kelas,
-        ]);
-        $this->reset();
+        Anggota::findOrFail($id)->delete();
+        session()->flash('message', 'Anggota berhasil dihapus.');
     }
 
     public function render()
     {
-        return view('pages.anggota.index', ['anggota' => Anggota::all()]);
+        return view('pages.anggota.index', [
+            'anggota' => Anggota::orderBy('nama')->paginate(10),
+        ])->layout('layouts.app');
     }
 }
