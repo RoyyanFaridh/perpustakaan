@@ -9,13 +9,21 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
-        Schema::create('bukus', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
-    }
+   
+
+    public function up(): void {
+    Schema::create('bukus', function (Blueprint $table) {
+        $table->id();
+        $table->string('judul');
+        $table->string('kategori')->nullable();
+        $table->string('penulis')->nullable();
+        $table->string('penerbit')->nullable();
+        $table->integer('tahun_terbit')->nullable();
+        $table->string('isbn')->nullable();
+        $table->timestamps();
+    });
+}
+
 
     /**
      * Reverse the migrations.

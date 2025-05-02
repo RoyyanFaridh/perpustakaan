@@ -5,6 +5,10 @@ use App\Http\Controllers\HomeController;
 use App\Livewire\AnggotaComponent;
 use App\Livewire\AnggotaCreate;
 use App\Livewire\AnggotaEdit;
+use App\Http\Controllers\BukuController;
+
+Route::post('/bukus', [BukuController::class, 'store'])->name('bukus.store');
+
 
 Route::get('/', function () {
     return view('pages.welcome');

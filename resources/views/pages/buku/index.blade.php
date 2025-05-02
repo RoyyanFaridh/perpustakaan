@@ -1,63 +1,77 @@
-<div>
-    <h1>Daftar Buku</h1>
+<div class="container mt-4">
+    <h1 class="mb-4">Daftar Buku</h1>
 
-    <!-- Menampilkan pesan sukses/gagal -->
     @if (session()->has('message'))
-        <div class="alert alert-success">
-            {{ session('message') }}
-        </div>
+        <div class="alert alert-success">{{ session('message') }}</div>
     @endif
 
-    <!-- Tampilkan daftar buku -->
-    <table class="table table-bordered">
-        <thead>
+    <div class="d-flex justify-content-between mb-3">
+        <input type="text" wire:model="search" placeholder="Cari Buku..." class="form-control w-25">
+        <button wire:click="resetForm" class="btn btn-primary">+ Tambah Buku</button>
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
             <tr>
                 <th>No</th>
                 <th>Judul Buku</th>
-                <th>Pengarang</th>
+                <th>Kategori</th>
+                <th>Penulis</th>
+                <th>Penerbit</th>
                 <th>Tahun Terbit</th>
+                <th>ISBN</th>
                 <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($buku as $key => $item)
+            @foreach($buku as $index => $item)
                 <tr>
-                    <td>{{ $key + 1 }}</td>
+                    <td>{{ $index + 1 }}</td>
                     <td>{{ $item->judul }}</td>
-                    <td>{{ $item->pengarang }}</td>
+                    <td>{{ $item->kategori }}</td>
+                    <td>{{ $item->penulis }}</td>
+                    <td>{{ $item->penerbit }}</td>
                     <td>{{ $item->tahun_terbit }}</td>
+                    <td>{{ $item->isbn }}</td>
                     <td>
-                        <button wire:click="edit({{ $item->id }})" class="btn btn-warning">Edit</button>
-                        <button wire:click="delete({{ $item->id }})" class="btn btn-danger">Delete</button>
+                        <button wire:click="edit({{ $item->id }})" class="btn btn-warning btn-sm">Edit</button>
+                        <button wire:click="delete({{ $item->id }})" class="btn btn-danger btn-sm">Hapus</button>
                     </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
 
-    <!-- Form untuk menambah buku -->
+    {{-- Form Tambah/Edit --}}
     <div class="mt-4">
-        <h2>Tambah Buku</h2>
-        <form wire:submit.prevent="store">
+        <h4>{{ $isEdit ? 'Edit Buku' : 'Tambah Buku' }}</h4>
+        <form wire:submit.prevent="{{ $isEdit ? 'update' : 'store' }}">
             <div class="form-group">
-                <label for="judul">Judul Buku</label>
-                <input type="text" id="judul" wire:model="judul" class="form-control">
+                <label>Judul Buku</label>
+                <input type="text" wire:model="judul" class="form-control">
                 @error('judul') <span class="text-danger">{{ $message }}</span> @enderror
             </div>
-
             <div class="form-group">
-                <label for="pengarang">Pengarang</label>
-                <input type="text" id="pengarang" wire:model="pengarang" class="form-control">
-                @error('pengarang') <span class="text-danger">{{ $message }}</span> @enderror
+                <label>Kategori</label>
+                <input type="text" wire:model="kategori" class="form-control">
             </div>
-
             <div class="form-group">
-                <label for="tahun_terbit">Tahun Terbit</label>
-                <input type="number" id="tahun_terbit" wire:model="tahun_terbit" class="form-control">
-                @error('tahun_terbit') <span class="text-danger">{{ $message }}</span> @enderror
+                <label>Penulis</label>
+                <input type="text" wire:model="penulis" class="form-control">
             </div>
-
-            <button type="submit" class="btn btn-primary mt-3">Simpan</button>
+            <div class="form-group">
+                <label>Penerbit</label>
+                <input type="text" wire:model="penerbit" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Tahun Terbit</label>
+                <input type="number" wire:model="tahun_terbit" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>ISBN</label>
+                <input type="text" wire:model="isbn" class="form-control">
+            </div>
+            <button class="btn btn-success mt-2">{{ $isEdit ? 'Update' : 'Simpan' }}</button>
         </form>
     </div>
 </div>

@@ -9,5 +9,16 @@ class Buku extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['judul', 'pengarang', 'tahun_terbit'];  // Pastikan kolom yang sesuai
+    // Jika tetap pakai nama tabel 'bukus', tambahkan baris ini:
+    protected $table = 'bukus';
+
+    // Kolom-kolom yang bisa diisi secara massal
+    protected $fillable = [
+        'judul',
+        'kategori',
+        'penulis',
+        'penerbit',
+        'tahun_terbit',
+        'isbn'
+    ];
 }
