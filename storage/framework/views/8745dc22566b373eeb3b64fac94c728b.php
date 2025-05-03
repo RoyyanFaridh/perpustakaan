@@ -13,14 +13,14 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200 bg-white">
-                @foreach($peminjaman as $item)
+                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $peminjaman; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr>
-                        <td class="px-4 py-2">{{ $item->anggota_id }}</td>
-                        <td class="px-4 py-2">{{ $item->buku_id }}</td>
-                        <td class="px-4 py-2">{{ $item->tanggal_pinjam }}</td>
-                        <td class="px-4 py-2">{{ $item->tanggal_kembali }}</td>
+                        <td class="px-4 py-2"><?php echo e($item->anggota_id); ?></td>
+                        <td class="px-4 py-2"><?php echo e($item->buku_id); ?></td>
+                        <td class="px-4 py-2"><?php echo e($item->tanggal_pinjam); ?></td>
+                        <td class="px-4 py-2"><?php echo e($item->tanggal_kembali); ?></td>
                     </tr>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
             </tbody>
         </table>
     </div>
@@ -48,3 +48,4 @@
         </div>
     </form>
 </div>
+<?php /**PATH D:\Perkuliahan Duniawi\New folder\New folder\perpustakaan\resources\views/pages/peminjaman/index.blade.php ENDPATH**/ ?>

@@ -1,0 +1,23 @@
+<div>
+    <h1>Data Terlambat</h1>
+    <table class="table">
+        <thead><tr><th>Anggota</th><th>Hari</th><th>Denda</th></tr></thead>
+        <tbody>
+            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $terlambat; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <tr>
+                    <td><?php echo e($item->anggota_id); ?></td>
+                    <td><?php echo e($item->jumlah_hari); ?></td>
+                    <td><?php echo e($item->denda); ?></td>
+                </tr>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+        </tbody>
+    </table>
+
+    <form wire:submit.prevent="store">
+        <input type="number" wire:model="anggota_id" placeholder="Anggota ID">
+        <input type="number" wire:model="jumlah_hari" placeholder="Hari Terlambat">
+        <input type="number" step="0.01" wire:model="denda" placeholder="Denda">
+        <button type="submit">Simpan</button>
+    </form>
+</div>
+<?php /**PATH D:\Perkuliahan Duniawi\New folder\New folder\perpustakaan\resources\views/pages/terlambat/index.blade.php ENDPATH**/ ?>
