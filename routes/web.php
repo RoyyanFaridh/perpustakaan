@@ -2,9 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Livewire\AnggotaComponent;
-use App\Livewire\AnggotaCreate;
-use App\Livewire\AnggotaEdit;
 use App\Http\Controllers\BukuController;
 
 Route::post('/bukus', [BukuController::class, 'store'])->name('bukus.store');
@@ -23,14 +20,9 @@ Route::view('/buku', 'pages.buku')
     ->middleware(['auth', 'verified'])
     ->name('buku.index');
 
-Route::get('/anggota', AnggotaComponent::class)
+Route::view('/anggota', 'pages.anggota')
     ->middleware(['auth', 'verified'])
     ->name('anggota.index');
-
-Route::get('/anggota/create', AnggotaCreate::class)
-    ->middleware(['auth', 'verified'])
-    ->name('anggota.create');
-    
 
 Route::view('/peminjaman', 'pages.peminjaman')
     ->middleware(['auth', 'verified'])

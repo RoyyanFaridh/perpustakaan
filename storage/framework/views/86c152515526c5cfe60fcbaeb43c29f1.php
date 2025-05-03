@@ -305,4 +305,4 @@ use Livewire\Volt\Component;
 <?php endif; ?>
         </div>         
     </form>
-</div><?php /**PATH C:\Users\MSI Computer\Herd\perpustakaan\resources\views\livewire/pages/auth/register.blade.php ENDPATH**/ ?>
+</div><?php /**PATH C:\Users\ASUS\perpustakaan_smp\resources\views\livewire/pages/auth/register.blade.php ENDPATH**/ ?>

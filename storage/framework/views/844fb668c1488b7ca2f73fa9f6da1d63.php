@@ -48,4 +48,4 @@
         </tbody>
     </table>
 </div>
-<?php /**PATH C:\Users\MSI Computer\Herd\perpustakaan\resources\views/livewire/buku/buku-component.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\Users\ASUS\perpustakaan_smp\resources\views/livewire/buku/buku-component.blade.php ENDPATH**/ ?>
