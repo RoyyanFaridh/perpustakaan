@@ -5,10 +5,17 @@
             + Tambah Buku
         </button>
     </div>
+    <div class="mb-4">
+        <input 
+            type="text" 
+            wire:model.debounce.300ms="search" 
+            placeholder="Cari judul buku..." 
+            class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+    </div>
 
     @if($showModal)
     <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm">
-        <div class="bg-white rounded-xl shadow-lg w-full max-w-lg sm:max-w-md p-6">
+        <div class="bg-white rounded-xl shadow-lg w-full max-w-lg sm:max-w-md max-h-[90vh] overflow-y-auto p-6">
             <h2 class="text-xl font-semibold mb-4">{{ $isEdit ? 'Edit Buku' : 'Tambah Buku' }}</h2>
 
             <div class="space-y-4 text-sm text-gray-600">
@@ -55,13 +62,13 @@
                 </div>
 
                 <!-- Penulis & Penerbit -->
-                <div class="flex space-x-2">
-                    <div class="w-1/2">
+                <div class="flex flex-wrap sm:flex-nowrap space-x-0 sm:space-x-2">
+                    <div class="w-full sm:w-1/2">
                         <label for="penulis" class="block text-black text-xs mb-1">Penulis</label>
                         <input type="text" wire:model="penulis" id="penulis"
                             class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:ring focus:ring-blue-100 focus:outline-none">
                     </div>
-                    <div class="w-1/2">
+                    <div class="w-full sm:w-1/2">
                         <label for="penerbit" class="block text-black text-xs mb-1">Penerbit</label>
                         <input type="text" wire:model="penerbit" id="penerbit"
                             class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:ring focus:ring-blue-100 focus:outline-none">
@@ -69,8 +76,8 @@
                 </div>
 
                 <!-- Tahun Terbit & ISBN -->
-                <div class="flex space-x-2">
-                    <div class="w-1/2">
+                <div class="flex flex-wrap sm:flex-nowrap space-x-0 sm:space-x-2">
+                    <div class="w-full sm:w-1/2">
                         <label for="tahun_terbit" class="block text-black text-xs mb-1">Tahun Terbit</label>
                         <select wire:model="tahun_terbit" id="tahun_terbit"
                             class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:ring focus:ring-blue-100 focus:outline-none">
@@ -80,7 +87,7 @@
                             @endfor
                         </select>
                     </div>
-                    <div class="w-1/2">
+                    <div class="w-full sm:w-1/2">
                         <label for="isbn" class="block text-black text-xs mb-1">ISBN</label>
                         <input type="number" wire:model="isbn" id="isbn"
                             class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:ring focus:ring-blue-100 focus:outline-none">
@@ -88,14 +95,14 @@
                 </div>
 
                 <!--Jumlah stok & Lokasi rak -->
-                <div class="flex space-x-2">
-                    <div class="w-1/2">
+                <div class="flex flex-wrap sm:flex-nowrap space-x-0 sm:space-x-2">
+                    <div class="w-full sm:w-1/2">
                         <label for="jumlah_stok" class="block text-black text-xs mb-1">Jumlah Stok</label>
                         <input type="number" id="jumlah_stok" wire:model="jumlah_stok" 
                             class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm" 
                             placeholder=" " />
                     </div>
-                    <div class="w-1/2">
+                    <div class="w-full sm:w-1/2">
                         <label for="lokasi_rak" class="block text-black text-xs mb-1">Lokasi Rak</label>
                         <input type="text" id="lokasi_rak" wire:model="lokasi_rak" 
                             class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm" 
