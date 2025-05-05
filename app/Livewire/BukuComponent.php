@@ -3,28 +3,31 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use Livewire\WithFileUploads; // Jangan lupa untuk import ini
+use Livewire\WithFileUploads;
 use App\Models\Buku as BukuModel;
 use Illuminate\Support\Facades\Storage;
 
 class BukuComponent extends Component
 {
-    use WithFileUploads;  // Agar dapat menangani file upload
+    use WithFileUploads;
 
-    public $buku, $judul, $kategori, $penulis, $penerbit, $tahun_terbit, $isbn, $cover, $bukuId;
+    public $buku;
+    public $judul, $kategori, $penulis, $penerbit, $tahun_terbit, $isbn, $cover, $deskripsi, $jumlah_stok, $lokasi_rak;
+    public $bukuId;
     public $isEdit = false;
     public $showModal = false;
+    public $search = '';
 
-    // Fungsi render untuk menampilkan halaman
     public function render()
     {
-        $this->buku = BukuModel::all();
-        return view('pages.buku.index'); // Pastikan view-nya sesuai
+        // Menampilkan buku berdasarkan pencarian
+        $this->buku = BukuModel::where('judul', 'like', '%' . $this->search . '%')->get();
+        return view('pages.buku.index');
     }
 
-    // Menyimpan data buku baru
     public function store()
     {
+        // Validasi inputan
         $this->validate([
             'judul' => 'required|string|max:255',
             'kategori' => 'required|string|max:100',
@@ -32,15 +35,19 @@ class BukuComponent extends Component
             'penerbit' => 'required|string|max:100',
             'tahun_terbit' => 'required|integer',
             'isbn' => 'required|string|max:20',
-            'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validasi file cover
+            'deskripsi' => 'nullable|string|max:1000',
+            'jumlah_stok' => 'required|integer|min:0',
+            'lokasi_rak' => 'required|string|max:50',
+            'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
+        // Menyimpan gambar cover jika ada
         $coverPath = null;
         if ($this->cover) {
-            // Menyimpan file cover
             $coverPath = $this->cover->store('covers', 'public');
         }
 
+        // Membuat entri buku baru
         BukuModel::create([
             'judul' => $this->judul,
             'kategori' => $this->kategori,
@@ -48,17 +55,20 @@ class BukuComponent extends Component
             'penerbit' => $this->penerbit,
             'tahun_terbit' => $this->tahun_terbit,
             'isbn' => $this->isbn,
-            'cover' => $coverPath,  // Simpan path file cover
+            'deskripsi' => $this->deskripsi,
+            'jumlah_stok' => $this->jumlah_stok,
+            'lokasi_rak' => $this->lokasi_rak,
+            'cover' => $coverPath,
         ]);
 
         session()->flash('message', 'Buku berhasil ditambahkan!');
         $this->resetForm();
     }
 
-    // Menyiapkan form edit
     public function edit($id)
     {
         $buku = BukuModel::findOrFail($id);
+        // Mengisi data yang ada pada form modal untuk edit
         $this->bukuId = $buku->id;
         $this->judul = $buku->judul;
         $this->kategori = $buku->kategori;
@@ -66,13 +76,17 @@ class BukuComponent extends Component
         $this->penerbit = $buku->penerbit;
         $this->tahun_terbit = $buku->tahun_terbit;
         $this->isbn = $buku->isbn;
+        $this->deskripsi = $buku->deskripsi;
+        $this->jumlah_stok = $buku->jumlah_stok;
+        $this->lokasi_rak = $buku->lokasi_rak;
 
-        $this->isEdit = true; // mode edit aktif
+        $this->isEdit = true;
+        $this->showModal = true;
     }
 
-    // Menyimpan hasil edit
     public function update()
     {
+        // Validasi inputan saat melakukan update
         $this->validate([
             'judul' => 'required|string|max:255',
             'kategori' => 'required|string|max:100',
@@ -80,21 +94,27 @@ class BukuComponent extends Component
             'penerbit' => 'required|string|max:100',
             'tahun_terbit' => 'required|integer',
             'isbn' => 'required|string|max:20',
-            'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validasi file cover
+            'deskripsi' => 'nullable|string|max:1000',
+            'jumlah_stok' => 'required|integer|min:0',
+            'lokasi_rak' => 'required|string|max:50',
+            'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
+        // Ambil data buku yang akan diperbarui
         $buku = BukuModel::findOrFail($this->bukuId);
-        $coverPath = $buku->cover;  // Pertahankan cover lama jika tidak ada file baru
+        $coverPath = $buku->cover;
 
+        // Proses upload gambar cover jika ada
         if ($this->cover) {
-            // Menghapus cover lama jika ada
+            // Hapus gambar lama jika ada
             if ($coverPath) {
-                \Storage::disk('public')->delete($coverPath);
+                Storage::disk('public')->delete($coverPath);
             }
-            // Menyimpan file cover yang baru
+            // Simpan gambar baru
             $coverPath = $this->cover->store('covers', 'public');
         }
 
+        // Perbarui data buku
         $buku->update([
             'judul' => $this->judul,
             'kategori' => $this->kategori,
@@ -102,14 +122,34 @@ class BukuComponent extends Component
             'penerbit' => $this->penerbit,
             'tahun_terbit' => $this->tahun_terbit,
             'isbn' => $this->isbn,
-            'cover' => $coverPath,  // Update cover
+            'deskripsi' => $this->deskripsi,
+            'jumlah_stok' => $this->jumlah_stok,
+            'lokasi_rak' => $this->lokasi_rak,
+            'cover' => $coverPath,
         ]);
+
+        // Emit event untuk memberitahukan bahwa buku telah diperbarui
+        $this->emit('bookUpdated'); 
 
         session()->flash('message', 'Buku berhasil diperbarui!');
         $this->resetForm();
     }
 
-    // Reset form input
+    public function delete($id)
+    {
+        $buku = BukuModel::findOrFail($id);
+
+        // Hapus gambar cover jika ada
+        if ($buku->cover) {
+            Storage::disk('public')->delete($buku->cover);
+        }
+
+        // Hapus data buku dari database
+        $buku->delete();
+
+        session()->flash('message', 'Buku berhasil dihapus!');
+    }
+
     public function resetForm()
     {
         $this->judul = '';
@@ -118,14 +158,18 @@ class BukuComponent extends Component
         $this->penerbit = '';
         $this->tahun_terbit = '';
         $this->isbn = '';
+        $this->deskripsi = '';
+        $this->jumlah_stok = '';
+        $this->lokasi_rak = '';
+        $this->cover = null;
         $this->bukuId = null;
-        $this->cover = null;  // Reset cover
         $this->isEdit = false;
+        $this->showModal = false;
     }
 
     public function openModal()
     {
-        $this->resetForm(); // pastikan form kosong
+        $this->resetForm();
         $this->showModal = true;
     }
 
