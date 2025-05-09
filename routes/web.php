@@ -5,8 +5,6 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BukuController;
 
 Route::post('/bukus', [BukuController::class, 'store'])->name('bukus.store');
-
-
 Route::get('/', function () {
     return view('pages.welcome');
 });
