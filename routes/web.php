@@ -5,7 +5,6 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\DashboardSiswaController;  // Controller khusus dashboard siswa
 
-// Route untuk halaman welcome (public)
 Route::get('/', function () {
     return view('pages.welcome');
 })->name('welcome');
