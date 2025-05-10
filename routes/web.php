@@ -4,17 +4,22 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\DashboardSiswaController;
-
-
+use App\Http\Controllers\AnggotaController;
+use App\Livewire\AnggotaComponent;
+ 
 Route::get('/', function () {
     return view('pages.welcome');
 })->name('welcome');
 
+Route::get('/anggota-livewire', AnggotaComponent::class)->middleware(['auth', 'verified']);
+Route::post('/anggotas', [AnggotaController::class, 'store'])->name('anggotas.store');
+
 // Routes untuk proses simpan buku (POST)
 Route::post('/bukus', [BukuController::class, 'store'])->name('bukus.store');
 
+
 // Routes yang membutuhkan auth & verified
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth'])->group(function () {
 
     // Dashboard dan tampilan terkait buku, anggota, dsb.
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');

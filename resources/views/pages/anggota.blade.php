@@ -1,13 +1,18 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-md text-gray-500 leading-tight">
-            {{ __('> Anggota') }}
+            {{ __('>Anggota') }}
+
         </h2>
     </x-slot>
 
     <div class="py-4">
-        <div class="mx-auto sm:px-4 lg:px-6">
-            @livewire('anggota-component')
+    <div class="mx-auto sm:px-4 lg:px-6">
+            <div class="container mx-auto">
+                <!-- Menampilkan komponen Livewire BukuComponent -->
+                @livewire('anggota-component')
+            </div>            
         </div>
     </div>
+
 </x-app-layout>
