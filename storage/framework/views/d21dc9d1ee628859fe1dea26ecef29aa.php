@@ -5,7 +5,24 @@ use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 
-?>
+new #[Layout('layouts.guest')] class extends Component
+{
+    public LoginForm $form;
+
+    /**
+     * Handle an incoming authentication request.
+     */
+    public function login(): void
+    {
+        $this->validate();
+
+        $this->form->authenticate();
+
+        Session::regenerate();
+
+        $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+    }
+}; ?>
 
 <div>
     <!-- Session Status -->
@@ -173,13 +190,13 @@ use Livewire\Volt\Component;
                 </label>
         
                 <!-- Forgot Password -->
-                <!--[if BLOCK]><![endif]--><?php if(Route::has('password.request')): ?>
+                <?php if(Route::has('password.request')): ?>
                     <a class="text-sm text-gray-600 hover:text-gray-900 underline rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                        href="<?php echo e(route('password.request')); ?>" wire:navigate>
                         <?php echo e(__('Forgot your password?')); ?>
 
                     </a>
-                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                <?php endif; ?>
             </div>
         </div>
         
@@ -216,4 +233,5 @@ use Livewire\Volt\Component;
             </a>
         </div>
     </form>
-</div><?php /**PATH D:\Perkuliahan Duniawi\New folder\New folder\perpustakaan\resources\views\livewire/pages/auth/login.blade.php ENDPATH**/ ?>
+</div>
+<?php /**PATH D:\Perkuliahan Duniawi\New folder\New folder\perpustakaan\resources\views/livewire/pages/auth/login.blade.php ENDPATH**/ ?>

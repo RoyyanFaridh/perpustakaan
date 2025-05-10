@@ -69,19 +69,18 @@ new #[Layout('layouts.guest')] class extends Component
             </div>
         </div>
         
-        
         <div class="mt-4">
             <x-primary-button class="w-full">
-                    {{ __('Log in') }}
+                {{ __('Log in') }}
             </x-primary-button>
         </div>
 
-        <div class="mt-4 text-center">
-            <span class="text-sm text-gray-600">{{ __("Don't have an account?") }}</span>
-            <a href="{{ route('register') }}" class="text-sm text-indigo-600 hover:text-indigo-900 font-semibold" wire:navigate>
-                {{ __('Register') }}
+        {{-- Tombol login Google --}}
+        <div class="flex justify-center">
+            <a href="{{ route('google.redirect') }}" class="flex items-center gap-2 rounded px-4 py-2 hover:bg-gray-100 transition">
+                <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5" alt="Google">
+                <span class="text-sm text-gray-700">Login dengan Google</span>
             </a>
         </div>
-
     </form>
 </div>

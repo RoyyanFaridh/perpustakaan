@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Auth\GoogleController;
 use App\Livewire\AnggotaComponent;
 use App\Livewire\AnggotaCreate;
 use App\Livewire\AnggotaEdit;
@@ -43,5 +44,8 @@ Route::view('/broadcast', 'pages.broadcast')
 Route::view('/profile', 'pages.profile')
     ->middleware(['auth'])
     ->name('profile');
+
+Route::get('/auth/google/redirect', [GoogleController::class, 'redirect'])->name('google.redirect');
+Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
 
 require __DIR__.'/auth.php';

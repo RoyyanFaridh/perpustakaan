@@ -1,51 +1,44 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perpustakaan Digital SMP 12 Yogyakarta</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="font-sans antialiased bg-white">
 
-        <title>Perpustakaan Digital SMP 12 Yogyakarta</title>
+  <!-- Navbar Sticky -->
+  <header class="sticky top-0 z-50 flex justify-between items-center p-6 bg-white shadow-md">
+    <div class="flex items-center space-x-4">
+      <img src="/images/logo_smp12yk.png" alt="Logo SMPN 12 Yogyakarta" class="h-12 w-auto" />
+    </div>
+    <div class="space-x-4">
+      <a href="/login" class="px-5 py-2 rounded bg-blue-600 text-white hover:bg-blue-700">Login</a>
+      <a href="/register" class="px-5 py-2 rounded bg-blue-600 text-white hover:bg-blue-700">Register</a>
+    </div>
+  </header>
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
+  <!-- Hero Section -->
+  <section class="relative min-h-screen flex items-center justify-start text-white bg-cover bg-center" style="background-image: url('/images/gedungsmpn12yk.jpg');">
+    <div class="absolute inset-0 bg-black bg-opacity-60"></div>
+    <div class="relative px-6 md:px-20 z-10 max-w-3xl">
+      <h1 class="text-5xl font-bold mb-4 leading-tight">Perpustakaan Digital<br>SMP Negeri 12 Yogyakarta</h1>
+      <p class="text-lg">Akses buku digital sekolah dari mana saja dengan mudah dan cepat.</p>
+    </div>
+  </section>
 
-        <!-- Styles -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+  <!-- Konten Tambahan agar dapat discroll -->
+  <section class="px-6 md:px-20 py-16 bg-gray-100 text-gray-800">
+    <h2 class="text-3xl font-semibold mb-6">Tentang Perpustakaan</h2>
+    <p class="text-lg leading-relaxed mb-4">
+      Perpustakaan digital SMP Negeri 12 Yogyakarta menyediakan akses mudah ke berbagai koleksi buku pelajaran dan referensi untuk mendukung proses belajar mengajar.
+    </p>
+    <p class="text-lg leading-relaxed">
+      Siswa dan guru dapat membaca buku secara online kapan saja dan di mana saja, menjadikan pembelajaran lebih fleksibel dan efisien.
+    </p>
+    
+  </section>
 
-    </head>
-    <body class="antialiased font-sans">
-        <div class="min-h-screen flex">
-            <!-- Bagian Kiri -->
-            <div class="w-1/2 flex flex-col items-center justify-center bg-blue-50 p-6">
-                <h1 class="text-4xl font-bold text-blue-900 text-center">
-                    Selamat Datang Di Perpustakaan Digital SMP 12 Yogyakarta
-                </h1>
-                <p class="mt-6 text-lg text-gray-700 text-center">
-                    Jelajahi koleksi buku digital kami dan temukan informasi menarik untuk mendukung belajar Anda!
-                </p>
-            </div>
-
-            <!-- Bagian Kanan -->
-            <div class="w-1/2 flex flex-col items-center justify-center p-10 relative bg-cover bg-center" style="background-image: url('/images/bg_perpus.jpeg');">
-                <div class="absolute inset-0 bg-white bg-opacity-80 backdrop-blur-sm"></div>
-
-                <div class="relative z-10 w-full max-w-sm">
-                    <h2 class="text-2xl font-semibold text-blue-800 mb-6 text-center">Akses Perpustakaan</h2>
-                    <a
-                        href="/login"
-                        class="block w-full text-center py-4 mb-4 rounded-lg bg-blue-500 text-white font-bold hover:bg-blue-600 transition"
-                    >
-                        Login
-                    </a>
-                    <a
-                        href="/register"
-                        class="block w-full text-center py-4 rounded-lg bg-blue-500 text-white font-bold hover:bg-blue-600 transition"
-                    >
-                        Register
-                    </a>
-                </div>
-            </div>
-        </div>
-    </body>
+</body>
 </html>

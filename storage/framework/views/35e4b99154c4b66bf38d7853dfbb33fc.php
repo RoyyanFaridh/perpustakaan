@@ -1,7 +1,7 @@
 <?php $attributes ??= new \Illuminate\View\ComponentAttributeBag;
 
 $__newAttributes = [];
-$__propNames = \Illuminate\View\ComponentAttributeBag::extractPropNames((['disabled' => false]));
+$__propNames = \Illuminate\View\ComponentAttributeBag::extractPropNames((['url']));
 
 foreach ($attributes->all() as $__key => $__value) {
     if (in_array($__key, $__propNames)) {
@@ -16,7 +16,7 @@ $attributes = new \Illuminate\View\ComponentAttributeBag($__newAttributes);
 unset($__propNames);
 unset($__newAttributes);
 
-foreach (array_filter((['disabled' => false]), 'is_string', ARRAY_FILTER_USE_KEY) as $__key => $__value) {
+foreach (array_filter((['url']), 'is_string', ARRAY_FILTER_USE_KEY) as $__key => $__value) {
     $$__key = $$__key ?? $__value;
 }
 
@@ -27,6 +27,16 @@ foreach ($attributes->all() as $__key => $__value) {
 }
 
 unset($__defined_vars); ?>
+<tr>
+<td class="header">
+<a href="<?php echo e($url); ?>" style="display: inline-block;">
+<?php if(trim($slot) === 'Laravel'): ?>
+<img src="https://laravel.com/img/notification-logo.png" class="logo" alt="Laravel Logo">
+<?php else: ?>
+<?php echo e($slot); ?>
 
-<input <?php if($disabled): echo 'disabled'; endif; ?> <?php echo e($attributes->merge(['class' => 'border-gray-300 focus:border-red-900 focus:ring-red-900 rounded-md shadow-sm'])); ?>>
-<?php /**PATH D:\Perkuliahan Duniawi\New folder\New folder\perpustakaan\resources\views/components/text-input.blade.php ENDPATH**/ ?>
+<?php endif; ?>
+</a>
+</td>
+</tr>
+<?php /**PATH D:\Perkuliahan Duniawi\New folder\New folder\perpustakaan\vendor\laravel\framework\src\Illuminate\Mail/resources/views/html/header.blade.php ENDPATH**/ ?>
