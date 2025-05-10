@@ -18,8 +18,6 @@
                         <label for="foto" class="block text-black text-xs mb-1">Foto Anggota</label>
                         <input type="file" wire:model="foto" id="foto"
                             class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm" />
-                        @error('foto') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
-
                     </div>
 
                     <!-- Nama Anggota -->
@@ -27,7 +25,6 @@
                         <label for="nama" class="block text-black text-xs mb-1">Nama Lengkap</label>
                         <input type="text" wire:model="nama" id="nama"
                             class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm" />
-                            @error('nama') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                     </div>
                 
                     <!-- Status -->
@@ -47,7 +44,6 @@
                             <label for="nis" class="block text-black text-xs mb-1">Nomor Induk Siswa (NIS)</label>
                             <input type="text" wire:model="nis" id="nis"
                                 class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm" />
-                                @error('nis') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                         </div>
 
                         <div class="w-1/2">
@@ -83,7 +79,6 @@
                         <label for="no_telp" class="block text-black text-xs mb-1">Nomor Telepon</label>
                         <input type="text" wire:model="no_telp" id="no_telp"
                             class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm" />
-                            @error('no_telp') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                     </div>
 
                     <!-- Email -->
@@ -91,7 +86,6 @@
                         <label for="email" class="block text-black text-xs mb-1">Email</label>
                         <input type="email" wire:model="email" id="email"
                             class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm" />
-                            @error('email') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                     </div>
                 </div>              
 

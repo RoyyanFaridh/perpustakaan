@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
@@ -14,6 +13,7 @@ new #[Layout('layouts.guest')] class extends Component
     public string $email = '';
     public string $password = '';
     public string $password_confirmation = '';
+    public ?string $phone = null;
     public ?string $role = null;
     public bool $agree = false;
 
@@ -24,36 +24,45 @@ new #[Layout('layouts.guest')] class extends Component
 
 public function register(): void
 {
-    // Hanya untuk Guru dan Siswa, pastikan role divalidasi hanya jika ada
+    // Validasi form
     $validated = $this->validate([
-        'name' => ['required', 'string', 'max:255'],
-        'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
-        'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
-        // Validasi role hanya jika role tidak kosong
-        'role' => $this->role ? ['required', 'in:guru,siswa'] : [],
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|max:255|unique:users,email',
+        'password' => 'required|confirmed|min:8',
+        'role' => 'required|in:guru,siswa',
+        'phone' => 'required|numeric|digits_between:9,15',
+        'agree' => 'accepted',
     ]);
 
-    $validated['password'] = Hash::make($validated['password']);
-
-    // Jika user memilih role, simpan role mereka
-    if ($this->role) {
-        $validated['role'] = $this->role;
-    } else {
-        // Jika tidak memilih role, otomatis set menjadi 'siswa' atau 'admin' jika pengguna admin
-        $validated['role'] = 'siswa'; // Defaultkan jadi siswa
-    }
-
-    event(new Registered($user = User::create($validated)));
+    // Membuat user baru
+    $user = User::create([
+        'name' => $this->name,
+        'email' => $this->email,
+        'password' => Hash::make($this->password),
+        'role' => $this->role ?? 'siswa',
+        'phone' => $this->phone,
+    ]);
 
     Auth::login($user);
+    $this->redirect(route('dashboard'));
+}
 
-    $this->redirect(route('dashboard', absolute: false), navigate: true);
+public function updatedAgree($value)
+{
+    // Debugging untuk melihat perubahan agree
+    logger('Agree value:', [$value]);
+}
+
+
+public function updatedPhone($value)
+{
+    logger('Phone number updated:', [$value]);
 }
 
 }; ?>
 
 <div>
-    <form wire:submit="register">
+    <form wire:submit.prevent="register">
         <!-- Name -->
         <div>
             <x-input-label for="name" :value="__('Name')" />

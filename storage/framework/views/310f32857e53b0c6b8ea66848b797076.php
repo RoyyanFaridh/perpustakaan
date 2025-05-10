@@ -10,14 +10,17 @@
 <?php $component->withAttributes([]); ?>
      <?php $__env->slot('header', null, []); ?> 
         <h2 class="font-semibold text-md text-gray-500 leading-tight">
-            <?php echo e(__('> Anggota')); ?>
+            <?php echo e(__('>Anggota')); ?>
+
 
         </h2>
      <?php $__env->endSlot(); ?>
 
     <div class="py-4">
-        <div class="mx-auto sm:px-4 lg:px-6">
-            <?php
+    <div class="mx-auto sm:px-4 lg:px-6">
+            <div class="container mx-auto">
+                <!-- Menampilkan komponen Livewire BukuComponent -->
+                <?php
 $__split = function ($name, $params = []) {
     return [$name, $params];
 };
@@ -33,8 +36,10 @@ unset($__params);
 unset($__split);
 if (isset($__slots)) unset($__slots);
 ?>
+            </div>            
         </div>
     </div>
+
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>

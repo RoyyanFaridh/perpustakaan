@@ -13,7 +13,7 @@
                 <h2 class="text-xl font-semibold mb-4"><?php echo e($isEdit ? 'Edit Anggota' : 'Tambah Anggota'); ?></h2>
 
                 <div class="space-y-4 text-sm text-gray-600">
-                    <!-- Foto Anggota -->
+                    Foto Anggota
                     <div>
                         <label for="foto" class="block text-black text-xs mb-1">Foto Anggota</label>
                         <input type="file" wire:model="foto" id="foto"
@@ -76,8 +76,8 @@
                 
                     <!-- Nomor Telepon -->
                     <div>
-                        <label for="no_telepon" class="block text-black text-xs mb-1">Nomor Telepon</label>
-                        <input type="text" wire:model="no_telepon" id="no_telepon"
+                        <label for="no_telp" class="block text-black text-xs mb-1">Nomor Telepon</label>
+                        <input type="text" wire:model="no_telp" id="no_telp"
                             class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm" />
                     </div>
 
@@ -101,7 +101,7 @@
                             Update Anggota
                         </button>
                     <?php else: ?>
-                        <button wire:click="store"
+                        <button wire:click.prevent="store" type="button"
                             class="bg-blue-500 border border-blue-600 hover:bg-blue-600 text-white py-2 px-4 rounded-md shadow-sm transition duration-150 ease-in-out transform hover:scale-105">
                             Simpan Anggota
                         </button>
@@ -117,6 +117,7 @@
         </div>
 
         <!-- Tabel Daftar Anggota -->
+    </div class="overflow-x-auto">
         <table class="min-w-full text-sm text-left text-gray-700 border border-gray-200 rounded-lg overflow-hidden">
             <thead class="bg-gray-50">
                 <tr>
@@ -133,6 +134,8 @@
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-100">
+
+
                 <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $anggota; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr class="hover:bg-gray-50">
                         <td class="px-4 py-2"><?php echo e($index + 1); ?></td>
@@ -142,7 +145,7 @@
                         <td class="px-4 py-2"><?php echo e($item->kelas); ?></td>
                         <td class="px-4 py-2"><?php echo e($item->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan'); ?></td>
                         <td class="px-4 py-2"><?php echo e($item->alamat); ?></td>
-                        <td class="px-4 py-2"><?php echo e($item->no_telepon); ?></td>
+                        <td class="px-4 py-2"><?php echo e($item->no_telp); ?></td>
                         <td class="px-4 py-2"><?php echo e($item->email); ?></td>
                         <td class="px-4 py-2 text-center space-x-2">
                             <button wire:click="edit(<?php echo e($item->id); ?>)" class="px-3 py-1 bg-yellow-400 hover:bg-yellow-500 text-white rounded-md shadow text-xs">Edit</button>

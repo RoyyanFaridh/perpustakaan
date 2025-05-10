@@ -11,7 +11,7 @@ use Livewire\Volt\Component;
 ?>
 
 <div>
-    <form wire:submit="register">
+    <form wire:submit="register" action="<?php echo e(route('register')); ?>">
         <!-- Name -->
         <div>
             <?php if (isset($component)) { $__componentOriginale3da9d84bb64e4bc2eeebaafabfb2581 = $component; } ?>
