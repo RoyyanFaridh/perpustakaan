@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BukuController;
-use App\Http\Controllers\DashboardSiswaController;  // Controller khusus dashboard siswa
+use App\Http\Controllers\DashboardSiswaController;
+
 
 Route::get('/', function () {
     return view('pages.welcome');
