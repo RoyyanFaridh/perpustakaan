@@ -13,11 +13,13 @@
                 <h2 class="text-xl font-semibold mb-4">{{ $isEdit ? 'Edit Anggota' : 'Tambah Anggota' }}</h2>
 
                 <div class="space-y-4 text-sm text-gray-600">
-                    <!-- Foto Anggota -->
+                    Foto Anggota
                     <div>
                         <label for="foto" class="block text-black text-xs mb-1">Foto Anggota</label>
                         <input type="file" wire:model="foto" id="foto"
                             class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm" />
+                        @error('foto') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+
                     </div>
 
                     <!-- Nama Anggota -->
@@ -25,6 +27,7 @@
                         <label for="nama" class="block text-black text-xs mb-1">Nama Lengkap</label>
                         <input type="text" wire:model="nama" id="nama"
                             class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm" />
+                            @error('nama') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                     </div>
                 
                     <!-- Status -->
@@ -44,6 +47,7 @@
                             <label for="nis" class="block text-black text-xs mb-1">Nomor Induk Siswa (NIS)</label>
                             <input type="text" wire:model="nis" id="nis"
                                 class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm" />
+                                @error('nis') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                         </div>
 
                         <div class="w-1/2">
@@ -76,9 +80,10 @@
                 
                     <!-- Nomor Telepon -->
                     <div>
-                        <label for="no_telepon" class="block text-black text-xs mb-1">Nomor Telepon</label>
-                        <input type="text" wire:model="no_telepon" id="no_telepon"
+                        <label for="no_telp" class="block text-black text-xs mb-1">Nomor Telepon</label>
+                        <input type="text" wire:model="no_telp" id="no_telp"
                             class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm" />
+                            @error('no_telp') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                     </div>
 
                     <!-- Email -->
@@ -86,6 +91,7 @@
                         <label for="email" class="block text-black text-xs mb-1">Email</label>
                         <input type="email" wire:model="email" id="email"
                             class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm" />
+                            @error('email') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                     </div>
                 </div>              
 
@@ -101,7 +107,7 @@
                             Update Anggota
                         </button>
                     @else
-                        <button wire:click="store"
+                        <button wire:click.prevent="store" type="button"
                             class="bg-blue-500 border border-blue-600 hover:bg-blue-600 text-white py-2 px-4 rounded-md shadow-sm transition duration-150 ease-in-out transform hover:scale-105">
                             Simpan Anggota
                         </button>
@@ -117,6 +123,7 @@
         </div>
 
         <!-- Tabel Daftar Anggota -->
+    </div class="overflow-x-auto">
         <table class="min-w-full text-sm text-left text-gray-700 border border-gray-200 rounded-lg overflow-hidden">
             <thead class="bg-gray-50">
                 <tr>
@@ -133,6 +140,8 @@
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-100">
+
+
                 @foreach($anggota as $index => $item)
                     <tr class="hover:bg-gray-50">
                         <td class="px-4 py-2">{{ $index + 1 }}</td>
@@ -142,7 +151,7 @@
                         <td class="px-4 py-2">{{ $item->kelas }}</td>
                         <td class="px-4 py-2">{{ $item->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
                         <td class="px-4 py-2">{{ $item->alamat }}</td>
-                        <td class="px-4 py-2">{{ $item->no_telepon }}</td>
+                        <td class="px-4 py-2">{{ $item->no_telp }}</td>
                         <td class="px-4 py-2">{{ $item->email }}</td>
                         <td class="px-4 py-2 text-center space-x-2">
                             <button wire:click="edit({{ $item->id }})" class="px-3 py-1 bg-yellow-400 hover:bg-yellow-500 text-white rounded-md shadow text-xs">Edit</button>
