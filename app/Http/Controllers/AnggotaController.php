@@ -22,15 +22,7 @@ class AnggotaController extends Controller
             'kelas' => 'required|in:7,8,9',
             'jenis_kelamin' => 'required|in:L,P',
             'status' => 'required|in:active,inactive',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
-        // Menangani upload cover buku jika ada
-        $fotoPath = null;
-        if ($request->hasFile('foto')) {
-            // Menyimpan file cover
-            $fotoPath = $request->file('foto')->store('fotos', 'public');
-        }
 
         // Membuat entri buku baru
         Anggota::create([
@@ -42,7 +34,6 @@ class AnggotaController extends Controller
             'kelas' => $request->kelas,
             'jenis_kelamin' => $request->jenis_kelamin, 
             'status' => $request->status, 
-            'foto' => $fotoPath, 
         ]);
 
         return redirect()->back()->with('success', 'Anggota berhasil ditambahkan!');
@@ -61,21 +52,9 @@ class AnggotaController extends Controller
             'kelas' => 'required|in:7,8,9',
             'jenis_kelamin' => 'required|in:L,P',
             'status' => 'required|in:active,inactive',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $anggota = Anggota::findOrFail($id);
-        $fotoPath = $anggota->foto;
-
-    
-        if ($request->hasFile('foto')) {
-            // Menghapus foto lama jika ada
-            if ($fotoPath) {
-                Storage::disk('public')->delete($fotoPath);
-            }
-            // Menyimpan foto yang baru
-            $fotoPath = $request->file('foto')->store('fotos', 'public');
-        }
 
         // Memperbarui data buku
         $anggota->update([
@@ -87,7 +66,6 @@ class AnggotaController extends Controller
             'kelas' => $request->kelas,
             'jenis_kelamin' => $request->jenis_kelamin, 
             'status' => $request->status, 
-            'foto' => $fotoPath
         ]);
 
         return redirect()->back()->with('success', 'Anggota berhasil diperbarui!');

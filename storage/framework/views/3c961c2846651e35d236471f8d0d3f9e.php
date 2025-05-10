@@ -13,13 +13,6 @@
                 <h2 class="text-xl font-semibold mb-4"><?php echo e($isEdit ? 'Edit Anggota' : 'Tambah Anggota'); ?></h2>
 
                 <div class="space-y-4 text-sm text-gray-600">
-                    Foto Anggota
-                    <div>
-                        <label for="foto" class="block text-black text-xs mb-1">Foto Anggota</label>
-                        <input type="file" wire:model="foto" id="foto"
-                            class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm" />
-                    </div>
-
                     <!-- Nama Anggota -->
                     <div>
                         <label for="nama" class="block text-black text-xs mb-1">Nama Lengkap</label>
@@ -117,7 +110,6 @@
         </div>
 
         <!-- Tabel Daftar Anggota -->
-    </div class="overflow-x-auto">
         <table class="min-w-full text-sm text-left text-gray-700 border border-gray-200 rounded-lg overflow-hidden">
             <thead class="bg-gray-50">
                 <tr>
@@ -155,6 +147,7 @@
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
             </tbody>
         </table>
+        </div>
     </div>
 </div>
 <?php /**PATH C:\Users\ASUS\perpustakaan_smp\resources\views/pages/anggota/index.blade.php ENDPATH**/ ?>

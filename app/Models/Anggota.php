@@ -17,7 +17,6 @@ class Anggota extends Model {
         'status',
         'nis',
         'kelas',
-        'jenis_kelamin',
-        'foto'
+        'jenis_kelamin'
     ];
 }
