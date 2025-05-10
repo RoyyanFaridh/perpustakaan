@@ -5,7 +5,24 @@ use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 
-?>
+new #[Layout('layouts.guest')] class extends Component
+{
+    public LoginForm $form;
+
+    /**
+     * Handle an incoming authentication request.
+     */
+    public function login(): void
+    {
+        $this->validate();
+
+        $this->form->authenticate();
+
+        Session::regenerate();
+
+        $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+    }
+}; ?>
 
 <div>
     <!-- Session Status -->
@@ -170,13 +187,13 @@ use Livewire\Volt\Component;
                 </label>
     
                 <!-- Forgot Password -->
-                <!--[if BLOCK]><![endif]--><?php if(Route::has('password.request')): ?>
+                <?php if(Route::has('password.request')): ?>
                     <a class="text-sm text-gray-600 hover:text-gray-900 underline rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                        href="<?php echo e(route('password.request')); ?>" wire:navigate>
                         <?php echo e(__('Forgot your password?')); ?>
 
                     </a>
-                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                <?php endif; ?>
             </div>
         </div>
     
@@ -204,13 +221,6 @@ use Livewire\Volt\Component;
 <?php unset($__componentOriginald411d1792bd6cc877d687758b753742c); ?>
 <?php endif; ?>
         </div>
-
-        <div class="mt-4 text-center">
-            <span class="text-sm text-gray-600"><?php echo e(__("Haven't an account?")); ?></span>
-            <a href="<?php echo e(route('register')); ?>" class="text-sm text-indigo-600 hover:text-indigo-900 font-semibold" wire:navigate>
-                <?php echo e(__('Register')); ?>
-
-            </a>
-        </div> 
     </form>    
-</div><?php /**PATH C:\Users\ASUS\perpustakaan_smp\resources\views\livewire/pages/auth/login.blade.php ENDPATH**/ ?>
+</div>
+<?php /**PATH C:\Users\ASUS\perpustakaan_smp\resources\views/livewire/pages/auth/login.blade.php ENDPATH**/ ?>

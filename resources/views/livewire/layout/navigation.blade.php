@@ -56,12 +56,6 @@ new class extends Component
                             </nav>
                 
                             <nav class="mt-2 space-y-2">
-                                <x-nav-link :href="route('terlambat.index')" :active="request()->routeIs('terlambat.*')">
-                                    {{ __('Terlambat') }}
-                                </x-nav-link>   
-                            </nav>
-                
-                            <nav class="mt-2 space-y-2">
                                 <x-nav-link :href="route('broadcast.index')" :active="request()->routeIs('broadcast.*')">
                                     {{ __('Broadcast') }}
                                 </x-nav-link>   
