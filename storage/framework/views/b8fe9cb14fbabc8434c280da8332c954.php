@@ -17,12 +17,7 @@
 
     <div class="py-4">
         <div class="mx-auto sm:px-4 lg:px-6">
-            <div class="font-bold text-3xl text-gray-900 mb-4">
-                <?php echo e(__("Statistik Pengunjung")); ?>
-
-            </div>
-    
-            <!-- Wrapper untuk Card -->
+                <!-- Wrapper untuk Card -->
             <div class="flex flex-wrap gap-4 mb-4">
                 <?php if (isset($component)) { $__componentOriginal53747ceb358d30c0105769f8471417f6 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal53747ceb358d30c0105769f8471417f6 = $attributes; } ?>
@@ -111,7 +106,11 @@
             </div>
             
         </div>
-    
+
+        <div class="font-bold text-3xl text-gray-900 mb-4 ml-4">
+            <?php echo e(__("Statistik Pengunjung")); ?>
+
+        </div>
         
         <div class="bg-white p-6 rounded shadow">
             <canvas id="statistikChart" height="100"></canvas>

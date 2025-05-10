@@ -15,4 +15,4 @@
         <button type="submit">Kirim</button>
     </form>
 </div>
-<?php /**PATH C:\Users\ASUS\perpustakaan_smp\resources\views/pages/broadcast/index.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\Users\ACER\perpustakaan\resources\views/pages/broadcast/index.blade.php ENDPATH**/ ?>
