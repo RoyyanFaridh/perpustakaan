@@ -4,59 +4,65 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use App\Models\Anggota;
+use App\Models\Anggota as AnggotaModel;
 
 class AnggotaComponent extends Component{
 
     use WithFileUploads;
 
     public $anggota;
-    public $nama, $alamat, $no_telp, $email, $status, $nis, $kelas, $jenis_kelamin;
+    public $nama, $nis, $alamat, $no_telp, $email;
+
+    public $status = '';
+    public $kelas = '';
+    public $jenis_kelamin = '';
+
     public $anggotaId;
     public $isEdit= false;
     public $showModal = false;
     public $search = '';
 
     public function render(){
-        $this->anggota = Anggota::where('nama', 'like', '%' . $this->search . '%')
-        ->orWhere('nis', 'like', '%' . $this->search . '%')
-        ->get();
+        $this->anggota = AnggotaModel::where('nama', 'like', '%' . $this->search . '%')->get();
         return view('pages.anggota.index');
 
     }
 
     public function store(){
+        
         $this->validate([
             'nama' => 'required|string|max:255',
             'status' => 'required|in:active,inactive',
-            'nis' => 'required|string|max:20|unique:anggotas,nis',
+            'nis' => 'required|string|max:20',
             'kelas' => 'required|in:7,8,9',
             'jenis_kelamin' => 'required|in:L,P',
-            'alamat' => 'required|string|max:255',           
+            'alamat' => 'required|string|max:255',
             'no_telp' => 'required|string|max:20',
             'email' => 'required|email|max:255',
         ]);
 
-            Anggota::create([
-                'nama' => $this->nama,
-                'alamat' => $this->alamat,
-                'no_telp' => $this->no_telp,
-                'email' => $this->email,
-                'nis' => $this->nis,
-                'kelas' => $this->kelas,
-                'jenis_kelamin' => $this->jenis_kelamin,
-                'status' => $this->status,
-            ]);
+        
+
+        AnggotaModel::create([
+            'nama' => $this->nama,
+            'status' => $this->status,
+            'nis' => $this->nis,
+            'kelas' => $this->kelas,
+            'jenis_kelamin' => $this->jenis_kelamin,
+            'alamat' => $this->alamat,
+            'no_telp' => $this->no_telp,
+            'email' => $this->email,             
+        ]);
             
             session()->flash('message', 'Anggota berhasil ditambahkan!');
-            $this->reset();
-            $this->closeModal(); // Tutup modal
+            $this->resetForm();
+            $this->closeModal();
             $this->emit('anggotaUpdated');
-        
+            dd('Tombol store kepencet');
     }
 
     public function edit($id){
-        $anggota = Anggota::findOrFail($id);
+        $anggota = AnggotaModel::findOrFail($id);
         $this->anggotaId = $anggota->id;
         $this->nama = $anggota->nama;
         $this->alamat = $anggota->alamat;
@@ -72,35 +78,36 @@ class AnggotaComponent extends Component{
     }
 
     public function update() {
+        
         $this->validate([
             'nama' => 'required|string|max:255',
-            'alamat' => 'required|string|max:255',
-            'no_telp' => 'required|string|max:20',
-            'email' => 'required|email|max:255',
-            'nis' => 'required|string|max:20|unique:anggotas,nis,' . $this->anggotaId,
+            'status' => 'required|in:active,inactive',
+            'nis' => 'required|string|max:20|unique:anggotas,nis',
             'kelas' => 'required|in:7,8,9',
             'jenis_kelamin' => 'required|in:L,P',
-            'status' => 'required|in:active,inactive',
+            'alamat' => 'required|string|max:255',           
+            'no_telp' => 'required|string|max:20',
+            'email' => 'required|email|max:255',
         ]);
 
-        $anggota = Anggota::findOrFail($this->anggotaId);
+        $anggota = AnggotaModel::findOrFail($this->anggotaId);
 
         $anggota->update([
             'nama' => $this->nama,
-            'alamat' => $this->alamat,
-            'no_telp' => $this->no_telp,
-            'email' => $this->email,
+            'status' => $this->status,
             'nis' => $this->nis,
             'kelas' => $this->kelas,
             'jenis_kelamin' => $this->jenis_kelamin,
-            'status' => $this->status,
+            'alamat' => $this->alamat,
+            'no_telp' => $this->no_telp,
+            'email' => $this->email,  
         ]);
     }
 
      // Menghapus anggota
      public function delete($id)
      {
-         $anggota = Anggota::findOrFail($id);
+         $anggota = AnggotaModel::findOrFail($id);
  
          $anggota->delete();
  
@@ -109,21 +116,23 @@ class AnggotaComponent extends Component{
  
      // Reset form input
      public function resetForm()
-     {
-         $this->nama = '';
-         $this->alamat = '';
-         $this->no_telp = '';
-         $this->email = '';
-         $this->nis = '';
-         $this->kelas = '';
-         $this->jenis_kelamin = '';
-         $this->anggotaId = null;
-         $this->isEdit = false;
-     }
+    {
+        $this->nama = '';
+        $this->status = '';
+        $this->nis = '';
+        $this->kelas = '';
+        $this->jenis_kelamin = '';
+        $this->alamat = '';
+        $this->no_telp = '';
+        $this->email = '';
+        $this->anggotaId = null;
+        $this->isEdit = false;
+    }
+
  
      public function openModal()
      {
-        $this->reset();        // pastikan form kosong
+        $this->resetForm();   
          $this->showModal = true;
      }
  

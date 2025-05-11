@@ -15,25 +15,26 @@ class AnggotaController extends Controller
         // Validasi inputan
         $request->validate([
             'nama' => 'required|string|max:255',
-            'alamat' => 'required|string|max:255',
-            'no_telp' => 'required|string|max:20',
-            'email' => 'required|email|max:255',
-            'nis' => 'required|string|max:20|unique:anggotas,nis',
+            'status' => 'required|in:active,inactive',
+            'nis' => 'required|string|max:20',
             'kelas' => 'required|in:7,8,9',
             'jenis_kelamin' => 'required|in:L,P',
-            'status' => 'required|in:active,inactive',
+            'alamat' => 'required|string|max:255',           
+            'no_telp' => 'required|string|max:20',
+            'email' => 'required|email|max:255',
         ]);
+        dd('validasi masuk');
 
         // Membuat entri buku baru
         Anggota::create([
             'nama' => $request->nama,
-            'alamat' => $request->alamat,
-            'no_telp' => $request->no_telp,
-            'email' => $request->email,
+            'status' => $request->status, 
             'nis' => $request->nis,
             'kelas' => $request->kelas,
             'jenis_kelamin' => $request->jenis_kelamin, 
-            'status' => $request->status, 
+            'alamat' => $request->alamat,
+            'no_telp' => $request->no_telp,
+            'email' => $request->email, 
         ]);
 
         return redirect()->back()->with('success', 'Anggota berhasil ditambahkan!');
@@ -45,13 +46,13 @@ class AnggotaController extends Controller
         // Validasi inputan
         $request->validate([
             'nama' => 'required|string|max:255',
-            'alamat' => 'required|string|max:255',
-            'no_telp' => 'required|string|max:20',
-            'email' => 'required|email|max:255',
+            'status' => 'required|in:active,inactive',
             'nis' => 'required|string|max:20|unique:anggotas,nis',
             'kelas' => 'required|in:7,8,9',
             'jenis_kelamin' => 'required|in:L,P',
-            'status' => 'required|in:active,inactive',
+            'alamat' => 'required|string|max:255',           
+            'no_telp' => 'required|string|max:20',
+            'email' => 'required|email|max:255',
         ]);
 
         $anggota = Anggota::findOrFail($id);
@@ -59,23 +60,16 @@ class AnggotaController extends Controller
         // Memperbarui data buku
         $anggota->update([
             'nama' => $request->nama,
-            'alamat' => $request->alamat,
-            'no_telp' => $request->no_telp,
-            'email' => $request->email,
+            'status' => $request->status, 
             'nis' => $request->nis,
             'kelas' => $request->kelas,
             'jenis_kelamin' => $request->jenis_kelamin, 
-            'status' => $request->status, 
+            'alamat' => $request->alamat,
+            'no_telp' => $request->no_telp,
+            'email' => $request->email,
         ]);
 
         return redirect()->back()->with('success', 'Anggota berhasil diperbarui!');
 
-    }
-
-    public function index(){
-        $anggota = Anggota::all(); // ✅ aman tanpa relasi
-        return view('anggota.index', compact('anggota'));
-    }    
-    
-
+    }   
 }

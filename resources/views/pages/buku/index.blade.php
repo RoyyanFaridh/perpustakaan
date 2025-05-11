@@ -123,8 +123,8 @@
                         Update Buku
                     </button>
                 @else
-                    <button wire:click="store"
-                        class="bg-blue-500 border border-blue-600 hover:bg-blue-600 text-white py-2 px-4 rounded-md shadow-sm transition duration-150 ease-in-out transform hover:scale-105">
+                    <button wire:click.prevent="store"
+                        type='submit' class="bg-blue-500 border border-blue-600 hover:bg-blue-600 text-white py-2 px-4 rounded-md shadow-sm transition duration-150 ease-in-out transform hover:scale-105">
                         Simpan Buku
                     </button>
                 @endif

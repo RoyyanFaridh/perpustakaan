@@ -27,6 +27,7 @@ class BukuComponent extends Component
 
     public function store()
     {
+        // dd($this->judul, $this->kategori, $this->penulis, $this->penerbit, $this->tahun_terbit, $this->isbn, $this->deskripsi, $this->jumlah_stok, $this->lokasi_rak); // Debug data
         // Validasi inputan
         $this->validate([
             'judul' => 'required|string|max:255',
@@ -40,6 +41,7 @@ class BukuComponent extends Component
             'lokasi_rak' => 'required|string|max:50',
             'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+        // dd('validasi sukses');
 
         // Menyimpan gambar cover jika ada
         $coverPath = null;
@@ -60,6 +62,7 @@ class BukuComponent extends Component
             'lokasi_rak' => $this->lokasi_rak,
             'cover' => $coverPath,
         ]);
+        dd('create');
 
         session()->flash('message', 'Buku berhasil ditambahkan!');
         $this->resetForm();

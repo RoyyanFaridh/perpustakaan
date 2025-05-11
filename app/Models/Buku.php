@@ -19,6 +19,10 @@ class Buku extends Model
         'penulis',
         'penerbit',
         'tahun_terbit',
-        'isbn'
+        'isbn',
+        'deskripsi',
+        'jumlah_stok',
+        'lokasi_rak',
+        'cover',
     ];
 }

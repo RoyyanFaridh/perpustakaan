@@ -10,7 +10,7 @@
 <?php $component->withAttributes([]); ?>
      <?php $__env->slot('header', null, []); ?> 
         <h2 class="font-semibold text-md text-gray-500 leading-tight">
-            <?php echo e(__('>Anggota')); ?>
+            <?php echo e(__('> Anggota')); ?>
 
 
         </h2>

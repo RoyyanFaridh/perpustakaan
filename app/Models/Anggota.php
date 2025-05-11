@@ -11,12 +11,12 @@ class Anggota extends Model {
 
     protected $fillable = [
         'nama',
-        'alamat',
-        'no_telp',
-        'email',
         'status',
         'nis',
         'kelas',
-        'jenis_kelamin'
+        'jenis_kelamin',
+        'alamat',
+        'no_telp',
+        'email',      
     ];
 }
