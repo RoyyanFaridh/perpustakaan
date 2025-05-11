@@ -15,22 +15,22 @@
             class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
         </div>
         
-        @if($showModal)
+        <!--[if BLOCK]><![endif]--><?php if($showModal): ?>
         <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm">
             <div class="bg-white rounded-xl shadow-lg w-full max-w-lg p-6">
-                <h2 class="text-xl font-semibold mb-4">{{ $isEdit ? 'Edit Anggota' : 'Tambah Anggota' }}</h2>
+                <h2 class="text-xl font-semibold mb-4"><?php echo e($isEdit ? 'Edit Anggota' : 'Tambah Anggota'); ?></h2>
 
-                {{-- ERROR VALIDASI --}}
-                    @if ($errors->any())
+                
+                    <!--[if BLOCK]><![endif]--><?php if($errors->any()): ?>
                         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 text-sm">
                             <strong class="font-medium">Terdapat kesalahan input:</strong>
                             <ul class="list-disc list-inside mt-2 space-y-1">
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
+                                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <li><?php echo e($error); ?></li>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                             </ul>
                         </div>
-                    @endif
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                 <div class="space-y-4 text-sm text-gray-600">
                     <!-- Nama Anggota -->
@@ -111,21 +111,21 @@
                         Batal
                     </button>
                 
-                    @if($isEdit)
+                    <!--[if BLOCK]><![endif]--><?php if($isEdit): ?>
                         <button wire:click="update"
                             class="bg-yellow-400 hover:bg-yellow-500 text-white py-2 px-4 rounded-md shadow-sm transition duration-150 ease-in-out transform hover:scale-105">
                             Update Anggota
                         </button>
-                    @else
+                    <?php else: ?>
                         <button wire:click.prevent="store"
                             type="submit" class="bg-blue-500 border border-blue-600 hover:bg-blue-600 text-white py-2 px-4 rounded-md shadow-sm transition duration-150 ease-in-out transform hover:scale-105">
                             Simpan Anggota
                         </button>
-                    @endif
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                 </div>            
             </div>
         </div>
-        @endif
+        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
         <!-- Tabel Daftar Anggota -->
         <table class="min-w-full text-sm text-left text-gray-700 border border-gray-200 rounded-lg overflow-hidden">
@@ -144,23 +144,23 @@
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-100">
-                @foreach($anggota as $index => $item)
+                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $anggota; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr class="hover:bg-gray-50">
-                        <td class="px-4 py-2">{{ $index + 1 }}</td>
-                        <td class="px-4 py-2">{{ $item->nama }}</td>
-                        <td class="px-4 py-2">{{ $item->status == 'active' ? 'Aktif' : 'Tidak Aktif' }}</td>
-                        <td class="px-4 py-2">{{ $item->nis }}</td>
-                        <td class="px-4 py-2">{{ $item->kelas }}</td>
-                        <td class="px-4 py-2">{{ $item->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
-                        <td class="px-4 py-2">{{ Str::limit($item->alamat, 100) }}</td>
-                        <td class="px-4 py-2">{{ $item->no_telp }}</td>
-                        <td class="px-4 py-2">{{ $item->email }}</td>
+                        <td class="px-4 py-2"><?php echo e($index + 1); ?></td>
+                        <td class="px-4 py-2"><?php echo e($item->nama); ?></td>
+                        <td class="px-4 py-2"><?php echo e($item->status == 'active' ? 'Aktif' : 'Tidak Aktif'); ?></td>
+                        <td class="px-4 py-2"><?php echo e($item->nis); ?></td>
+                        <td class="px-4 py-2"><?php echo e($item->kelas); ?></td>
+                        <td class="px-4 py-2"><?php echo e($item->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan'); ?></td>
+                        <td class="px-4 py-2"><?php echo e(Str::limit($item->alamat, 100)); ?></td>
+                        <td class="px-4 py-2"><?php echo e($item->no_telp); ?></td>
+                        <td class="px-4 py-2"><?php echo e($item->email); ?></td>
                         <td class="px-4 py-2 text-center space-x-2">
-                            <button wire:click="edit({{ $item->id }})" class="px-3 py-1 bg-yellow-400 hover:bg-yellow-500 text-white rounded-md shadow text-xs">Edit</button>
-                            <button wire:click="delete({{ $item->id }})" class="px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded-md shadow text-xs">Hapus</button>
+                            <button wire:click="edit(<?php echo e($item->id); ?>)" class="px-3 py-1 bg-yellow-400 hover:bg-yellow-500 text-white rounded-md shadow text-xs">Edit</button>
+                            <button wire:click="delete(<?php echo e($item->id); ?>)" class="px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded-md shadow text-xs">Hapus</button>
                         </td>
                     </tr>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
             </tbody>
         </table>
     </div>
@@ -182,3 +182,4 @@
         });
     });
 </script>
+<?php /**PATH C:\Users\MSI Computer\Herd\perpustakaan\resources\views/pages/anggota/index.blade.php ENDPATH**/ ?>
