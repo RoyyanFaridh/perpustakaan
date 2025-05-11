@@ -31,17 +31,13 @@ class AuthenticatedSessionController extends Controller
     $role = Auth::user()->role;
 
     if ($role === 'admin') {
-        return redirect('/admin');
-    } elseif ($role === 'guru') {
-        return redirect('/guru');
-    } elseif ($role === 'siswa') {
-        return redirect('/siswa');
+    return redirect()->route('admin.dashboard')->with('success', 'Login successful');
+    } elseif ($role === 'guru' || $role === 'siswa') {
+        return redirect()->route('user.dashboard')->with('success', 'Login successful');
     } else {
-        abort(403);
+        abort(403, 'Unauthorized. You do not have the required role.');
     }
 }
-
-
     /**
      * Destroy an authenticated session.
      */

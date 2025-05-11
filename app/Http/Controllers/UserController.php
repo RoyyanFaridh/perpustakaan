@@ -10,12 +10,12 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 
-class HomeController extends Controller
+class UserController extends Controller
 {
     
     public function index()
     {
-        return view('welcome');
+        return redirect()->route('user.dashboard');
     }
 
     public function dashboard()
@@ -57,7 +57,7 @@ class HomeController extends Controller
         $totalPeminjaman = Peminjaman::count();
         $totalKeterlambatan = Peminjaman::where('status', 'terlambat')->count();
 
-        return view('pages.admin.dashboard', compact(
+        return view('pages.user.dashboard', compact(
         'bulanLabels',
         'jumlahPengunjungTahunIni',
         'jumlahPengunjungTahunLalu',

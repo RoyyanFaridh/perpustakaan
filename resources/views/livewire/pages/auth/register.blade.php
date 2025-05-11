@@ -6,10 +6,12 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
+use App\Models\Anggota;
 
 new #[Layout('layouts.guest')] class extends Component
 {
     public string $name = '';
+    public string $nis_nip = '';
     public string $email = '';
     public string $password = '';
     public string $password_confirmation = '';
@@ -21,12 +23,31 @@ new #[Layout('layouts.guest')] class extends Component
     /**
      * Handle an incoming registration request.
      */
+public function validateNisAndName()
+{
+    // Kalau nama atau nis belum diisi, jangan validasi dulu
+    if (empty($this->name) || empty($this->nis_nip)) {
+        return;
+    }
+
+    $anggota = Anggota::where('nis_nip', $this->nis_nip)
+        ->where('nama', $this->name)
+        ->first();
+
+    if (!$anggota) {
+        $this->addError('nis_nip', 'Nama dan NIS/NIP tidak cocok dengan data anggota.');
+    } else {
+        $this->resetErrorBag('nis_nip'); // Hapus error kalau cocok
+    }
+}
+
 
 public function register(): void
 {
     // Validasi form
     $validated = $this->validate([
         'name' => 'required|string|max:255',
+        'nis_nip' => 'required|numeric|exists:anggotas,nis_nip',
         'email' => 'required|email|max:255|unique:users,email',
         'password' => 'required|confirmed|min:8',
         'role' => 'required|in:guru,siswa',
@@ -34,17 +55,52 @@ public function register(): void
         'agree' => 'accepted',
     ]);
 
+    $anggota = Anggota::where('nis_nip', $this->nis_nip)
+                ->where('nama', $this->name)
+                ->first();
+
+    if (!$anggota) {
+        $this->addError('nis_nip', 'Nama dan NIS/NIP tidak cocok dengan data anggota.');
+        return;
+    }
+
+    $updated = $anggota->update([
+            'email' => $this->email,
+            'no_telp' => $this->phone,
+    ]);
+
+     if (!$updated) {
+            // Menangani kasus gagal update data anggota
+            $this->addError('update', 'Gagal memperbarui data anggota.');
+            return;
+        }
+    
+    $allowedRoles = ['guru', 'siswa'];
+    $role = in_array($this->role, $allowedRoles) ? $this->role : 'siswa';
+
     // Membuat user baru
     $user = User::create([
         'name' => $this->name,
         'email' => $this->email,
         'password' => Hash::make($this->password),
-        'role' => $this->role ?? 'siswa',
+        'role' => $role,
         'phone' => $this->phone,
     ]);
 
+
     Auth::login($user);
+    $this->resetErrorBag();
     $this->redirect(route('dashboard'));
+}
+
+public function updatedName()
+{
+    $this->validateNisAndName();
+}
+
+public function updatedNis()
+{
+    $this->validateNisAndName();
 }
 
 public function updatedAgree($value)
@@ -69,6 +125,14 @@ public function updatedPhone($value)
             <x-text-input wire:model="name" id="name" class="block mt-1 w-full" type="text" name="name" required autofocus autocomplete="name" />
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
+
+        <!-- NIS/NIP -->
+        <div class="mt-4">
+            <x-input-label for="nis_nip" :value="__('NIS/NIP')" />
+            <x-text-input wire:model="nis_nip" id="nis_nip" class="block mt-1 w-full" type="text" name="nis_nip" required />
+            <x-input-error :messages="$errors->get('nis_nip')" class="mt-2" />
+        </div>
+
 
         <!-- Email Address -->
         <div class="mt-4">
@@ -113,7 +177,6 @@ public function updatedPhone($value)
                 <x-input-error :messages="$errors->get('password')" class="mt-2" />
             </div>
                                    
-        
             <!-- Confirm Password -->
             <div x-data="{ showConfirm: false }" class="relative">
                 <x-input-label for="password" :value="__('Confirm Password')" />
@@ -181,7 +244,7 @@ public function updatedPhone($value)
             <x-input-error :messages="$errors->get('phone')" class="mt-2" />
         </div>
 
-        <!-- Email -->
+        <!-- Role -->
         @if (is_null($role))
             <div class="mt-4">
                 <x-input-label for="role" :value="__('Role')" />
