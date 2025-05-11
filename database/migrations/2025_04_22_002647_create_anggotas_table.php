@@ -13,7 +13,15 @@ return new class extends Migration
     {
         Schema::create('anggotas', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('nama');
+            $table->enum('status', ['active', 'inactive']);
+            $table->string('nis', 20);
+            $table->enum('kelas', [7, 8, 9]);
+            $table->enum('jenis_kelamin', ['L', 'P']);
+            $table->string('alamat');
+            $table->string('no_telp', 20);
+            $table->string('email')->unique();
+            $table->timestamps();;
         });
     }
 

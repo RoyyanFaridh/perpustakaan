@@ -75,21 +75,21 @@ class AnggotaComponent extends Component{
         $this->showModal = true;
     }
 
-    public function update() {
-        
+    public function update()
+    {
+        // Validasi
         $this->validate([
             'nama' => 'required|string|max:255',
             'status' => 'required|in:active,inactive',
-            'nis' => 'required|string|max:20|unique:anggotas,nis',
+            'nis' => 'required|string|max:20|unique:anggotas,nis,' . $this->anggotaId,
             'kelas' => 'required|in:7,8,9',
             'jenis_kelamin' => 'required|in:L,P',
-            'alamat' => 'required|string|max:255',           
+            'alamat' => 'required|string|max:255',
             'no_telp' => 'required|string|max:20',
             'email' => 'required|email|max:255',
         ]);
 
         $anggota = AnggotaModel::findOrFail($this->anggotaId);
-
         $anggota->update([
             'nama' => $this->nama,
             'status' => $this->status,
@@ -98,9 +98,15 @@ class AnggotaComponent extends Component{
             'jenis_kelamin' => $this->jenis_kelamin,
             'alamat' => $this->alamat,
             'no_telp' => $this->no_telp,
-            'email' => $this->email,  
+            'email' => $this->email,
         ]);
+
+        $this->resetForm(); // Reset input form
+        $this->showModal = false; // Tutup modal
+
+         // Emit event ke browser
     }
+
 
      // Menghapus anggota
      public function delete($id)
