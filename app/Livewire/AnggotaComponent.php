@@ -57,8 +57,6 @@ class AnggotaComponent extends Component{
             session()->flash('message', 'Anggota berhasil ditambahkan!');
             $this->resetForm();
             $this->closeModal();
-            $this->emit('anggotaUpdated');
-            dd('Tombol store kepencet');
     }
 
     public function edit($id){
