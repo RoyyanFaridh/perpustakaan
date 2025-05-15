@@ -15,12 +15,13 @@ class UserController extends Controller
     
     public function index()
     {
-        return redirect()->route('user.dashboard');
+        return view('welcome');
     }
 
-    public function dashboard()
+    public function UserDashboard()
     {
         $user = Auth::user();
+        
 
         $bulanLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
 
@@ -30,15 +31,15 @@ class UserController extends Controller
         $jumlahPengunjungTahunIni = array_fill(0, 12, 0);
         $jumlahPengunjungTahunLalu = array_fill(0, 12, 0);
 
+
         $pengunjungPerBulan = DB::table('pengunjung')
             ->select(
-                DB::raw("CAST(strftime('%m', tanggal) AS INTEGER) as bulan"),
+                DB::raw("strftime('%m', tanggal) as bulan"),
                 DB::raw("strftime('%Y', tanggal) as tahun"),
                 DB::raw("count(*) as jumlah")
             )
-            ->whereYear('tanggal', $tahunSekarang)
-            ->orWhereYear('tanggal', $tahunSebelumnya)
-            ->groupBy(DB::raw("strftime('%Y', tanggal), strftime('%m', tanggal)"))
+            ->whereIn(DB::raw("strftime('%Y', tanggal)"), [$tahunSekarang, $tahunSebelumnya])
+            ->groupBy('tahun', 'bulan')
             ->orderBy('tahun')
             ->orderBy('bulan')
             ->get();

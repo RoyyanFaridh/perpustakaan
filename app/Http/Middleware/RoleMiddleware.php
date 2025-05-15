@@ -5,21 +5,52 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class RoleMiddleware
 {
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @param  string[]  ...$roles
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\HttpException
+     */
     public function handle(Request $request, Closure $next, ...$roles)
     {
-        if (!Auth::check()) {
-            abort(403, 'Unauthorized. User not authenticated.');
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'Not authenticated',
+                'auth' => auth()->check(),
+                'user' => auth()->id()
+            ], 401);
         }
 
-        $user = Auth::user();
-
-        if (!in_array($user->role, $roles)) {
-            abort(403, 'Unauthorized. You do not have the required role.');
+        if (!$user->hasAnyRole($roles)) {
+            return response()->json([
+                'message' => 'Insufficient permissions',
+                'required_roles' => $roles,
+                'user_roles' => $user->getRoleNames(),
+                'user_id' => $user->id
+            ], 403);
         }
 
         return $next($request);
+    }
+
+    /**
+     * Return consistent unauthorized response
+     */
+    protected function unauthorizedResponse(string $message): Response
+    {
+        return response()->json([
+            'message' => 'Unauthorized: ' . $message,
+            'user_roles' => optional(auth()->user())->getRoleNames() ?: 'none'
+        ], 403);
     }
 }

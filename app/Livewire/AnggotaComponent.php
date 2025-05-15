@@ -11,7 +11,7 @@ class AnggotaComponent extends Component{
     use WithFileUploads;
 
     public $anggota;
-    public $nama, $nis, $alamat, $no_telp, $email;
+    public $nama, $nis_nip, $alamat, $no_telp, $email;
 
     public $status = '';
     public $kelas = '';
@@ -33,7 +33,7 @@ class AnggotaComponent extends Component{
         $this->validate([
             'nama' => 'required|string|max:255',
             'status' => 'required|in:active,inactive',
-            'nis' => 'required|string|max:20',
+            'nis_nip' => 'required|string|max:20',
             'kelas' => 'required|in:7,8,9',
             'jenis_kelamin' => 'required|in:L,P',
             'alamat' => 'required|string|max:255',
@@ -46,7 +46,7 @@ class AnggotaComponent extends Component{
         AnggotaModel::create([
             'nama' => $this->nama,
             'status' => $this->status,
-            'nis' => $this->nis,
+            'nis_nip' => $this->nis_nip,
             'kelas' => $this->kelas,
             'jenis_kelamin' => $this->jenis_kelamin,
             'alamat' => $this->alamat,
@@ -66,7 +66,7 @@ class AnggotaComponent extends Component{
         $this->alamat = $anggota->alamat;
         $this->no_telp = $anggota->no_telp;
         $this->email = $anggota->email;
-        $this->nis = $anggota->nis;
+        $this->nis_nip = $anggota->nis_nip;
         $this->kelas = $anggota->kelas;
         $this->jenis_kelamin = $anggota->jenis_kelamin;
         $this->status = $anggota->status;
@@ -81,7 +81,7 @@ class AnggotaComponent extends Component{
         $this->validate([
             'nama' => 'required|string|max:255',
             'status' => 'required|in:active,inactive',
-            'nis' => 'required|string|max:20|unique:anggotas,nis,' . $this->anggotaId,
+            'nis_nip' => 'required|string|max:20|unique:anggotas,nis_nip,' . $this->anggotaId,
             'kelas' => 'required|in:7,8,9',
             'jenis_kelamin' => 'required|in:L,P',
             'alamat' => 'required|string|max:255',
@@ -93,7 +93,7 @@ class AnggotaComponent extends Component{
         $anggota->update([
             'nama' => $this->nama,
             'status' => $this->status,
-            'nis' => $this->nis,
+            'nis_nip' => $this->nis_nip,
             'kelas' => $this->kelas,
             'jenis_kelamin' => $this->jenis_kelamin,
             'alamat' => $this->alamat,
@@ -123,7 +123,7 @@ class AnggotaComponent extends Component{
     {
         $this->nama = '';
         $this->status = '';
-        $this->nis = '';
+        $this->nis_nip = '';
         $this->kelas = '';
         $this->jenis_kelamin = '';
         $this->alamat = '';

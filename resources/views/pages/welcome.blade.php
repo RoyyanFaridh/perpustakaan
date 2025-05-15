@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Perpustakaan Digital SMP 12 Yogyakarta</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  @livewireStyles
+
 </head>
 <body class="font-sans antialiased bg-white">
 
@@ -14,8 +16,8 @@
       <img src="/images/logo_smp12yk.png" alt="Logo SMPN 12 Yogyakarta" class="h-12 w-auto" />
     </div>
     <div class="space-x-4">
-      <a href="/login" class="px-5 py-2 rounded bg-red-400 text-white hover:bg-red-400">Login</a>
-      <a href="/register" class="px-5 py-2 rounded border-2 border-red-400 text-red-400 hover:bg-red-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 transition ease-in-out duration-150">Register</a>
+      <a href="{{ route('login') }}" class="px-5 py-2 rounded bg-red-400 text-white hover:bg-red-400">Login</a>
+      <a href="{{ route('register') }}" class="px-5 py-2 rounded border-2 border-red-400 text-red-400 hover:bg-red-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 transition ease-in-out duration-150">Register</a>
     </div>
   </header>
 
@@ -40,5 +42,6 @@
     
   </section>
 
+@livewireScripts
 </body>
 </html>

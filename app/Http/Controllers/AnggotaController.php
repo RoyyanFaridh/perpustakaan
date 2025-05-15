@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Anggota;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 
@@ -18,7 +17,7 @@ class AnggotaController extends Controller
         $request->validate([
             'nama' => 'required|string|max:255',
             'status' => 'required|in:active,inactive',
-            'nis' => 'required|string|max:20',
+            'nis_nip' => 'required|string|max:20',
             'kelas' => 'required|in:7,8,9',
             'jenis_kelamin' => 'required|in:L,P',
             'alamat' => 'required|string|max:255',           
@@ -31,7 +30,7 @@ class AnggotaController extends Controller
         Anggota::create([
             'nama' => $request->nama,
             'status' => $request->status, 
-            'nis' => $request->nis,
+            'nis_nip' => $request->nis_nip,
             'kelas' => $request->kelas,
             'jenis_kelamin' => $request->jenis_kelamin, 
             'alamat' => $request->alamat,
@@ -47,11 +46,11 @@ class AnggotaController extends Controller
     $request->validate([
         'nama' => 'required|string|max:255',
         'status' => 'required|in:active,inactive',
-        'nis' => [
+        'nis_nip' => [
             'required',
             'string',
             'max:20',
-            Rule::unique('anggotas', 'nis')->ignore($id),
+            Rule::unique('anggotas', 'nis_nip')->ignore($id),
         ],
         'kelas' => 'required|in:7,8,9',
         'jenis_kelamin' => 'required|in:L,P',
@@ -65,7 +64,7 @@ class AnggotaController extends Controller
     $anggota->update([
         'nama' => $request->nama,
         'status' => $request->status,
-        'nis' => $request->nis,
+        'nis_nip' => $request->nis_nip,
         'kelas' => $request->kelas,
         'jenis_kelamin' => $request->jenis_kelamin,
         'alamat' => $request->alamat,

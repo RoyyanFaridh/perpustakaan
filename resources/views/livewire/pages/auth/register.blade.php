@@ -1,283 +1,100 @@
 <?php
 
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
+use App\Livewire\Forms\RegisterForm;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
-use App\Models\Anggota;
 
 new #[Layout('layouts.guest')] class extends Component
 {
-    public string $name = '';
-    public string $nis_nip = '';
-    public string $email = '';
-    public string $password = '';
-    public string $password_confirmation = '';
-    public ?string $phone = null;
-    public ?string $role = null;
-    public bool $agree = false;
-
+    public RegisterForm $form;
 
     /**
      * Handle an incoming registration request.
      */
-public function validateNisAndName()
-{
-    // Kalau nama atau nis belum diisi, jangan validasi dulu
-    if (empty($this->name) || empty($this->nis_nip)) {
-        return;
+    public function register(): void
+    {
+        $this->form->register();
+
+        session()->flash('status', 'Registration successful! Please login.');
+
+        $this->redirect(route('login'));
     }
-
-    $anggota = Anggota::where('nis_nip', $this->nis_nip)
-        ->where('nama', $this->name)
-        ->first();
-
-    if (!$anggota) {
-        $this->addError('nis_nip', 'Nama dan NIS/NIP tidak cocok dengan data anggota.');
-    } else {
-        $this->resetErrorBag('nis_nip'); // Hapus error kalau cocok
-    }
-}
-
-
-public function register(): void
-{
-    // Validasi form
-    $validated = $this->validate([
-        'name' => 'required|string|max:255',
-        'nis_nip' => 'required|numeric|exists:anggotas,nis_nip',
-        'email' => 'required|email|max:255|unique:users,email',
-        'password' => 'required|confirmed|min:8',
-        'role' => 'required|in:guru,siswa',
-        'phone' => 'required|numeric|digits_between:9,15',
-        'agree' => 'accepted',
-    ]);
-
-    $anggota = Anggota::where('nis_nip', $this->nis_nip)
-                ->where('nama', $this->name)
-                ->first();
-
-    if (!$anggota) {
-        $this->addError('nis_nip', 'Nama dan NIS/NIP tidak cocok dengan data anggota.');
-        return;
-    }
-
-    $updated = $anggota->update([
-            'email' => $this->email,
-            'no_telp' => $this->phone,
-    ]);
-
-     if (!$updated) {
-            // Menangani kasus gagal update data anggota
-            $this->addError('update', 'Gagal memperbarui data anggota.');
-            return;
-        }
-    
-    $allowedRoles = ['guru', 'siswa'];
-    $role = in_array($this->role, $allowedRoles) ? $this->role : 'siswa';
-
-    // Membuat user baru
-    $user = User::create([
-        'name' => $this->name,
-        'email' => $this->email,
-        'password' => Hash::make($this->password),
-        'role' => $role,
-        'phone' => $this->phone,
-    ]);
-
-
-    Auth::login($user);
-    $this->resetErrorBag();
-    $this->redirect(route('dashboard'));
-}
-
-public function updatedName()
-{
-    $this->validateNisAndName();
-}
-
-public function updatedNis()
-{
-    $this->validateNisAndName();
-}
-
-public function updatedAgree($value)
-{
-    // Debugging untuk melihat perubahan agree
-    logger('Agree value:', [$value]);
-}
-
-
-public function updatedPhone($value)
-{
-    logger('Phone number updated:', [$value]);
-}
-
 }; ?>
 
 <div>
+    <!-- Session Status -->
+    <x-auth-session-status class="mb-4" :status="session('status')" />
+
     <form wire:submit.prevent="register">
         <!-- Name -->
         <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input wire:model="name" id="name" class="block mt-1 w-full" type="text" name="name" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+            <x-input-label for="name" :value="__('Nama Lengkap')" />
+            <x-text-input wire:model="form.name" id="name" class="block mt-1 w-full" type="text" name="name" required autofocus autocomplete="name" />
+            <x-input-error :messages="$errors->get('form.name')" class="mt-2" />
         </div>
 
         <!-- NIS/NIP -->
         <div class="mt-4">
             <x-input-label for="nis_nip" :value="__('NIS/NIP')" />
-            <x-text-input wire:model="nis_nip" id="nis_nip" class="block mt-1 w-full" type="text" name="nis_nip" required />
-            <x-input-error :messages="$errors->get('nis_nip')" class="mt-2" />
+            <x-text-input wire:model="form.nis_nip" id="nis_nip" class="block mt-1 w-full" type="text" name="nis_nip" required />
+            <x-input-error :messages="$errors->get('form.nis_nip')" class="mt-2" />
         </div>
-
 
         <!-- Email Address -->
         <div class="mt-4">
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input wire:model="email" id="email" class="block mt-1 w-full" type="email" name="email" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            <x-text-input wire:model="form.email" id="email" class="block mt-1 w-full" type="email" name="email" required autocomplete="username" />
+            <x-input-error :messages="$errors->get('form.email')" class="mt-2" />
         </div>
 
-        <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-            <!-- Password -->
-            <div x-data="{ show: false }" class="relative">
-                <x-input-label for="password" :value="__('Password')" />
-                
-                <div class="relative">
-                    <input 
-                        :type="show ? 'text' : 'password'" 
-                        wire:model="password" 
-                        id="password" 
-                        name="password" 
-                        required autocomplete="new-password"
-                        class="block mt-1 w-full pr-10 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                    >
-            
-                    <!-- Eye Icon inside input -->
-                    <button type="button" x-on:click="show = !show"
-                        class="absolute top-1/2 right-3 transform -translate-y-1/2 p-1 flex items-center text-gray-500 focus:outline-none">
-                        <svg x-show="!show" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                        </svg>
-                        <svg x-show="show" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.961 9.961 0 012.105-3.507M9.88 9.88a3 3 0 104.24 4.24m3.212-1.368A9.964 9.964 0 0119.542 12c-1.274 4.057-5.064 7-9.542 7a9.96 9.96 0 01-4.807-1.222M3 3l18 18" />
-                        </svg>
-                    </button>
-                </div>
-            
-                <x-input-error :messages="$errors->get('password')" class="mt-2" />
-            </div>
-                                   
-            <!-- Confirm Password -->
-            <div x-data="{ showConfirm: false }" class="relative">
-                <x-input-label for="password" :value="__('Confirm Password')" />
-                
-                <div class="relative">
-                    <input 
-                        :type="showConfirm ? 'text' : 'password'" 
-                        wire:model="password_confirmation" 
-                        id="password_confirmation" 
-                        name="password_confirmation" 
-                        required autocomplete="new-password"
-                        class="block mt-1 w-full pr-10 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                    >
-            
-                    <!-- Eye Icon inside input -->
-                    <button type="button" x-on:click="showConfirm = !showConfirm"
-                        class="absolute top-1/2 right-3 transform -translate-y-1/2 p-1 flex items-center text-gray-500 focus:outline-none">
-                        <svg x-show="!showConfirm" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                        </svg>
-                        <svg x-show="show" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.961 9.961 0 012.105-3.507M9.88 9.88a3 3 0 104.24 4.24m3.212-1.368A9.964 9.964 0 0119.542 12c-1.274 4.057-5.064 7-9.542 7a9.96 9.96 0 01-4.807-1.222M3 3l18 18" />
-                        </svg>
-                    </button>
-                </div>
-            
-                <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-            </div>
-        </div> 
+        <!-- Password -->
+        <div class="mt-4">
+            <x-input-label for="password" :value="__('Password')" />
+            <x-text-input wire:model="form.password" id="password" class="block mt-1 w-full"
+                          type="password"
+                          name="password"
+                          required autocomplete="new-password" />
+            <x-input-error :messages="$errors->get('form.password')" class="mt-2" />
+        </div>
 
-        <!-- Nomor Telepon -->
-        <div x-data="{
-            kodeNegara: '+62',
-            nomor: @entangle('phone').defer,
-            gabungNomor() {
-                // Hapus karakter selain angka
-                let clean = this.nomor.replace(/\D/g, '');
-                // Pastikan tidak ada 0 di depan
-                if (clean.startsWith('0')) {
-                    clean = clean.substring(1);
-                }
-                this.nomor = clean;
-            }
-        }" class="mt-4">
+        <!-- Confirm Password -->
+        <div class="mt-4">
+            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+            <x-text-input wire:model="form.password_confirmation" id="password_confirmation" class="block mt-1 w-full"
+                          type="password"
+                          name="password_confirmation"
+                          required autocomplete="new-password" />
+            <x-input-error :messages="$errors->get('form.password_confirmation')" class="mt-2" />
+        </div>
 
-            <x-input-label for="phone" :value="__('Nomor Telepon')" />
-
-            <div class="flex space-x-2">
-                <input type="text" readonly x-model="kodeNegara"
-                    class="w-20 text-center border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
-
-                <input type="tel" id="phone" name="phone" autocomplete="tel"
-                    x-model="nomor"
-                    x-on:input.debounce.300ms="gabungNomor"
-                    class="flex-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                    placeholder="" required />
-            </div>
-
-            <x-input-error :messages="$errors->get('phone')" class="mt-2" />
+        <!-- Phone Number -->
+        <div class="mt-4">
+            <x-input-label for="no_telp" :value="__('Nomor Telepon')" />
+            <x-text-input wire:model="form.no_telp" id="no_telp" class="block mt-1 w-full" type="tel" name="no_telp" required />
+            <x-input-error :messages="$errors->get('form.no_telp')" class="mt-2" />
         </div>
 
         <!-- Role -->
-        @if (is_null($role))
-            <div class="mt-4">
-                <x-input-label for="role" :value="__('Role')" />
-                <select wire:model="role" id="role" name="role" required class="block mt-1 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                    <option value=""></option>
-                    <option value="guru">{{ __('Guru') }}</option>
-                    <option value="siswa">{{ __('Siswa') }}</option>
-                </select>
-                <x-input-error :messages="$errors->get('role')" class="mt-2" />
-            </div>
-        @endif
+        <div class="mt-4">
+            <x-input-label for="role" :value="__('Role')" />
+            <select wire:model="form.role" id="role" class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                <option value="anggota">Siswa</option>
+                <option value="petugas">Guru</option>
+            </select>
+            <x-input-error :messages="$errors->get('form.role')" class="mt-2" />
+        </div>
 
         <div class="mt-4">
-            <label class="flex items-center">
-                <input type="checkbox" wire:model="agree" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500">
-                <span class="ml-2 text-sm text-gray-600">
-                    {{ __('I agree to the') }} <a href="#" class="underline text-sm text-indigo-600 hover:text-indigo-900">{{ __('Privacy Policy') }}</a> {{ __('and') }} <a href="#" class="underline text-sm text-indigo-600 hover:text-indigo-900">{{ __('Terms') }}</a>
-                </span>
-            </label>
-            <x-input-error :messages="$errors->get('agree')" class="mt-2" />
-        </div>        
-
-        <div class="mt-4">
-            <x-primary-button class="w-full" :disabled="!$agree">
+            <x-primary-button class="w-full">
                 {{ __('Register') }}
             </x-primary-button>
         </div>
-        
+
         <div class="mt-4 text-center">
-            <span class="text-sm text-gray-600">{{ __("Have an account?") }}</span>
+            <span class="text-sm text-gray-600">{{ __('Already registered?') }}</span>
             <a href="{{ route('login') }}" class="text-sm text-indigo-600 hover:text-indigo-900 font-semibold" wire:navigate>
                 {{ __('Login') }}
             </a>
-        </div> 
+        </div>
     </form>
 </div>

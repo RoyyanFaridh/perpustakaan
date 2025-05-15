@@ -4,6 +4,7 @@ use App\Livewire\Forms\LoginForm;
 use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
+use Illuminate\Validation\ValidationException;
 
 new #[Layout('layouts.guest')] class extends Component
 {
@@ -16,11 +17,43 @@ new #[Layout('layouts.guest')] class extends Component
     {
         $this->validate();
 
-        $this->form->authenticate();
+        try {
+            $this->form->authenticate();
+            
+            // Debug session
+            logger()->info('Session Before Regenerate', [
+                'session_id' => session()->getId(),
+                'data' => session()->all()
+            ]);
 
-        Session::regenerate();
+            Session::regenerate();
 
-        $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+            // Debug setelah regenerate
+            logger()->info('Session After Regenerate', [
+                'session_id' => session()->getId(),
+                'user_id' => auth()->id()
+            ]);
+
+            // Hard redirect untuk testing
+            if(app()->environment('local')) {
+                $route = auth()->user()->hasRole('admin') 
+                    ? route('admin.dashboard')
+                    : route('user.dashboard');
+                    
+                $this->js("window.location.href = '{$route}'");
+                return;
+            }
+
+            $this->redirectIntended(
+                default: auth()->user()->hasRole('admin') 
+                    ? route('admin.dashboard') 
+                    : route('user.dashboard'),
+                navigate: true
+            );
+
+        } catch (ValidationException $e) {
+            $this->addError('form.email', $e->getMessage());
+        }
     }
 }; ?>
 
@@ -28,7 +61,7 @@ new #[Layout('layouts.guest')] class extends Component
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form wire:submit="login">
+    <form wire:submit.prevent="login">
         <!-- Email Address -->
         <div>
             <x-input-label for="email" :value="__('Email')" />
