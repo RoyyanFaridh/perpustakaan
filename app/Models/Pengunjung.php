@@ -9,7 +9,7 @@ class Pengunjung extends Model
 {
     use HasFactory;
 
-    protected $table = 'pengunjung';
+    protected $table = 'visitors';
 
     protected $fillable = ['user_id', 'tanggal'];
 

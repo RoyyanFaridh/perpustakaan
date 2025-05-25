@@ -14,7 +14,8 @@ new class extends Component
 
         $this->redirect('/', navigate: true);
     }
-}; ?>
+};
+?>
 
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
@@ -26,42 +27,30 @@ new class extends Component
                     <div class="flex flex-col h-full justify-between">
                         <div>
                             <div class="h-16 flex items-center justify-center border-b">
-                                <a href="{{ route('admin.dashboard') }}">
+                                <a href="{{ route('user.dashboard') }}">
                                     <x-application-logo class="h-9 w-auto text-gray-800" />
                                 </a>
                             </div>
-                
+
                             <nav class="mt-2 space-y-2">
-                                <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+                                <x-nav-link :href="route('user.dashboard')" :active="request()->routeIs('user.dashboard')">
                                     {{ __('Dashboard') }}
                                 </x-nav-link>
                             </nav>
 
                             <nav class="mt-2 space-y-2">
-                                <x-nav-link :href="route('admin.anggota.index')" :active="request()->routeIs('anggota.*')">
-                                    {{ __('Anggota') }}
-                                </x-nav-link>                                
-                            </nav>
-                
-                            <nav class="mt-2 space-y-2">
-                                <x-nav-link :href="route('admin.buku.index')" :active="request()->routeIs('buku.*')">
+                                <x-nav-link :href="route('user.buku.index')" :active="request()->routeIs('buku.*')">
                                     {{ __('Buku') }}
                                 </x-nav-link>                                
                             </nav>
-                
+
                             <nav class="mt-2 space-y-2">
-                                <x-nav-link :href="route('admin.peminjaman.index')" :active="request()->routeIs('peminjaman.*')">
+                                <x-nav-link :href="route('user.peminjaman.index')" :active="request()->routeIs('peminjaman.*')">
                                     {{ __('Peminjaman') }}
                                 </x-nav-link>   
                             </nav>
-                
-                            <nav class="mt-2 space-y-2">
-                                <x-nav-link :href="route('admin.broadcast.index')" :active="request()->routeIs('broadcast.*')">
-                                    {{ __('Broadcast') }}
-                                </x-nav-link>   
-                            </nav>
                         </div>
-                
+
                         <!-- Profile Dropdown Moved to the Bottom -->
                         <div class="relative w-full px-2 pt-4 mt-auto">
                             <x-dropdown align="left" width="48" position="top">
@@ -106,7 +95,7 @@ new class extends Component
                     <!-- Topbar untuk layar kecil -->
                     <div class="sm:hidden bg-white border-b border-gray-100">
                         <div class="flex items-center justify-between h-16 px-4">
-                            <a href="{{ route('admin.dashboard') }}" wire:navigate>
+                            <a href="{{ route('user.dashboard') }}" wire:navigate>
                                 <x-application-logo class="h-8 w-auto" />
                             </a>
                             <button @click="open = ! open" class="text-gray-500 hover:text-gray-700 focus:outline-none">
@@ -122,7 +111,7 @@ new class extends Component
                         <!-- Responsive Navigation Menu -->
                         <div :class="{'block': open, 'hidden': ! open}" class="hidden">
                             <div class="pt-2 pb-3 space-y-1 px-4">
-                                <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')" wire:navigate>
+                                <x-responsive-nav-link :href="route('user.dashboard')" :active="request()->routeIs('user.dashboard')" wire:navigate>
                                     {{ __('Dashboard') }}
                                 </x-responsive-nav-link>
                             </div>
@@ -171,7 +160,7 @@ new class extends Component
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')" wire:navigate>
+            <x-responsive-nav-link :href="route('user.dashboard')" :active="request()->routeIs('user.dashboard')" wire:navigate>
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
         </div>

@@ -23,11 +23,12 @@ class RoleMiddleware
     {
         $user = $request->user();
 
+
         if (!$user) {
             return response()->json([
                 'message' => 'Not authenticated',
-                'auth' => auth()->check(),
-                'user' => auth()->id()
+                'auth' => Auth::check(),
+                'user' => Auth::id()
             ], 401);
         }
 
@@ -50,7 +51,7 @@ class RoleMiddleware
     {
         return response()->json([
             'message' => 'Unauthorized: ' . $message,
-            'user_roles' => optional(auth()->user())->getRoleNames() ?: 'none'
+            'user_roles' => optional(Auth::user())->getRoleNames() ?: 'none'
         ], 403);
     }
 }

@@ -9,10 +9,8 @@ class Buku extends Model
 {
     use HasFactory;
 
-    // Jika tetap pakai nama tabel 'bukus', tambahkan baris ini:
-    protected $table = 'bukus';
+    protected $table = 'books';
 
-    // Kolom-kolom yang bisa diisi secara massal
     protected $fillable = [
         'judul',
         'kategori',
@@ -25,4 +23,10 @@ class Buku extends Model
         'lokasi_rak',
         'cover',
     ];
+
+    // Relasi satu buku bisa punya banyak peminjaman
+    public function peminjaman()
+    {
+        return $this->hasMany(Peminjaman::class, 'buku_id');
+    }
 }

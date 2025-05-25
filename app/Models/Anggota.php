@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Anggota extends Model {
     use HasFactory;
     
-    protected $table = 'anggotas';
+    protected $table = 'members';
 
     protected $fillable = [
         'nama',
@@ -19,4 +19,10 @@ class Anggota extends Model {
         'no_telp',
         'email',      
     ];
+
+    // Relasi satu anggota punya banyak peminjaman
+    public function peminjaman()
+    {
+        return $this->hasMany(Peminjaman::class, 'anggota_id');
+    }
 }
