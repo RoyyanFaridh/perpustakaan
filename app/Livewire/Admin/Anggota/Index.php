@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Admin\Anggota;
 
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\Anggota as AnggotaModel;
 
-class AnggotaComponent extends Component{
+class Index extends Component{
 
     use WithFileUploads;
 
@@ -24,8 +24,7 @@ class AnggotaComponent extends Component{
 
     public function render(){
         $this->anggota = AnggotaModel::where('nama', 'like', '%' . $this->search . '%')->get();
-        return view('pages.admin.anggota.index');
-
+        return view('livewire.admin.anggota.index')->layout('layouts.app');
     }
 
     public function store(){

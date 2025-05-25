@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Admin\Broadcast;
 
 use Livewire\Component;
 use App\Models\Broadcast;
 
-class BroadcastComponent extends Component
+class Index extends Component
 {
     public $judul, $isi;
 
@@ -26,6 +26,6 @@ class BroadcastComponent extends Component
 
     public function render()
     {
-        return view('pages.admin.broadcast.index', ['broadcast' => Broadcast::all()]);
+        return view('livewire.admin.broadcast.index', ['broadcast' => Broadcast::all()]);
     }
 }

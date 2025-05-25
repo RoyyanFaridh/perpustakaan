@@ -1,20 +1,17 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Admin\Peminjaman;
 
 use Livewire\Component;
 use App\Models\Peminjaman;
 use App\Models\Anggota;
 use App\Models\Buku;
 
-class PeminjamanComponent extends Component
+class Index extends Component
 {
     public $peminjaman, $anggota_id, $buku_id, $tanggal_pinjam, $tanggal_kembali;
     public $isEdit = false, $showModal = false;
     public $peminjamanId = null;
-
-
-    protected $table = 'borrowings';
 
     protected $rules = [
         'anggota_id' => 'required|integer',
@@ -54,6 +51,7 @@ class PeminjamanComponent extends Component
         ]);
 
         $this->closeModal();
+        session()->flash('message', 'Data peminjaman berhasil disimpan!');
     }
 
     public function edit($id)
@@ -94,7 +92,7 @@ class PeminjamanComponent extends Component
 
     public function render()
     {
-    return view('pages.admin.peminjaman.index', [
+    return view('livewire.admin.peminjaman.index', [
         'peminjaman' => Peminjaman::with(['anggota', 'buku'])->latest()->get(),
         'anggotaList' => Anggota::all(),
         'bukuList' => Buku::all(),

@@ -9,8 +9,7 @@
     <div class="py-4">
     <div class="mx-auto sm:px-4 lg:px-6">
             <div class="container mx-auto">
-                <!-- Menampilkan komponen Livewire BukuComponent -->
-                @livewire('admin.anggota-component')
+                @livewire('admin.anggota.index')
             </div>            
         </div>
     </div>

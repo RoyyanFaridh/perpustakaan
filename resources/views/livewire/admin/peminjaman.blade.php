@@ -7,7 +7,7 @@
 
     <div class="py-4">
         <div class="mx-auto sm:px-4 lg:px-6">
-            @livewire('admin.peminjaman-component')
+            @livewire('admin.peminjaman.index')
         </div>
     </div>
 </x-app-layout>

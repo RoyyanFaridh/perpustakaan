@@ -13,9 +13,6 @@ class PeminjamanComponent extends Component
     public $isEdit = false, $showModal = false;
     public $peminjamanId = null;
 
-
-    protected $table = 'borrowings';
-
     protected $rules = [
         'anggota_id' => 'required|integer',
         'buku_id' => 'required|integer',

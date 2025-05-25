@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Admin\Buku;
 
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\Buku as BukuModel;
 use Illuminate\Support\Facades\Storage;
 
-class BukuComponent extends Component
+class Index extends Component
 {
     use WithFileUploads;
 
@@ -22,7 +22,7 @@ class BukuComponent extends Component
     {
         // Menampilkan buku berdasarkan pencarian
         $this->buku = BukuModel::where('judul', 'like', '%' . $this->search . '%')->get();
-        return view('pages.admin.buku.index');
+        return view('livewire.admin.buku.index')->layout('layouts.app');
     }
 
     public function store()
@@ -62,7 +62,6 @@ class BukuComponent extends Component
             'lokasi_rak' => $this->lokasi_rak,
             'cover' => $coverPath,
         ]);
-        dd('create');
 
         session()->flash('message', 'Buku berhasil ditambahkan!');
         $this->resetForm();

@@ -1,53 +1,45 @@
-<div class="bg-white p-6 rounded-2xl shadow-md overflow-x-auto">
+<div class="bg-white p-6 rounded-2xl shadow-md">
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-xl font-semibold text-gray-800">Daftar Buku</h2>
     </div>
-    <div class="mb-4">
+    <div class="mb-6">
         <input 
             type="text" 
             wire:model.debounce.300ms="search" 
             placeholder="Cari judul buku..." 
-            class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 focus:outline-none">
     </div>
 
-    <!-- Tabel Daftar Buku -->
-    <div class="overflow-x-auto">
-        <table class="min-w-full text-sm text-left text-gray-700 border border-gray-200 rounded-lg overflow-hidden">
-            <thead class="bg-gray-50">
-                <tr>
-                    <th class="px-4 py-3 font-semibold">No</th>
-                    <th class="px-4 py-3 font-semibold">Judul Buku</th>
-                    <th class="px-4 py-3 font-semibold">Deskripsi</th>
-                    <th class="px-4 py-3 font-semibold">Kategori</th>
-                    <th class="px-4 py-3 font-semibold">Penulis</th>
-                    <th class="px-4 py-3 font-semibold">Penerbit</th>
-                    <th class="px-4 py-3 font-semibold">Tahun</th>
-                    <th class="px-4 py-3 font-semibold">ISBN</th>
-                    <th class="px-4 py-3 font-semibold">Jumlah Stok</th>
-                    <th class="px-4 py-3 font-semibold">Lokasi Rak</th>
-                    <th class="px-4 py-3 text-center font-semibold">Aksi</th>
-                </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-100">
-                @foreach($books as $index => $item)
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-4 py-2">{{ $index + 1 }}</td>
-                        <td class="px-4 py-2">{{ $item->judul }}</td>
-                        <td class="px-4 py-2">{{ Str::limit($item->deskripsi, 100) }}...</td>
-                        <td class="px-4 py-2">{{ $item->kategori }}</td>
-                        <td class="px-4 py-2">{{ $item->penulis }}</td>
-                        <td class="px-4 py-2">{{ $item->penerbit }}</td>
-                        <td class="px-4 py-2">{{ $item->tahun_terbit }}</td>
-                        <td class="px-4 py-2">{{ $item->isbn }}</td>
-                        <td class="px-4 py-2">{{ $item->jumlah_stok }}</td>
-                        <td class="px-4 py-2">{{ $item->lokasi_rak }}</td>
-                        <td class="px-4 py-2 text-center space-x-2">
-                            <button wire:click="edit({{ $item->id }})" class="px-3 py-1 bg-yellow-400 hover:bg-yellow-500 text-white rounded-md shadow text-xs">Edit</button>
-                            <button wire:click="delete({{ $item->id }})" class="px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded-md shadow text-xs">Hapus</button>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+    <!-- Grid Daftar Buku -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        @foreach($books as $item)
+            <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-5 hover:shadow-md transition-shadow duration-300">
+                @if ($item->cover)
+                    <img src="{{ asset('storage/' . $item->cover) }}" alt="Cover Buku" class="w-full h-48 object-cover rounded-lg mb-4">
+                @else
+                    <div class="w-full h-48 bg-gray-100 rounded-lg flex items-center justify-center mb-4 text-gray-400 text-sm">
+                        Tidak ada cover
+                    </div>
+                @endif
+
+                <h3 class="text-lg font-semibold text-gray-900">{{ $item->judul }}</h3>
+                <span class="inline-block mt-1 mb-2 px-2 py-0.5 text-xs font-medium bg-green-100 text-green-700 rounded-full">{{ $item->kategori }}</span>
+                
+                <p class="text-sm text-gray-600 mb-4 line-clamp-3">{{ $item->deskripsi }}</p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 text-sm text-gray-700 mt-2">
+                    <div class="space-y-1">
+                        <p><span class="font-medium">Penulis:</span> {{ $item->penulis }}</p>
+                        <p><span class="font-medium">Penerbit:</span> {{ $item->penerbit }}</p>
+                        <p><span class="font-medium">Tahun:</span> {{ $item->tahun_terbit }}</p>
+                    </div>
+                    <div class="space-y-1">
+                        <p><span class="font-medium">ISBN:</span> {{ $item->isbn }}</p>
+                        <p><span class="font-medium">Stok:</span> {{ $item->jumlah_stok }}</p>
+                        <p><span class="font-medium">Rak:</span> {{ $item->lokasi_rak }}</p>
+                    </div>
+                </div>
+            </div>
+        @endforeach
     </div>
 </div>
