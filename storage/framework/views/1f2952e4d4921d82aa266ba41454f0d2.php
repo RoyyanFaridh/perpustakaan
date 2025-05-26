@@ -11,16 +11,16 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
-                @forelse($broadcast as $item)
+                <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $broadcast; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                     <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 font-semibold text-gray-700">{{ $item->judul }}</td>
-                        <td class="px-6 py-4 text-gray-600">{{ $item->isi }}</td>
+                        <td class="px-6 py-4 font-semibold text-gray-700"><?php echo e($item->judul); ?></td>
+                        <td class="px-6 py-4 text-gray-600"><?php echo e($item->isi); ?></td>
                     </tr>
-                @empty
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                     <tr>
                         <td colspan="2" class="px-6 py-4 text-center text-gray-500">Belum ada pesan broadcast.</td>
                     </tr>
-                @endforelse
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
             </tbody>
         </table>
     </div>
@@ -48,3 +48,4 @@
         </div>
     </form>
 </div>
+<?php /**PATH C:\Users\MSI Computer\Herd\perpustakaan\resources\views/pages/broadcast/index.blade.php ENDPATH**/ ?>

@@ -6,7 +6,12 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\AnggotaController;
 use App\Livewire\Pages\Auth\Register;
+use App\Http\Controllers\BroadcastController;
 
+Route::get('/broadcast', [BroadcastController::class, 'index'])->name('broadcast.index');
+Route::get('/broadcast/create', [BroadcastController::class, 'create'])->name('broadcast.create');
+Route::post('/broadcast', [BroadcastController::class, 'store'])->name('broadcast.store');
+Route::get('/broadcast/{id}', [BroadcastController::class, 'show'])->
  
 Route::get('/', function () {
     return view('pages.welcome');
