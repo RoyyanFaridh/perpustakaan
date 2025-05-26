@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Pages\Auth\Register;
+use App\Http\Controllers\BroadcastController;
 
 //Admin
 use App\Http\Controllers\Admin\AdminController;
@@ -20,6 +21,11 @@ Route::get('/', function () {
 })->name('welcome');
 
 Route::get('/register', Register::class)->name('register');
+
+Route::get('/broadcast', [BroadcastController::class, 'index'])->name('broadcast.index');
+Route::get('/broadcast/create', [BroadcastController::class, 'create'])->name('broadcast.create');
+Route::post('/broadcast', [BroadcastController::class, 'store'])->name('broadcast.store');
+Route::get('/broadcast/{id}', [BroadcastController::class, 'show'])->
 
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard-admin', [AdminController::class, 'AdminDashboard'])->name('admin.dashboard');
