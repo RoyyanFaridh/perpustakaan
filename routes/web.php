@@ -15,6 +15,7 @@ use App\Http\Controllers\User\UserController;
 use App\Livewire\User\Buku\Index as BukuIndexUser;
 use App\Livewire\User\Peminjaman\Index as PeminjamanIndexUser;
 
+
  
 Route::get('/', function () {
     return view('pages.welcome');
@@ -25,7 +26,7 @@ Route::get('/register', Register::class)->name('register');
 Route::get('/broadcast', [BroadcastController::class, 'index'])->name('broadcast.index');
 Route::get('/broadcast/create', [BroadcastController::class, 'create'])->name('broadcast.create');
 Route::post('/broadcast', [BroadcastController::class, 'store'])->name('broadcast.store');
-Route::get('/broadcast/{id}', [BroadcastController::class, 'show'])->
+Route::get('/broadcast/{id}', [BroadcastController::class, 'show']);
 
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard-admin', [AdminController::class, 'AdminDashboard'])->name('admin.dashboard');

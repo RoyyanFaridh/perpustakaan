@@ -91,7 +91,7 @@ class Index extends Component
 
     public function render()
     {
-    return view('user.peminjaman.index', [
+    return view('livewire.user.peminjaman.index', [
         'peminjaman' => Peminjaman::with(['anggota', 'buku'])->latest()->get(),
         'anggotaList' => Anggota::all(),
         'bukuList' => Buku::all(),

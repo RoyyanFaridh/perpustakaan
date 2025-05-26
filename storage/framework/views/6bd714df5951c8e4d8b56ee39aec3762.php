@@ -127,4 +127,4 @@
         </table>
     </div>
 </div>
-<?php /**PATH C:\Users\ASUS\perpustakaan_smp\resources\views/livewire/admin/peminjaman/index.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\Users\ASUS\perpustakaan_smp\resources\views/livewire/user/peminjaman/index.blade.php ENDPATH**/ ?>
