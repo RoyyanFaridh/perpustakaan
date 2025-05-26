@@ -2,14 +2,17 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Pages\Auth\Register;
+
 //Admin
 use App\Http\Controllers\Admin\AdminController;
 use App\Livewire\Admin\Anggota\Index as AnggotaIndex;
 use App\Livewire\Admin\Buku\Index as BukuIndex;
 use App\Livewire\Admin\Peminjaman\Index as PeminjamanIndex;
+
 //User
 use App\Http\Controllers\User\UserController;
-use App\Livewire\User\BukuComponent;
+use App\Livewire\User\Buku\Index as BukuIndexUser;
+use App\Livewire\User\Peminjaman\Index as PeminjamanIndexUser;
 
  
 Route::get('/', function () {
@@ -29,8 +32,8 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->group(fu
 // Untuk guru dan siswa
 Route::middleware(['auth', 'verified', 'role:siswa,guru'])->group(function () {
     Route::get('/dashboard', [UserController::class, 'UserDashboard'])->name('user.dashboard');
-    Route::get('/buku', BukuComponent::class)->name('user.buku.index');
-    Route::view('/peminjaman', 'livewire.user.peminjaman')->name('user.peminjaman.index');
+    Route::get('/buku', BukuIndexUser::class)->name('user.buku.index');
+    Route::get('/peminjaman', PeminjamanIndexUser::class)->name('user.peminjaman.index');
 });
 
 // Route profile hanya membutuhkan auth, tidak perlu verified

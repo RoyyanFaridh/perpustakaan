@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\User\Peminjaman;
 
 use Livewire\Component;
 use App\Models\Peminjaman;
 use App\Models\Anggota;
 use App\Models\Buku;
 
-class PeminjamanComponent extends Component
+class Index extends Component
 {
     public $peminjaman, $anggota_id, $buku_id, $tanggal_pinjam, $tanggal_kembali;
     public $isEdit = false, $showModal = false;
@@ -95,6 +95,6 @@ class PeminjamanComponent extends Component
         'peminjaman' => Peminjaman::with(['anggota', 'buku'])->latest()->get(),
         'anggotaList' => Anggota::all(),
         'bukuList' => Buku::all(),
-    ]);
+    ])->layout('layouts.user');
     }
 }

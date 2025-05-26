@@ -96,6 +96,6 @@ class Index extends Component
         'peminjaman' => Peminjaman::with(['anggota', 'buku'])->latest()->get(),
         'anggotaList' => Anggota::all(),
         'bukuList' => Buku::all(),
-    ]);
+    ])->layout('layouts.app');
     }
 }

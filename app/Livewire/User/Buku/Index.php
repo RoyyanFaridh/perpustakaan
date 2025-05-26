@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Livewire\User;
+namespace App\Livewire\User\Buku;
 
 use Livewire\Component;
 use App\Models\Buku;
 
-class BukuComponent extends Component
+class Index extends Component
 {
     public $books = [];
 

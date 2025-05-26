@@ -13,30 +13,46 @@
     <!-- Grid Daftar Buku -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $books; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-5 hover:shadow-md transition-shadow duration-300">
-                <!--[if BLOCK]><![endif]--><?php if($item->cover): ?>
-                    <img src="<?php echo e(asset('storage/' . $item->cover)); ?>" alt="Cover Buku" class="w-full h-48 object-cover rounded-lg mb-4">
-                <?php else: ?>
-                    <div class="w-full h-48 bg-gray-100 rounded-lg flex items-center justify-center mb-4 text-gray-400 text-sm">
-                        Tidak ada cover
-                    </div>
-                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+            <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-4 hover:shadow-md transition-shadow duration-300 max-w-md mx-auto">
+                <div class="flex gap-4">
+                    
+                    <!--[if BLOCK]><![endif]--><?php if($item->cover): ?>
+                        <div class="w-[140px] h-[200px] flex-shrink-0 overflow-hidden rounded-md">
+                            <img src="<?php echo e(asset('storage/' . $item->cover)); ?>" alt="Cover Buku" class="w-full h-full object-cover">
+                        </div>
+                    <?php else: ?>
+                        <div class="w-[140px] h-[200px] bg-gray-100 rounded-md flex items-center justify-center text-gray-400 text-sm">
+                            Tidak ada cover
+                        </div>
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-                <h3 class="text-lg font-semibold text-gray-900"><?php echo e($item->judul); ?></h3>
-                <span class="inline-block mt-1 mb-2 px-2 py-0.5 text-xs font-medium bg-green-100 text-green-700 rounded-full"><?php echo e($item->kategori); ?></span>
-                
-                <p class="text-sm text-gray-600 mb-4 line-clamp-3"><?php echo e($item->deskripsi); ?></p>
+                    
+                    <div class="flex flex-col justify-between flex-1">
+                        <div>
+                            <h3 class="text-xl font-bold text-black"><?php echo e($item->judul); ?></h3>
+                            <span class="inline-block mt-1 mb-2 px-4 py-0.5 text-xs font-medium bg-green-100 text-green-700 rounded-full border border-green-300">
+                                <?php echo e($item->kategori); ?>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 text-sm text-gray-700 mt-2">
-                    <div class="space-y-1">
-                        <p><span class="font-medium">Penulis:</span> <?php echo e($item->penulis); ?></p>
-                        <p><span class="font-medium">Penerbit:</span> <?php echo e($item->penerbit); ?></p>
-                        <p><span class="font-medium">Tahun:</span> <?php echo e($item->tahun_terbit); ?></p>
-                    </div>
-                    <div class="space-y-1">
-                        <p><span class="font-medium">ISBN:</span> <?php echo e($item->isbn); ?></p>
-                        <p><span class="font-medium">Stok:</span> <?php echo e($item->jumlah_stok); ?></p>
-                        <p><span class="font-medium">Rak:</span> <?php echo e($item->lokasi_rak); ?></p>
+                            </span>
+
+                            <p class="text-sm text-gray-500 mb-3 line-clamp-3">
+                                <?php echo e($item->deskripsi); ?>
+
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 text-sm text-gray-700">
+                            <div class="space-y-1">
+                                <p><span class="font-sm">Penulis:</span> <?php echo e($item->penulis); ?></p>
+                                <p><span class="font-sm">Penerbit:</span> <?php echo e($item->penerbit); ?></p>
+                                <p><span class="font-sm">Tahun:</span> <?php echo e($item->tahun_terbit); ?></p>
+                            </div>
+                            <div class="space-y-1">
+                                <p><span class="font-sm">ISBN:</span> <?php echo e($item->isbn); ?></p>
+                                <p><span class="font-sm">Stok:</span> <?php echo e($item->jumlah_stok); ?></p>
+                                <p><span class="font-sm">Rak:</span> <?php echo e($item->lokasi_rak); ?></p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
