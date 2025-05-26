@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Pages\Auth\Register;
+use App\Livewire\Forms\LoginForm;
 use App\Http\Controllers\BroadcastController;
 
 //Admin
@@ -22,6 +23,8 @@ Route::get('/', function () {
 })->name('welcome');
 
 Route::get('/register', Register::class)->name('register');
+
+Route::get('/login', LoginForm::class)->name('login')->middleware('guest');
 
 Route::get('/broadcast', [BroadcastController::class, 'index'])->name('broadcast.index');
 Route::get('/broadcast/create', [BroadcastController::class, 'create'])->name('broadcast.create');

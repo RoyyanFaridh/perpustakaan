@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\Anggota;
 
 class User extends Authenticatable
 
@@ -31,4 +32,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function anggota()
+    {
+        return $this->hasOne(Anggota::class, 'nis_nip', 'nis_nip');
+    }
 }

@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Peminjaman;
 use App\Models\Anggota;
 use App\Models\Buku;
+use Illuminate\Support\Facades\Auth;
 
 class Index extends Component
 {
@@ -91,10 +92,16 @@ class Index extends Component
 
     public function render()
     {
-    return view('livewire.user.peminjaman.index', [
-        'peminjaman' => Peminjaman::with(['anggota', 'buku'])->latest()->get(),
-        'anggotaList' => Anggota::all(),
-        'bukuList' => Buku::all(),
-    ])->layout('layouts.user');
+        $user = Auth::user();
+        $anggotaId = $user->anggota->id ?? null;
+
+        return view('livewire.user.peminjaman.index', [
+            'peminjaman' => Peminjaman::with(['anggota', 'buku'])
+                ->where('anggota_id', $anggotaId)
+                ->latest()
+                ->get(),
+            'anggotaList' => Anggota::all(), // kalau untuk dropdown
+            'bukuList' => Buku::all(),
+        ])->layout('layouts.user');
     }
 }
