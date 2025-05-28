@@ -1,7 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\Pengunjung; // Tambahkan ini
 use App\Livewire\Pages\Auth\Register;
+
+use App\Livewire\Pages\Auth\LoginPage;
 use App\Http\Controllers\BroadcastController;
 use App\Livewire\Pages\Auth\ChangePasswordForm;
 
@@ -18,6 +21,9 @@ use App\Livewire\User\Dashboard;
 use App\Livewire\User\Buku\Index as BukuIndexUser;
 use App\Livewire\User\Peminjaman\Index as PeminjamanIndexUser;
 
+use App\Models\Buku;
+use App\Models\User;
+use App\Models\Peminjaman;
 
 // Public routes
 Route::get('/', fn() => view('pages.welcome'))->name('welcome');
@@ -30,6 +36,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/broadcast', [BroadcastController::class, 'store'])->name('broadcast.store');
     Route::get('/broadcast/{id}', [BroadcastController::class, 'show']);
 });
+
 
 // Admin routes
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->group(function () {
@@ -58,3 +65,38 @@ Route::view('/profile', 'pages.profile')->middleware('auth')->name('profile');
 
 // Auth routes default Laravel
 require __DIR__.'/auth.php';
+
+Route::get('/', function () {
+$tahunSekarang = now()->year;
+$tahunSebelumnya = now()->year - 1;
+$bulanLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+
+$jumlahPengunjungTahunIni = [];
+$jumlahPengunjungTahunLalu = [];
+
+for ($i = 1; $i <= 12; $i++) {
+    $jumlahPengunjungTahunIni[] = Pengunjung::whereYear('created_at', $tahunSekarang)
+        ->whereMonth('created_at', $i)->count();
+
+    $jumlahPengunjungTahunLalu[] = Pengunjung::whereYear('created_at', $tahunSebelumnya)
+        ->whereMonth('created_at', $i)->count();
+}
+
+// Total Data
+$totalKoleksiBuku = Buku::count();
+$totalAnggota = User::whereIn('role', ['siswa', 'guru'])->count();
+$totalPeminjaman = Peminjaman::count();
+$totalKeterlambatan = Peminjaman::where('tanggal_kembali', '>', 'batas_pengembalian')->count();
+
+return view('pages.welcome', compact(
+    'bulanLabels',
+    'jumlahPengunjungTahunIni',
+    'jumlahPengunjungTahunLalu',
+    'tahunSekarang',
+    'tahunSebelumnya',
+    'totalKoleksiBuku',
+    'totalAnggota',
+    'totalPeminjaman',
+    'totalKeterlambatan'
+));
+})->name('welcome');
