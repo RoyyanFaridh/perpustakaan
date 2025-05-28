@@ -51,14 +51,14 @@ unset($__defined_vars); ?>
                 class="text-white rounded-md p-2 flex items-center justify-center" 
                 style="background-color: <?php echo e($bgColor); ?>;"
             >
-                <?php if($icon): ?>
+                <!--[if BLOCK]><![endif]--><?php if($icon): ?>
                     <?php echo $icon; ?>
 
                 <?php else: ?>
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18" />
                     </svg>
-                <?php endif; ?>
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
             </div>
             <h5 class="text-gray-800 font-semibold text-base leading-tight">
                 <?php echo e($title); ?>
@@ -77,17 +77,17 @@ unset($__defined_vars); ?>
     <!-- Value dan delta -->
     <div class="flex justify-between items-center mt-4">
         <p class="text-4xl font-semibold text-black"><?php echo e($value); ?></p>
-        <?php if($delta): ?>
+        <!--[if BLOCK]><![endif]--><?php if($delta): ?>
             <span class="text-green-600 text-sm border border-green-500 rounded-md px-2 py-0.5 font-medium">
                 +<?php echo e($delta); ?>
 
             </span>
-        <?php endif; ?>
+        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
     </div>
 
     <!-- Periode -->
-    <?php if($periode): ?>
+    <!--[if BLOCK]><![endif]--><?php if($periode): ?>
         <p class="text-gray-400 text-sm mt-2">pada <?php echo e($periode); ?></p>
-    <?php endif; ?>
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 </div>
 <?php /**PATH C:\Users\ASUS\perpustakaan_smp\resources\views/components/card.blade.php ENDPATH**/ ?>

@@ -11,12 +11,14 @@ return new class extends Migration {
             $table->id();
             $table->string('nama', 255);
             $table->string('status')->default('active'); // 'active' or 'inactive'
+            $table->string('role')->default('siswa');
             $table->string('nis_nip', 20)->unique();
             $table->string('kelas', 1); // '7', '8', or '9'
             $table->string('jenis_kelamin', 1); // 'L' or 'P'
             $table->string('alamat', 255);
             $table->string('no_telp', 20);
             $table->string('email', 255)->unique();
+            $table->string('plain_password')->nullable();
             $table->timestamps();
         });
     }

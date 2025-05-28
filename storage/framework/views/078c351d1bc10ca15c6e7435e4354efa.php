@@ -2,9 +2,14 @@
     <div class="bg-white p-6 rounded-2xl shadow-md overflow-x-auto">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-xl font-semibold text-gray-800">Daftar Anggota</h2>
-            <button wire:click="openModal" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-2 px-4 rounded-lg">
-                + Tambah Anggota
-            </button>        
+            <div class="flex gap-2">
+                <a href="<?php echo e(route('anggota.export')); ?>" target="_blank" class="bg-green-500 hover:bg-green-600 text-white text-sm font-medium py-2 px-4 rounded-lg">
+                    Export Excel
+                </a>
+                <button wire:click="openModal" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-2 px-4 rounded-lg">
+                    + Tambah Anggota
+                </button>
+            </div>
         </div>
 
         <div class="mb-4">
@@ -41,22 +46,32 @@
                     </div>
                 
                     <!-- Status -->
-                    <div>
-                        <label for="status" class="block text-black text-xs mb-1">Status</label>
-                        <select wire:model="status" id="status" 
-                            class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm">
-                            <option value="">-- Pilih Status --</option>
-                            <option value="active">Aktif</option>
-                            <option value="inactive">Tidak Aktif</option>
-                        </select>
+                    <div class="flex space-x-4">
+                        <div class="w-1/2">
+                            <label for="status" class="block text-black text-xs mb-1">Status</label>
+                            <select wire:model="status" id="status" 
+                                class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm">
+                                <option value="">-- Pilih Status --</option>
+                                <option value="active">Aktif</option>
+                                <option value="inactive">Tidak Aktif</option>
+                            </select>
+                        </div>
+                        <div class="w-1/2">
+                            <label for="role" class="block text-black text-xs mb-1">Role</label>
+                            <select wire:model="role" id="role" 
+                                class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm">
+                                <option value="">-- Pilih Role --</option>
+                                <option value="siswa">Siswa</option>
+                                <option value="guru">Guru</option>
+                            </select>
+                        </div>
                     </div>
-
                     
                     <!-- NIS dan Kelas (sejajar) -->
                     <div class="flex space-x-4">
                         <div class="w-1/2">
-                            <label for="nis" class="block text-black text-xs mb-1">Nomor Induk Siswa (NIS)</label>
-                            <input type="text" wire:model="nis" id="nis"
+                            <label for="nis_nip" class="block text-black text-xs mb-1">NIS/NIP</label>
+                            <input type="text" wire:model="nis_nip" id="nis_nip"
                                 class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm" />
                         </div>
 
@@ -134,6 +149,7 @@
                     <th class="px-4 py-3 font-semibold">No</th>
                     <th class="px-4 py-3 font-semibold">Nama</th>
                     <th class="px-4 py-3 font-semibold">Status</th>
+                    <th class="px-4 py-3 font-semibold">Role</th>
                     <th class="px-4 py-3 font-semibold">NIS</th>
                     <th class="px-4 py-3 font-semibold">Kelas</th>
                     <th class="px-4 py-3 font-semibold">Jenis Kelamin</th>
@@ -149,7 +165,8 @@
                         <td class="px-4 py-2"><?php echo e($index + 1); ?></td>
                         <td class="px-4 py-2"><?php echo e($item->nama); ?></td>
                         <td class="px-4 py-2"><?php echo e($item->status == 'active' ? 'Aktif' : 'Tidak Aktif'); ?></td>
-                        <td class="px-4 py-2"><?php echo e($item->nis); ?></td>
+                        <td class="px-4 py-2"><?php echo e($item->role == 'siswa' ? 'Siswa' : 'Guru'); ?></td>
+                        <td class="px-4 py-2"><?php echo e($item->nis_nip); ?></td>
                         <td class="px-4 py-2"><?php echo e($item->kelas); ?></td>
                         <td class="px-4 py-2"><?php echo e($item->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan'); ?></td>
                         <td class="px-4 py-2"><?php echo e(Str::limit($item->alamat, 100)); ?></td>

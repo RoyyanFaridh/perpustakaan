@@ -1,26 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Livewire\User;
 
 use App\Models\Buku;
 use App\Models\Anggota;
 use App\Models\Peminjaman;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Controller;
+use Livewire\Component;
 
-class UserController extends Controller
+class Dashboard extends Component
 {
-    public function index()
+    public function render()
     {
-        return view('welcome');
-    }
-
-    public function UserDashboard()
-    {
-        $user = Auth::user();
-
         $bulanLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
 
         $tahunSekarang = Carbon::now()->year;
@@ -65,6 +57,6 @@ class UserController extends Controller
             'totalAnggota',
             'totalPeminjaman',
             'totalKeterlambatan'
-        ));
+        ))->layout('layouts.user');
     }
 }

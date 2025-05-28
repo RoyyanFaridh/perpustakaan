@@ -12,12 +12,14 @@ class Anggota extends Model {
     protected $fillable = [
         'nama',
         'status',
-        'nis',
+        'role',
+        'nis_nip',
         'kelas',
         'jenis_kelamin',
         'alamat',
         'no_telp',
-        'email',      
+        'email',
+        'plain_password',      
     ];
 
     // Relasi satu anggota punya banyak peminjaman
