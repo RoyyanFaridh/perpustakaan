@@ -6,7 +6,8 @@
   <title>Perpustakaan Digital SMP 12 Yogyakarta</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  @livewireStyles
+  <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::styles(); ?>
+
 
 </head>
 <body class="font-sans antialiased bg-white">
@@ -17,8 +18,8 @@
       <img src="/images/logo_smp12yk.png" alt="Logo SMPN 12 Yogyakarta" class="h-12 w-auto" />
     </div>
     <div class="space-x-4">
-      <a href="{{ route('login') }}" class="px-5 py-2 rounded bg-red-400 text-white hover:bg-red-400">Login</a>
-      <a href="{{ route('register') }}" class="px-5 py-2 rounded border-2 border-red-400 text-red-400 hover:bg-red-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 transition ease-in-out duration-150">Register</a>
+      <a href="<?php echo e(route('login')); ?>" class="px-5 py-2 rounded bg-red-400 text-white hover:bg-red-400">Login</a>
+      <a href="<?php echo e(route('register')); ?>" class="px-5 py-2 rounded border-2 border-red-400 text-red-400 hover:bg-red-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 transition ease-in-out duration-150">Register</a>
     </div>
   </header>
 
@@ -56,17 +57,17 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"> 
       <div class="p-4 bg-red-100 text-center rounded shadow"> 
         <h3 class="text-lg font-bold">Total Buku</h3> 
-        <p class="text-2xl">{{ number_format($totalKoleksiBuku, 0, ',', '.') }}</p> 
+        <p class="text-2xl"><?php echo e(number_format($totalKoleksiBuku, 0, ',', '.')); ?></p> 
       </div> 
       <div class="p-4 bg-blue-100 text-center rounded shadow"> 
         <h3 class="text-lg font-bold">Total Anggota</h3> 
-        <p class="text-2xl">{{ number_format($totalAnggota, 0, ',', '.') }}</p> 
+        <p class="text-2xl"><?php echo e(number_format($totalAnggota, 0, ',', '.')); ?></p> 
       </div> <div class="p-4 bg-teal-100 text-center rounded shadow"> 
         <h3 class="text-lg font-bold">Total Peminjaman</h3> 
-        <p class="text-2xl">{{ number_format($totalPeminjaman, 0, ',', '.') }}</p> 
+        <p class="text-2xl"><?php echo e(number_format($totalPeminjaman, 0, ',', '.')); ?></p> 
       </div> <div class="p-4 bg-green-100 text-center rounded shadow"> 
         <h3 class="text-lg font-bold">Total Keterlambatan</h3> 
-        <p class="text-2xl">{{ number_format($totalKeterlambatan, 0, ',', '.') }}</p> 
+        <p class="text-2xl"><?php echo e(number_format($totalKeterlambatan, 0, ',', '.')); ?></p> 
       </div> 
     </div> 
   </section>
@@ -83,11 +84,11 @@
     const statistikChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: @json($bulanLabels),
+            labels: <?php echo json_encode($bulanLabels, 15, 512) ?>,
             datasets: [
                 {
-                    label: '{{ $tahunSebelumnya }}',
-                    data: @json($jumlahPengunjungTahunLalu),
+                    label: '<?php echo e($tahunSebelumnya); ?>',
+                    data: <?php echo json_encode($jumlahPengunjungTahunLalu, 15, 512) ?>,
                     borderColor: '#60A5FA',
                     backgroundColor: 'rgba(96, 165, 250, 0.2)',
                     borderWidth: 2,
@@ -96,8 +97,8 @@
                     tension: 0.4
                 },
                 {
-                    label: '{{ $tahunSekarang }}',
-                    data: @json($jumlahPengunjungTahunIni),
+                    label: '<?php echo e($tahunSekarang); ?>',
+                    data: <?php echo json_encode($jumlahPengunjungTahunIni, 15, 512) ?>,
                     borderColor: '#FB7185',
                     backgroundColor: 'rgba(251, 113, 133, 0.2)',
                     borderWidth: 2,
@@ -135,7 +136,8 @@
     });
   </script>
 
-@livewireScripts
+<?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::scripts(); ?>
+
 </body>
 
 <!-- Footer -->
@@ -167,7 +169,7 @@
 
   <!-- Copyright -->
   <div class="mt-8 text-center text-sm text-white">
-    &copy; {{ date('Y') }} Perpustakaan Digital SMP Negeri 12 Yogyakarta. All rights reserved.
+    &copy; <?php echo e(date('Y')); ?> Perpustakaan Digital SMP Negeri 12 Yogyakarta. All rights reserved.
   </div>
 </footer>
-</html>
+</html><?php /**PATH D:\Perkuliahan Duniawi\New folder\New folder\perpustakaan\resources\views/pages/welcome.blade.php ENDPATH**/ ?>
