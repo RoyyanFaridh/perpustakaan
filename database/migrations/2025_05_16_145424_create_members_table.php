@@ -10,14 +10,15 @@ return new class extends Migration {
         Schema::create('members', function (Blueprint $table) {
             $table->id();
             $table->string('nama', 255);
-            $table->string('status')->default('active'); // 'active' or 'inactive'
-            $table->string('role')->default('siswa');
+            $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->enum('role', ['siswa', 'guru'])->default('siswa');
             $table->string('nis_nip', 20)->unique();
-            $table->string('kelas', 1); // '7', '8', or '9'
-            $table->string('jenis_kelamin', 1); // 'L' or 'P'
-            $table->string('alamat', 255);
-            $table->string('no_telp', 20);
-            $table->string('email', 255)->unique();
+            $table->string('kelas', 10)->nullable();
+            $table->enum('jenis_kelamin', ['L', 'P']);
+            $table->string('alamat', 255)->nullable();
+            $table->string('no_telp', 20)->nullable();
+            $table->string('email', 255)->unique()->nullable(); 
+            $table->timestamp('email_verified_at')->nullable(); 
             $table->string('plain_password')->nullable();
             $table->timestamps();
         });
@@ -28,4 +29,3 @@ return new class extends Migration {
         Schema::dropIfExists('members');
     }
 };
-

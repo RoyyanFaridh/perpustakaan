@@ -49,7 +49,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->group(fu
 });
 
 // Routes untuk guru dan siswa
-Route::middleware(['auth', 'verified', 'role:siswa,guru', 'check.default.password'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:siswa,guru', 'check.default.password', 'email.filled'])->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('user.dashboard');
     Route::get('/buku', BukuIndexUser::class)->name('user.buku.index');
     Route::get('/peminjaman', PeminjamanIndexUser::class)->name('user.peminjaman.index');

@@ -205,13 +205,5 @@ use Illuminate\Validation\ValidationException;
 <?php unset($__componentOriginald411d1792bd6cc877d687758b753742c); ?>
 <?php endif; ?>
         </div>
-
-        <div class="mt-4 text-center">
-            <span class="text-sm text-gray-600"><?php echo e(__("Haven't an account?")); ?></span>
-            <a href="<?php echo e(route('register')); ?>" class="text-sm text-indigo-600 hover:text-indigo-900 font-semibold" wire:navigate>
-                <?php echo e(__('Register')); ?>
-
-            </a>
-        </div> 
     </form>    
 </div><?php /**PATH C:\Users\ASUS\perpustakaan_smp\resources\views\livewire/pages/auth/login.blade.php ENDPATH**/ ?>

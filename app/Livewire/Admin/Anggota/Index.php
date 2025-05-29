@@ -47,8 +47,8 @@ class Index extends Component{
             'kelas' => 'required|in:7,8,9',
             'jenis_kelamin' => 'required|in:L,P',
             'alamat' => 'required|string|max:255',
-            'no_telp' => 'required|string|max:20',
-            'email' => 'required|email|max:255|unique:members,email',
+            // 'no_telp' => 'required|string|max:20',
+            // 'email' => 'required|email|max:255|unique:members,email',
         ]);
 
 
@@ -113,8 +113,8 @@ class Index extends Component{
             'kelas' => 'required|in:7,8,9',
             'jenis_kelamin' => 'required|in:L,P',
             'alamat' => 'required|string|max:255',
-            'no_telp' => 'required|string|max:20',
-            'email' => 'required|email|max:255|unique:members,email',
+            // 'no_telp' => 'required|string|max:20',
+            // 'email' => 'required|email|max:255|unique:members,email',
         ]);
 
 

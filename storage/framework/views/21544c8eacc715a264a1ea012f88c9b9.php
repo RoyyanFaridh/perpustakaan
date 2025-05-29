@@ -15,9 +15,29 @@
         </h2>
      <?php $__env->endSlot(); ?>
 
+    
+    <!--[if BLOCK]><![endif]--><?php if(session('show_email_modal')): ?>
+        <?php
+$__split = function ($name, $params = []) {
+    return [$name, $params];
+};
+[$__name, $__params] = $__split('input-email-modal');
+
+$__html = app('livewire')->mount($__name, $__params, 'lw-3776872209-0', $__slots ?? [], get_defined_vars());
+
+echo $__html;
+
+unset($__html);
+unset($__name);
+unset($__params);
+unset($__split);
+if (isset($__slots)) unset($__slots);
+?>
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+
     <div class="py-4">
         <div class="mx-auto sm:px-4 lg:px-6">
-                <!-- Wrapper untuk Card -->
+            <!-- Wrapper untuk Card -->
             <div class="flex flex-wrap gap-4 mb-4">
                 <?php if (isset($component)) { $__componentOriginal53747ceb358d30c0105769f8471417f6 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal53747ceb358d30c0105769f8471417f6 = $attributes; } ?>
@@ -39,7 +59,6 @@
 <?php $component = $__componentOriginal53747ceb358d30c0105769f8471417f6; ?>
 <?php unset($__componentOriginal53747ceb358d30c0105769f8471417f6); ?>
 <?php endif; ?>
-
 
                 <?php if (isset($component)) { $__componentOriginal53747ceb358d30c0105769f8471417f6 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal53747ceb358d30c0105769f8471417f6 = $attributes; } ?>
@@ -104,7 +123,6 @@
 <?php unset($__componentOriginal53747ceb358d30c0105769f8471417f6); ?>
 <?php endif; ?>
             </div>
-            
         </div>
 
         <div class="font-bold text-3xl text-gray-900 mb-4 ml-4">
@@ -116,7 +134,7 @@
             <canvas id="statistikChart" height="100"></canvas>
         </div>
     </div>
-    
+
     <script>
         const ctx = document.getElementById('statistikChart').getContext('2d');
         const statistikChart = new Chart(ctx, {
@@ -188,7 +206,7 @@
                 }
             }
         });
-    </script>    
+    </script>
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal951024bfcf58033c82ac11d797616473)): ?>

@@ -1,9 +1,6 @@
 <div class="bg-white p-6 rounded-2xl shadow-md overflow-x-auto">
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-xl font-semibold text-gray-800">Daftar Peminjaman</h2>
-        <button wire:click="openModal" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-2 px-4 rounded-lg">
-            + Tambah Peminjaman
-        </button>
     </div>
 
     <!--[if BLOCK]><![endif]--><?php if($showModal): ?>

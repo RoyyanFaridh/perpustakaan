@@ -104,20 +104,6 @@
                         <textarea wire:model="alamat" id="alamat" rows="3"
                             class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm"></textarea>
                     </div>
-                
-                    <!-- Nomor Telepon -->
-                    <div>
-                        <label for="no_telp" class="block text-black text-xs mb-1">Nomor Telepon</label>
-                        <input type="text" wire:model="no_telp" id="no_telp"
-                            class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm" />
-                    </div>
-
-                    <!-- Email -->
-                    <div>
-                        <label for="email" class="block text-black text-xs mb-1">Email</label>
-                        <input type="email" wire:model="email" id="email"
-                            class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm" />
-                    </div>
                 </div>              
 
                 <div class="flex justify-end space-x-2 mt-6">
@@ -154,7 +140,6 @@
                     <th class="px-4 py-3 font-semibold">Kelas</th>
                     <th class="px-4 py-3 font-semibold">Jenis Kelamin</th>
                     <th class="px-4 py-3 font-semibold">Alamat</th>
-                    <th class="px-4 py-3 font-semibold">Nomor Telepon</th>
                     <th class="px-4 py-3 font-semibold">Email</th>
                     <th class="px-4 py-3 text-center font-semibold">Aksi</th>
                 </tr>
@@ -170,7 +155,6 @@
                         <td class="px-4 py-2"><?php echo e($item->kelas); ?></td>
                         <td class="px-4 py-2"><?php echo e($item->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan'); ?></td>
                         <td class="px-4 py-2"><?php echo e(Str::limit($item->alamat, 100)); ?></td>
-                        <td class="px-4 py-2"><?php echo e($item->no_telp); ?></td>
                         <td class="px-4 py-2"><?php echo e($item->email); ?></td>
                         <td class="px-4 py-2 text-center space-x-2">
                             <button wire:click="edit(<?php echo e($item->id); ?>)" class="px-3 py-1 bg-yellow-400 hover:bg-yellow-500 text-white rounded-md shadow text-xs">Edit</button>
