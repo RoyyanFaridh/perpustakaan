@@ -9,7 +9,8 @@ class Buku extends Model
 {
     use HasFactory;
 
-    protected $table = 'books';
+    // Nama tabel di database
+    protected $table = 'buku'; // sesuaikan dengan tabel di database
 
     protected $fillable = [
         'judul',
@@ -24,7 +25,7 @@ class Buku extends Model
         'cover',
     ];
 
-    // Relasi satu buku bisa punya banyak peminjaman
+    // Relasi: satu buku punya banyak peminjaman
     public function peminjaman()
     {
         return $this->hasMany(Peminjaman::class, 'buku_id');

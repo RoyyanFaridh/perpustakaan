@@ -29,15 +29,23 @@ class Anggota extends Model
         'email_verified_at',
     ];
 
-    // Relasi ke model User (berdasarkan nis_nip)
     public function user()
     {
         return $this->belongsTo(User::class, 'nis_nip', 'nis_nip');
     }
 
-    // Contoh relasi lain: Anggota punya banyak peminjaman
     public function peminjaman()
     {
         return $this->hasMany(Peminjaman::class, 'anggota_id');
+    }
+
+    public function getNisAttribute()
+    {
+        return $this->role === 'siswa' ? $this->nis_nip : null;
+    }
+
+    public function getNipAttribute()
+    {
+        return $this->role === 'guru' ? $this->nis_nip : null;
     }
 }

@@ -22,7 +22,7 @@
             <aside class="w-64 bg-white border-r hidden sm:block">
                 <livewire:layout.navigation />
             </aside>
-
+            
             <!-- Mobile Navbar -->
             <div class="sm:hidden w-full">
                 <livewire:layout.navigation />
@@ -38,7 +38,7 @@
                         </div>
                     </header>
                 @endif
-
+                
                 <!-- Page Content -->
                 <main class="">
                     {{ $slot }}

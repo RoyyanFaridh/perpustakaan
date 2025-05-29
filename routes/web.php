@@ -1,17 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Models\Pengunjung; // Tambahkan ini
+use App\Models\Pengunjung;
 use App\Livewire\Pages\Auth\Register;
-
-use App\Livewire\Pages\Auth\LoginPage;
 use App\Http\Controllers\BroadcastController;
 use App\Livewire\Pages\Auth\ChangePasswordForm;
 
 // Admin
 use App\Http\Controllers\Admin\AdminController;
 use App\Livewire\Admin\Anggota\Index as AnggotaIndex;
-use App\Livewire\Admin\Buku\Index as BukuIndex;
+use App\Livewire\Admin\Anggota\Siswa;
+use App\Livewire\Admin\Anggota\Guru;
+use App\Livewire\Admin\Buku\Index as BukuIndexAdmin;
 use App\Livewire\Admin\Peminjaman\Index as PeminjamanIndex;
 use App\Livewire\Admin\Anggota\Export as AnggotaExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -43,7 +43,9 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->group(fu
     Route::get('/dashboard-admin', [AdminController::class, 'AdminDashboard'])->name('admin.dashboard');
     Route::get('/anggota', AnggotaIndex::class)->name('admin.anggota.index');
     Route::get('/anggota/export', fn() => Excel::download(new AnggotaExport, 'daftar_anggota.xlsx'))->name('anggota.export');
-    Route::get('/buku', BukuIndex::class)->name('admin.buku.index');
+    Route::get('/anggota/siswa', Siswa::class)->name('anggota.siswa');
+    Route::get('/anggota/guru', Guru::class)->name('anggota.guru');
+    Route::get('/buku', BukuIndexAdmin::class)->name('admin.buku.index');
     Route::get('/peminjaman', PeminjamanIndex::class)->name('admin.peminjaman.index');
     Route::view('/broadcast', 'livewire.admin.broadcast')->name('admin.broadcast.index');
 });

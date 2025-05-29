@@ -1,5 +1,6 @@
 <?php
 
+
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -17,5 +18,6 @@ Route::middleware(['auth', 'check.default.password'])->group(function () {
     // Tambahkan route lain yang ingin dilindungi oleh middleware ini
     Volt::route('dashboard', 'user.dashboard')->name('user.dashboard');
 });
+
 
 
