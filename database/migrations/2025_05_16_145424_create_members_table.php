@@ -11,8 +11,9 @@ return new class extends Migration {
             $table->id();
             $table->string('nama', 255);
             $table->string('status')->default('active'); // 'active' or 'inactive'
+            $table->string('role'); // 'siswa' atau 'guru'
             $table->string('nis_nip', 20)->unique();
-            $table->string('kelas', 1); // '7', '8', or '9'
+            $table->string('kelas', 10)->nullable(); // nullable untuk guru
             $table->string('jenis_kelamin', 1); // 'L' or 'P'
             $table->string('alamat', 255);
             $table->string('no_telp', 20);

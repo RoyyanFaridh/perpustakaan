@@ -8,23 +8,24 @@ use App\Http\Controllers\BroadcastController;
 //Admin
 use App\Http\Controllers\Admin\AdminController;
 use App\Livewire\Admin\Anggota\Index as AnggotaIndex;
-use App\Livewire\Admin\Buku\Index as BukuIndex;
+use App\Livewire\Admin\Anggota\Siswa;
+use App\Livewire\Admin\Anggota\Guru;
+use App\Livewire\Admin\Buku\Index as BukuIndexAdmin;
 use App\Livewire\Admin\Peminjaman\Index as PeminjamanIndex;
 
 //User
 use App\Http\Controllers\User\UserController;
 use App\Livewire\User\Buku\Index as BukuIndexUser;
 use App\Livewire\User\Peminjaman\Index as PeminjamanIndexUser;
+use App\Models\Anggota;
 
-
- 
 Route::get('/', function () {
     return view('pages.welcome');
 })->name('welcome');
 
 Route::get('/register', Register::class)->name('register');
 
-Route::get('/login', LoginForm::class)->name('login')->middleware('guest');
+//Route::get('/login', LoginForm::class)->name('login')->middleware('guest');
 
 Route::get('/broadcast', [BroadcastController::class, 'index'])->name('broadcast.index');
 Route::get('/broadcast/create', [BroadcastController::class, 'create'])->name('broadcast.create');
@@ -33,8 +34,9 @@ Route::get('/broadcast/{id}', [BroadcastController::class, 'show']);
 
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard-admin', [AdminController::class, 'AdminDashboard'])->name('admin.dashboard');
-    Route::get('/anggota', AnggotaIndex::class)->name('admin.anggota.index');
-    Route::get('/buku', BukuIndex::class)->name('admin.buku.index');
+    Route::get('/anggota/siswa', Siswa::class)->name('anggota.siswa');
+    Route::get('/anggota/guru', Guru::class)->name('anggota.guru');
+    Route::get('/buku', BukuIndexAdmin::class)->name('admin.buku.index');
     Route::get('/peminjaman', PeminjamanIndex::class)->name('admin.peminjaman.index');
     Route::view('/broadcast', 'livewire.admin.broadcast')->name('admin.broadcast.index');
 });

@@ -156,7 +156,7 @@
                     <tr class="hover:bg-gray-50">
                         <td class="px-4 py-2">{{ $index + 1 }}</td>
                         <td class="px-4 py-2">{{ $item->judul }}</td>
-                        <td class="px-4 py-2">{{ Str::limit($item->deskripsi, 100, '...') }}</td>
+                        <td class="px-4 py-2">{{ Str::limit($item->deskripsi, 100) }}...</td>
                         <td class="px-4 py-2">{{ $item->kategori }}</td>
                         <td class="px-4 py-2">{{ $item->penulis }}</td>
                         <td class="px-4 py-2">{{ $item->penerbit }}</td>
