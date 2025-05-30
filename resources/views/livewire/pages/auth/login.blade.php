@@ -57,9 +57,17 @@ new #[Layout('layouts.guest')] class extends Component
     }
 }; ?>
 
-<div>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+<div class="min-h-screen flex flex-col md:flex-row">
+    <!-- Kiri: Form -->
+    <div class="w-full md:w-1/2 flex items-center justify-center p-8 bg-white">
+        <div class="w-full max-w-md space-y-6">
+            <div class="flex justify-center">
+                <a href="/" wire:navigate>
+                    <x-application-logo class="h-12 w-auto" />
+                </a>
+            </div>
+
+            <x-auth-session-status class="mb-4" :status="session('status')" />
 
     <form wire:submit.prevent="login">
         <!-- Email Address -->
