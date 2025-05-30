@@ -75,7 +75,7 @@ new class extends Component
                                 </x-slot>
                         
                                 <x-slot name="content">
-                                    <x-dropdown-link :href="route('profile')" wire:navigate>
+                                    <x-dropdown-link :href="route('user.profile')" wire:navigate>
                                         {{ __('Profile') }}
                                     </x-dropdown-link>
                         
@@ -121,7 +121,7 @@ new class extends Component
                                 <div class="font-medium text-sm text-gray-500">{{ auth()->user()->email }}</div>
             
                                 <div class="mt-3 space-y-1">
-                                    <x-responsive-nav-link :href="route('profile')" wire:navigate>
+                                    <x-responsive-nav-link :href="route('user.profile')" wire:navigate>
                                         {{ __('Profile') }}
                                     </x-responsive-nav-link>
             
@@ -173,7 +173,7 @@ new class extends Component
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile')" wire:navigate>
+                <x-responsive-nav-link :href="route('user.profile')" wire:navigate>
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
 

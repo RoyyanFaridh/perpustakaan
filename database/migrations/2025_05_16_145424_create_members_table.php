@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->enum('jenis_kelamin', ['L', 'P']);
             $table->string('alamat', 255)->nullable();
             $table->string('no_telp', 20)->nullable();
-            $table->string('email', 255)->unique()->nullable(); 
+            $table->string('email', 255)->nullable(); 
             $table->timestamp('email_verified_at')->nullable(); 
             $table->string('plain_password')->nullable();
             $table->timestamps();

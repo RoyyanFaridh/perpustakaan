@@ -15,13 +15,12 @@
         </h2>
      <?php $__env->endSlot(); ?>
 
-    
     <!--[if BLOCK]><![endif]--><?php if(session('show_email_modal')): ?>
         <?php
 $__split = function ($name, $params = []) {
     return [$name, $params];
 };
-[$__name, $__params] = $__split('input-email-modal');
+[$__name, $__params] = $__split('user.dashboard.input-email-modal');
 
 $__html = app('livewire')->mount($__name, $__params, 'lw-1971034565-0', $__slots ?? [], get_defined_vars());
 
@@ -34,6 +33,7 @@ unset($__split);
 if (isset($__slots)) unset($__slots);
 ?>
     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+
 
     <div class="py-4">
         <div class="mx-auto sm:px-4 lg:px-6">

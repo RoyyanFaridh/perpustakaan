@@ -11,150 +11,111 @@
 </head>
 <body class="font-sans antialiased text-gray-800">
 
-  <!-- Navbar -->
-  <header class="sticky top-0 z-50 flex justify-between items-center px-6 py-4 bg-white border-b">
-    <img src="/images/logo_smp12yk.png" alt="Logo SMPN 12 Yogyakarta" class="h-10" />
-    <div class="space-x-3">
-      <a href="<?php echo e(route('login')); ?>" class="px-4 py-1.5 rounded bg-red-500 text-white hover:bg-red-600 transition">Login</a>
+  <!-- Navbar Sticky -->
+  <header class="sticky top-0 z-50 flex justify-between items-center p-6 bg-white shadow-md">
+    <!-- Logo -->
+    <div class="flex items-center space-x-4">
+      <img src="/images/logo_smp12yk.png" alt="Logo SMPN 12 Yogyakarta" class="h-10 w-auto" />
+    </div>
+
+    <!-- Menu + Login (dibungkus agar lebih dekat) -->
+    <div class="flex items-center justify-between w-full md:w-auto">
+      <nav class="space-x-3 sm:space-x-6 text-sm text-gray-700">
+        <a href="#hero" class="hover:underline">Beranda</a>
+        <a href="#tentang" class="hover:underline">Tentang</a>
+        <a href="#kontak" class="hover:underline">Kontak</a>
+      </nav>
+      <a href="<?php echo e(route('login')); ?>" class="mx-10 px-5 py-2 rounded bg-red-400 text-white hover:bg-red-500 transition">Login</a>
     </div>
   </header>
 
-  <!-- Hero -->
-  <section class="relative min-h-[80vh] flex items-center px-6 md:px-20 bg-cover bg-center text-white" style="background-image: url('/images/gedungsmpn12ykasli.jpg');">
-    <div class="absolute inset-0 bg-black/50"></div> <!-- sebelumnya bg-black/60 -->
-    <div class="relative z-10 max-w-2xl text-gray-900"> <!-- supaya teks terbaca di atas putih -->
-      <h1 class="text-4xl md:text-5xl text-white font-bold mb-3 leading-tight">Perpustakaan Digital<br>SMP Negeri 12 Yogyakarta</h1>
-      <p class="text-lg text-white">Akses buku digital dari mana saja dengan mudah dan cepat.</p>
-    </div>
-  </section>
+  <!-- Hero Section -->
+  <section id="hero" class="relative min-h-screen flex items-start justify-start text-white bg-cover bg-center pt-40" style="background-image: url('/images/gedungsmpn12ykasli.jpg');">
+    <!-- Overlay hitam semi-transparan -->
+    <div class="absolute inset-0 bg-black bg-opacity-30"></div>
 
-  <!-- Tentang -->
-  <section class="px-6 md:px-20 py-16 bg-white">
-    <h2 class="text-2xl font-semibold text-red-500 mb-6">Tentang Perpustakaan</h2>
-    <div class="space-y-4 text-base leading-relaxed">
-      <p>Perpustakaan adalah jantung literasi sekolah. Dengan hadirnya versi digital, SMPN 12 Yogyakarta ingin menjangkau seluruh siswa dan guru di era modern.</p>
-      <p>Semua koleksi dapat diakses secara online — dari buku pelajaran hingga referensi umum — cukup melalui perangkat yang terhubung internet.</p>
-      <p>Tujuannya adalah mempermudah pembelajaran mandiri, meningkatkan literasi digital, dan memberi kemudahan guru menyediakan sumber belajar yang relevan.</p>
-    </div>
-  </section>
-
-  <!-- Statistik Koleksi -->
-  <section class="px-6 md:px-20 py-16 bg-white">
-    <h2 class="text-3xl font-semibold mb-6 text-red-400">Statistik Koleksi</h2>
-    <div class="flex flex-wrap gap-4">
-      <?php if (isset($component)) { $__componentOriginal53747ceb358d30c0105769f8471417f6 = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal53747ceb358d30c0105769f8471417f6 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.card','data' => ['title' => 'Total Koleksi Buku','bgColor' => '#ED5565','value' => number_format($totalKoleksiBuku, 0, ',', '.'),'periode' => 'Mei 2025','delta' => 8,'icon' => view('components.icon.books')->render()]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('card'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['title' => 'Total Koleksi Buku','bgColor' => '#ED5565','value' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(number_format($totalKoleksiBuku, 0, ',', '.')),'periode' => 'Mei 2025','delta' => 8,'icon' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(view('components.icon.books')->render())]); ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal53747ceb358d30c0105769f8471417f6)): ?>
-<?php $attributes = $__attributesOriginal53747ceb358d30c0105769f8471417f6; ?>
-<?php unset($__attributesOriginal53747ceb358d30c0105769f8471417f6); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal53747ceb358d30c0105769f8471417f6)): ?>
-<?php $component = $__componentOriginal53747ceb358d30c0105769f8471417f6; ?>
-<?php unset($__componentOriginal53747ceb358d30c0105769f8471417f6); ?>
-<?php endif; ?>
-
-      <?php if (isset($component)) { $__componentOriginal53747ceb358d30c0105769f8471417f6 = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal53747ceb358d30c0105769f8471417f6 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.card','data' => ['title' => 'Total Anggota','bgColor' => '#1C84C6','value' => number_format($totalAnggota, 0, ',', '.'),'periode' => 'Mei 2025','delta' => 8,'icon' => view('components.icon.users')->render()]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('card'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['title' => 'Total Anggota','bgColor' => '#1C84C6','value' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(number_format($totalAnggota, 0, ',', '.')),'periode' => 'Mei 2025','delta' => 8,'icon' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(view('components.icon.users')->render())]); ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal53747ceb358d30c0105769f8471417f6)): ?>
-<?php $attributes = $__attributesOriginal53747ceb358d30c0105769f8471417f6; ?>
-<?php unset($__attributesOriginal53747ceb358d30c0105769f8471417f6); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal53747ceb358d30c0105769f8471417f6)): ?>
-<?php $component = $__componentOriginal53747ceb358d30c0105769f8471417f6; ?>
-<?php unset($__componentOriginal53747ceb358d30c0105769f8471417f6); ?>
-<?php endif; ?>
-
-      <?php if (isset($component)) { $__componentOriginal53747ceb358d30c0105769f8471417f6 = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal53747ceb358d30c0105769f8471417f6 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.card','data' => ['title' => 'Total Peminjaman','bgColor' => '#23C6C8','value' => number_format($totalPeminjaman, 0, ',', '.'),'periode' => 'Mei 2025','delta' => 8,'icon' => view('components.icon.calendar-clock')->render()]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('card'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['title' => 'Total Peminjaman','bgColor' => '#23C6C8','value' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(number_format($totalPeminjaman, 0, ',', '.')),'periode' => 'Mei 2025','delta' => 8,'icon' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(view('components.icon.calendar-clock')->render())]); ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal53747ceb358d30c0105769f8471417f6)): ?>
-<?php $attributes = $__attributesOriginal53747ceb358d30c0105769f8471417f6; ?>
-<?php unset($__attributesOriginal53747ceb358d30c0105769f8471417f6); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal53747ceb358d30c0105769f8471417f6)): ?>
-<?php $component = $__componentOriginal53747ceb358d30c0105769f8471417f6; ?>
-<?php unset($__componentOriginal53747ceb358d30c0105769f8471417f6); ?>
-<?php endif; ?>
-
-      <?php if (isset($component)) { $__componentOriginal53747ceb358d30c0105769f8471417f6 = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal53747ceb358d30c0105769f8471417f6 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.card','data' => ['title' => 'Total Keterlambatan','bgColor' => '#1AB394','value' => number_format($totalKeterlambatan, 0, ',', '.'),'periode' => 'Mei 2025','delta' => 8,'icon' => view('components.icon.calendar-x-2')->render()]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('card'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['title' => 'Total Keterlambatan','bgColor' => '#1AB394','value' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(number_format($totalKeterlambatan, 0, ',', '.')),'periode' => 'Mei 2025','delta' => 8,'icon' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(view('components.icon.calendar-x-2')->render())]); ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal53747ceb358d30c0105769f8471417f6)): ?>
-<?php $attributes = $__attributesOriginal53747ceb358d30c0105769f8471417f6; ?>
-<?php unset($__attributesOriginal53747ceb358d30c0105769f8471417f6); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal53747ceb358d30c0105769f8471417f6)): ?>
-<?php $component = $__componentOriginal53747ceb358d30c0105769f8471417f6; ?>
-<?php unset($__componentOriginal53747ceb358d30c0105769f8471417f6); ?>
-<?php endif; ?>
-    </div>
-  </section>
-
-  <!-- Statistik Pengunjung -->
-  <section class="px-6 md:px-20 py-16 bg-white">
-    <h2 class="text-2xl font-semibold text-red-500 mb-6">Statistik Pengunjung</h2>
-    <div class="bg-white p-6 rounded border">
-      <canvas id="statistikChart" height="100"></canvas>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="bg-white px-6 md:px-20 py-10 border-t text-sm">
-    <div class="flex flex-col md:flex-row justify-between gap-6">
-      <div>
-        <h3 class="font-semibold text-red-500 mb-2">SMP Negeri 12 Yogyakarta</h3>
-        <p>Jl. Tegal Gendu No.16, Pringgokusuman, Gedong Tengen, Yogyakarta</p>
-        <p>Website: <a href="https://smpn12jogja.sch.id" class="text-red-500 hover:underline">smpn12jogja.sch.id</a></p>
+    <!-- Kontainer isi -->
+    <div class="relative z-10">
+      <div class="mb-2 max-w-3xl px-6 sm:px-12 md:pl-20">
+        <span class="inline-block px-4 py-1 text-sm font-medium rounded-full bg-white bg-opacity-10 backdrop-blur-sm border border-white border-opacity-20">
+          Hai, Selamat Datang
+        </span>
       </div>
-      <div>
-        <h3 class="font-semibold text-red-500 mb-2">Ikuti Kami</h3>
-        <ul>
-          <li><a href="https://instagram.com/smpn12jogja" class="hover:underline">Instagram</a></li>
-          <li><a href="https://facebook.com/smpn12jogja" class="hover:underline">Facebook</a></li>
-          <li><a href="mailto:info@smpn12jogja.sch.id" class="hover:underline">Email</a></li>
-        </ul>
+      <div class="w-full max-w-8xl pl-20">
+        <h1 class="text-4xl sm:text-5xl md:text-8xl font-bold leading-tight">
+          Perpustakaan Digital <br> SMP Negeri 12 Yogyakarta
+        </h1>
       </div>
     </div>
-    <div class="mt-8 text-center text-gray-500">&copy; <?php echo e(date('Y')); ?> Perpustakaan Digital SMP Negeri 12 Yogyakarta.</div>
-  </footer>
+
+    <!-- Gradasi transisi -->
+    <div class="absolute bottom-0 left-0 w-full h-20 bg-gradient-to-b from-transparent to-gray-100 z-0"></div>
+  </section>
+
+  <!-- Statistik Section -->
+  <section class="relative z-10 px-6 md:px-20 py-20 bg-gray-100">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <!-- Total Koleksi Buku -->
+      <div class="bg-white shadow-md rounded-lg p-6">
+        <h3 class="text-lg font-semibold text-pink-600">Total Koleksi Buku</h3>
+        <p class="text-3xl font-bold mt-4"><?php echo e(number_format($totalKoleksiBuku, 0, ',', '.')); ?></p> 
+        <p class="text-xs text-gray-500 mt-2">pada Maret 2025</p>
+      </div>
+
+      <!-- Total Anggota -->
+      <div class="bg-white shadow-md rounded-lg p-6">
+        <h3 class="text-lg font-semibold text-blue-600">Total Anggota</h3>
+        <p class="text-3xl font-bold mt-4"><?php echo e(number_format($totalAnggota, 0, ',', '.')); ?></p> 
+        <p class="text-xs text-gray-500 mt-2">pada Maret 2025</p>
+      </div>
+
+      <!-- Total Peminjaman Buku -->
+      <div class="bg-white shadow-md rounded-lg p-6">
+        <h3 class="text-lg font-semibold text-teal-600">Total Peminjaman Buku</h3>
+        <p class="text-3xl font-bold mt-4"><?php echo e(number_format($totalPeminjaman, 0, ',', '.')); ?></p> 
+        <p class="text-xs text-gray-500 mt-2">pada Maret 2025</p>
+      </div>
+
+      <!-- Total Terlambat Pengembalian -->
+      <div class="bg-white shadow-md rounded-lg p-6">
+        <h3 class="text-lg font-semibold text-green-600">Total Terlambat Pengembalian</h3>
+        <p class="text-3xl font-bold mt-4"><?php echo e(number_format($totalKeterlambatan, 0, ',', '.')); ?></p> 
+        <p class="text-xs text-gray-500 mt-2">pada Maret 2025</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tentang Perpustakaan dan Statistik Pengunjung -->
+  <section id="tentang" class="px-6 md:px-20 py-16 bg-gray-100 text-gray-800">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start gap-y-16">
+      <!-- Tentang Perpustakaan -->
+      <div>
+        <h2 class="text-3xl font-semibold mb-6 text-red-400">Tentang Perpustakaan Digital</h2>
+        <p class="text-sm sm:text-sm md:text-base lg:text-lg leading-relaxed mb-4">
+          Perpustakaan merupakan jantung dari kegiatan literasi dan pembelajaran di sekolah. Di era digital saat ini, 
+          SMP Negeri 12 Yogyakarta turut berinovasi dengan menghadirkan layanan Perpustakaan Digital sebagai bentuk komitmen untuk mendukung kebutuhan belajar siswa dan guru secara lebih fleksibel, modern, dan inklusif.
+        </p>
+        <p class="text-sm sm:text-sm md:text-base lg:text-lg leading-relaxed mb-4">
+          Perpustakaan digital ini menyediakan berbagai koleksi buku pelajaran, bacaan umum, serta referensi lainnya yang dapat diakses secara daring kapan pun dan di mana pun. 
+          Dengan demikian, siswa tidak lagi terbatas oleh ruang dan waktu dalam menjelajahi ilmu pengetahuan. 
+          Cukup melalui perangkat gawai atau komputer yang terhubung ke internet, setiap pengguna dapat membuka dan membaca buku sesuai kebutuhan mereka.
+        </p>
+        <p class="text-sm sm:text-sm md:text-base lg:text-lg leading-relaxed mb-4">
+          Selain itu, perpustakaan digital ini juga menjadi sarana pembelajaran mandiri dan pembiasaan literasi digital bagi siswa. 
+          Guru pun dimudahkan dalam menyediakan sumber belajar tambahan yang relevan dan cepat diakses. 
+          Melalui fitur-fitur yang interaktif dan terintegrasi, perpustakaan digital diharapkan dapat menjadi bagian tak terpisahkan dari ekosistem pendidikan yang adaptif terhadap perkembangan zaman.
+        </p>
+      </div>
+
+      <!-- Statistik Pengunjung -->
+      <div>
+        <h2 class="text-3xl font-semibold mb-6 text-red-400">Statistik Pengunjung</h2>
+        <div class="p-6 h-[500px] relative">
+          <canvas id="statistikChart" class="absolute inset-0 w-full h-full"></canvas>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::scripts(); ?>
 
@@ -188,6 +149,7 @@
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false, // 🔥 kunci agar tinggi container bekerja
         plugins: {
           legend: {
             position: 'bottom',
@@ -212,5 +174,39 @@
     });
   </script>
 </body>
+
+<!-- Footer -->
+<footer id="kontak" class="bg-red-400 text-white px-6 md:px-20 py-10 border-t border-gray-200 shadow-2xl">
+  <div class="flex flex-col md:flex-row md:justify-between md:items-center space-y-6 md:space-y-0">
+    <!-- Informasi Sekolah -->
+    <div>
+      <h3 class="text-lg font-semibold mb-2 text-white">SMP Negeri 12 Yogyakarta</h3>
+      <p class="text-sm text-white">Jalan Tentara Pelajar No.9 Yogyakarta 55272</p>
+      <p class="text-sm text-white">Telp : (0274) 563012</>
+      <p class="text-sm text-white">Website: <a href="https://smpn12jogja.sch.id" target="_blank" class="text-white hover:underline">smpn12jogja.sch.id</a></p>
+    </div>
+
+    <!-- Sosial Media -->
+    <div>
+      <h3 class="text-lg font-semibold mb-2 text-white">Ikuti Kami</h3>
+      <ul class="space-y-1">
+        <li>
+          <a href="https://www.instagram.com/smpn12jogja" target="_blank" class="hover:text-white transition">Instagram: @smpn12jogja</a>
+        </li>
+        <li>
+          <a href="https://www.facebook.com/smpn12jogja" target="_blank" class="hover:text-white transition">Facebook: SMPN 12 Jogja</a>
+        </li>
+        <li>
+          <a href="mailto:smpn12jogja@gmail.com" class="hover:text-white transition">Email: smpn12jogja@gmail.com</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Copyright -->
+  <div class="mt-8 text-center text-sm text-white">
+    &copy; <?php echo e(date('Y')); ?> Perpustakaan Digital SMP Negeri 12 Yogyakarta. All rights reserved.
+  </div>
+</footer>
 </html>
 <?php /**PATH C:\Users\ASUS\perpustakaan\resources\views/pages/welcome.blade.php ENDPATH**/ ?>

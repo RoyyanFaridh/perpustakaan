@@ -13,18 +13,12 @@ class BroadcastMail extends Mailable
     public $judul;
     public $isi;
 
-    /**
-     * Create a new message instance.
-     */
     public function __construct($judul, $isi)
     {
         $this->judul = $judul;
         $this->isi = $isi;
     }
 
-    /**
-     * Build the message.
-     */
     public function build()
     {
         return $this->subject($this->judul)

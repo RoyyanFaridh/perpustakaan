@@ -2,11 +2,12 @@
     <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">📢 Broadcast Pesan</h1>
 
     <!-- Flash Message -->
-    @if (session()->has('message'))
+    <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
         <div class="mb-4 px-4 py-2 bg-green-100 text-green-700 rounded">
-            {{ session('message') }}
+            <?php echo e(session('message')); ?>
+
         </div>
-    @endif
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
     <!-- Tabel Broadcast -->
     <div class="overflow-x-auto mb-8 w-full">
@@ -18,16 +19,16 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
-                @forelse($broadcast as $item)
+                <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $broadcast; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                     <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 font-semibold text-gray-700">{{ $item->judul }}</td>
-                        <td class="px-6 py-4 text-gray-600">{{ $item->isi }}</td>
+                        <td class="px-6 py-4 font-semibold text-gray-700"><?php echo e($item->judul); ?></td>
+                        <td class="px-6 py-4 text-gray-600"><?php echo e($item->isi); ?></td>
                     </tr>
-                @empty
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                     <tr>
                         <td colspan="2" class="px-6 py-4 text-center text-gray-500">Belum ada pesan broadcast.</td>
                     </tr>
-                @endforelse
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
             </tbody>
         </table>
     </div>
@@ -39,9 +40,16 @@
             <input type="text" id="judul" wire:model="judul"
                    class="mt-1 w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                    placeholder="Judul pesan...">
-            @error('judul')
-                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-            @enderror
+            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['judul'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                <p class="text-red-600 text-sm mt-1"><?php echo e($message); ?></p>
+            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
         </div>
 
         <div>
@@ -49,9 +57,16 @@
             <textarea id="isi" wire:model="isi"
                       class="mt-1 w-full border border-gray-300 rounded-lg px-4 py-2 h-32 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="Isi pesan..."></textarea>
-            @error('isi')
-                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-            @enderror
+            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['isi'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                <p class="text-red-600 text-sm mt-1"><?php echo e($message); ?></p>
+            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
         </div>
 
         <div class="text-right">
@@ -62,3 +77,4 @@
         </div>
     </form>
 </div>
+<?php /**PATH C:\Users\ASUS\perpustakaan\resources\views/livewire/admin/broadcast/index.blade.php ENDPATH**/ ?>

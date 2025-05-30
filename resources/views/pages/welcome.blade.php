@@ -18,13 +18,13 @@
     </div>
 
     <!-- Menu + Login (dibungkus agar lebih dekat) -->
-    <div class="flex items-center space-x-6">
-      <nav class="space-x-6 text-sm text-gray-700">
+    <div class="flex items-center justify-between w-full md:w-auto">
+      <nav class="space-x-3 sm:space-x-6 text-sm text-gray-700">
         <a href="#hero" class="hover:underline">Beranda</a>
         <a href="#tentang" class="hover:underline">Tentang</a>
         <a href="#kontak" class="hover:underline">Kontak</a>
       </nav>
-      <a href="{{ route('login') }}" class="px-5 py-2 rounded bg-red-400 text-white hover:bg-red-500 transition">Login</a>
+      <a href="{{ route('login') }}" class="mx-10 px-5 py-2 rounded bg-red-400 text-white hover:bg-red-500 transition">Login</a>
     </div>
   </header>
 
@@ -35,13 +35,13 @@
 
     <!-- Kontainer isi -->
     <div class="relative z-10">
-      <div class="mb-2 max-w-3xl pl-20">
+      <div class="mb-2 max-w-3xl px-6 sm:px-12 md:pl-20">
         <span class="inline-block px-4 py-1 text-sm font-medium rounded-full bg-white bg-opacity-10 backdrop-blur-sm border border-white border-opacity-20">
           Hai, Selamat Datang
         </span>
       </div>
-      <div class="w-full max-w-5xl pl-20">
-        <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight">
+      <div class="w-full max-w-8xl pl-20">
+        <h1 class="text-4xl sm:text-5xl md:text-8xl font-bold leading-tight">
           Perpustakaan Digital <br> SMP Negeri 12 Yogyakarta
         </h1>
       </div>
@@ -52,55 +52,54 @@
   </section>
 
   <!-- Statistik Section -->
-  <section class="relative z-10 px-6 md:px-20 py-12 bg-gray-100">
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+  <section class="relative z-10 px-6 md:px-20 py-20 bg-gray-100">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
       <!-- Total Koleksi Buku -->
-      <div class="bg-white shadow-md rounded-lg p-4">
-        <h3 class="text-sm font-semibold text-pink-600">Total Koleksi Buku</h3>
-        <p class="text-2xl font-bold mt-2">{{ number_format($totalKoleksiBuku, 0, ',', '.') }}</p> 
-        <p class="text-xs text-gray-500 mt-1">pada Maret 2025</p>
+      <div class="bg-white shadow-md rounded-lg p-6">
+        <h3 class="text-lg font-semibold text-pink-600">Total Koleksi Buku</h3>
+        <p class="text-3xl font-bold mt-4">{{ number_format($totalKoleksiBuku, 0, ',', '.') }}</p> 
+        <p class="text-xs text-gray-500 mt-2">pada Maret 2025</p>
       </div>
 
       <!-- Total Anggota -->
-      <div class="bg-white shadow-md rounded-lg p-4">
-        <h3 class="text-sm font-semibold text-blue-600">Total Anggota</h3>
-        <p class="text-2xl font-bold mt-2">{{ number_format($totalAnggota, 0, ',', '.') }}</p> 
-        <p class="text-xs text-gray-500 mt-1">pada Maret 2025</p>
+      <div class="bg-white shadow-md rounded-lg p-6">
+        <h3 class="text-lg font-semibold text-blue-600">Total Anggota</h3>
+        <p class="text-3xl font-bold mt-4">{{ number_format($totalAnggota, 0, ',', '.') }}</p> 
+        <p class="text-xs text-gray-500 mt-2">pada Maret 2025</p>
       </div>
 
       <!-- Total Peminjaman Buku -->
-      <div class="bg-white shadow-md rounded-lg p-4">
-        <h3 class="text-sm font-semibold text-teal-600">Total Peminjaman Buku</h3>
-        <p class="text-2xl font-bold mt-2">{{ number_format($totalPeminjaman, 0, ',', '.') }}</p> 
-        <p class="text-xs text-gray-500 mt-1">pada Maret 2025</p>
+      <div class="bg-white shadow-md rounded-lg p-6">
+        <h3 class="text-lg font-semibold text-teal-600">Total Peminjaman Buku</h3>
+        <p class="text-3xl font-bold mt-4">{{ number_format($totalPeminjaman, 0, ',', '.') }}</p> 
+        <p class="text-xs text-gray-500 mt-2">pada Maret 2025</p>
       </div>
 
       <!-- Total Terlambat Pengembalian -->
-      <div class="bg-white shadow-md rounded-lg p-4">
-        <h3 class="text-sm font-semibold text-green-600">Total Terlambat Pengembalian</h3>
-        <p class="text-2xl font-bold mt-2">{{ number_format($totalKeterlambatan, 0, ',', '.') }}</p> 
-        <p class="text-xs text-gray-500 mt-1">pada Maret 2025</p>
+      <div class="bg-white shadow-md rounded-lg p-6">
+        <h3 class="text-lg font-semibold text-green-600">Total Terlambat Pengembalian</h3>
+        <p class="text-3xl font-bold mt-4">{{ number_format($totalKeterlambatan, 0, ',', '.') }}</p> 
+        <p class="text-xs text-gray-500 mt-2">pada Maret 2025</p>
       </div>
     </div>
   </section>
 
   <!-- Tentang Perpustakaan dan Statistik Pengunjung -->
   <section id="tentang" class="px-6 md:px-20 py-16 bg-gray-100 text-gray-800">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
-      
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start gap-y-16">
       <!-- Tentang Perpustakaan -->
       <div>
-        <h2 class="text-3xl font-semibold mb-6 text-red-400">Tentang Perpustakaan Digital SMP Negeri 12 Yogyakarta</h2>
-        <p class="text-lg leading-relaxed mb-4">
+        <h2 class="text-3xl font-semibold mb-6 text-red-400">Tentang Perpustakaan Digital</h2>
+        <p class="text-sm sm:text-sm md:text-base lg:text-lg leading-relaxed mb-4">
           Perpustakaan merupakan jantung dari kegiatan literasi dan pembelajaran di sekolah. Di era digital saat ini, 
           SMP Negeri 12 Yogyakarta turut berinovasi dengan menghadirkan layanan Perpustakaan Digital sebagai bentuk komitmen untuk mendukung kebutuhan belajar siswa dan guru secara lebih fleksibel, modern, dan inklusif.
         </p>
-        <p class="text-lg leading-relaxed mb-4">
+        <p class="text-sm sm:text-sm md:text-base lg:text-lg leading-relaxed mb-4">
           Perpustakaan digital ini menyediakan berbagai koleksi buku pelajaran, bacaan umum, serta referensi lainnya yang dapat diakses secara daring kapan pun dan di mana pun. 
           Dengan demikian, siswa tidak lagi terbatas oleh ruang dan waktu dalam menjelajahi ilmu pengetahuan. 
           Cukup melalui perangkat gawai atau komputer yang terhubung ke internet, setiap pengguna dapat membuka dan membaca buku sesuai kebutuhan mereka.
         </p>
-        <p class="text-lg leading-relaxed">
+        <p class="text-sm sm:text-sm md:text-base lg:text-lg leading-relaxed mb-4">
           Selain itu, perpustakaan digital ini juga menjadi sarana pembelajaran mandiri dan pembiasaan literasi digital bagi siswa. 
           Guru pun dimudahkan dalam menyediakan sumber belajar tambahan yang relevan dan cepat diakses. 
           Melalui fitur-fitur yang interaktif dan terintegrasi, perpustakaan digital diharapkan dapat menjadi bagian tak terpisahkan dari ekosistem pendidikan yang adaptif terhadap perkembangan zaman.
@@ -110,33 +109,12 @@
       <!-- Statistik Pengunjung -->
       <div>
         <h2 class="text-3xl font-semibold mb-6 text-red-400">Statistik Pengunjung</h2>
-        <div class="bg-white p-6 rounded shadow">
-          <canvas id="statistikChart" height="300"></canvas>
+        <div class="p-6 h-[500px] relative">
+          <canvas id="statistikChart" class="absolute inset-0 w-full h-full"></canvas>
         </div>
       </div>
-
     </div>
   </section>
-
-  <!-- Footer -->
-  <footer class="bg-white px-6 md:px-20 py-10 border-t text-sm">
-    <div class="flex flex-col md:flex-row justify-between gap-6">
-      <div>
-        <h3 class="font-semibold text-red-500 mb-2">SMP Negeri 12 Yogyakarta</h3>
-        <p>Jl. Tegal Gendu No.16, Pringgokusuman, Gedong Tengen, Yogyakarta</p>
-        <p>Website: <a href="https://smpn12jogja.sch.id" class="text-red-500 hover:underline">smpn12jogja.sch.id</a></p>
-      </div>
-      <div>
-        <h3 class="font-semibold text-red-500 mb-2">Ikuti Kami</h3>
-        <ul>
-          <li><a href="https://instagram.com/smpn12jogja" class="hover:underline">Instagram</a></li>
-          <li><a href="https://facebook.com/smpn12jogja" class="hover:underline">Facebook</a></li>
-          <li><a href="mailto:info@smpn12jogja.sch.id" class="hover:underline">Email</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="mt-8 text-center text-gray-500">&copy; {{ date('Y') }} Perpustakaan Digital SMP Negeri 12 Yogyakarta.</div>
-  </footer>
 
   @livewireScripts
 
@@ -169,6 +147,7 @@
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false, // 🔥 kunci agar tinggi container bekerja
         plugins: {
           legend: {
             position: 'bottom',
