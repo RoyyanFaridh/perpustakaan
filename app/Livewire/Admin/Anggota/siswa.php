@@ -1,10 +1,14 @@
 <?php
 
-// File: app/Http/Livewire/Guru.php
 namespace App\Livewire\Admin\Anggota;
 
 use Livewire\Component;
 use App\Models\Anggota;
+use App\Models\User;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Siswa extends Component
 {
@@ -18,8 +22,6 @@ class Siswa extends Component
         'kelas' => 'required',
         'jenis_kelamin' => 'required',
         'alamat' => 'required',
-        'no_telp' => 'required',
-        'email' => 'required|email',
     ];
 
     public function render()
@@ -29,25 +31,51 @@ class Siswa extends Component
         return view('livewire.admin.anggota.siswa')->layout('layouts.app');
     }
 
-    public function openModal() { $this->resetInput(); $this->showModal = true; $this->isEdit = false; }
-    public function closeModal() { $this->showModal = false; }
+    public function openModal()
+    {
+        $this->resetInput();
+        $this->showModal = true;
+        $this->isEdit = false;
+    }
+
+    public function closeModal()
+    {
+        $this->showModal = false;
+    }
 
     public function store()
     {
         $this->validate();
-        Anggota::create([
-            'nama' => $this->nama,
-            'status' => $this->status,
-            'role' => $this->role, 
-            'nis_nip' => $this->nis,
-            'kelas' => $this->kelas,
-            'jenis_kelamin' => $this->jenis_kelamin,
-            'alamat' => $this->alamat,
-            'no_telp' => $this->no_telp,
-            'email' => $this->email,
-        ]);
+        $plainPassword = Str::random(8);
+
+        DB::transaction(function () use ($plainPassword) {
+            Anggota::create([
+                'nama' => $this->nama,
+                'status' => $this->status,
+                'role' => $this->role,
+                'nis_nip' => $this->nis,
+                'kelas' => $this->kelas,
+                'jenis_kelamin' => $this->jenis_kelamin,
+                'alamat' => $this->alamat,
+                'no_telp' => $this->no_telp,
+                'email' => $this->email, // boleh kosong
+                'plain_password' => $plainPassword,
+            ]);
+
+            $user = User::create([
+                'name' => $this->nama,
+                'nis_nip' => $this->nis,
+                'email' => $this->email, // boleh kosong
+                'password' => Hash::make($plainPassword),
+                'is_default_password' => true,
+                'no_telp' => $this->no_telp,
+            ]);
+
+            $user->assignRole($this->role);
+        });
+
         $this->closeModal();
-        $this->dispatch('anggota-updated');
+        $this->dispatch('anggotaUpdated');
     }
 
     public function edit($id)
@@ -74,7 +102,7 @@ class Siswa extends Component
             $data->update([
                 'nama' => $this->nama,
                 'status' => $this->status,
-                'role' => $this->role, 
+                'role' => $this->role,
                 'nis_nip' => $this->nis,
                 'kelas' => $this->kelas,
                 'jenis_kelamin' => $this->jenis_kelamin,
@@ -89,13 +117,18 @@ class Siswa extends Component
 
     public function delete($id)
     {
-        Anggota::find($id)->delete();
+        Anggota::find($id)?->delete();
     }
 
     private function resetInput()
     {
         $this->nama = $this->status = $this->nis = $this->kelas = $this->jenis_kelamin = $this->alamat = $this->no_telp = $this->email = '';
         $this->selectedId = null;
+        $this->role = 'siswa';
     }
 
+    public function exportSiswa()
+    {
+        return Excel::download(new Export('siswa'), 'data-siswa.xlsx');
+    }
 }

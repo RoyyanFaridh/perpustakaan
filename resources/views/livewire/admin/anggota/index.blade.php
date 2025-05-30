@@ -67,17 +67,6 @@
                         </div>
                     </div>
 
-                    <!-- Role -->
-                    <div>
-                        <label for="role" class="block text-black text-xs mb-1">Role</label>
-                        <select wire:model="role" id="role"
-                            class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm">
-                            <option value="">-- Pilih Role --</option>
-                            <option value="guru">Guru</option>
-                            <option value="siswa">Siswa</option>
-                        </select>
-                    </div>
-
                     <!-- NIS atau NIP -->
                     <div>
                         @if($role === 'siswa')

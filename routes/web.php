@@ -13,7 +13,7 @@ use App\Livewire\Admin\Anggota\Siswa;
 use App\Livewire\Admin\Anggota\Guru;
 use App\Livewire\Admin\Buku\Index as BukuIndexAdmin;
 use App\Livewire\Admin\Peminjaman\Index as PeminjamanIndex;
-use App\Livewire\Admin\Anggota\Export as AnggotaExport;
+use App\Livewire\Admin\Anggota\Export;
 use Maatwebsite\Excel\Facades\Excel;
 
 // User
@@ -42,7 +42,8 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard-admin', [AdminController::class, 'AdminDashboard'])->name('admin.dashboard');
     Route::get('/anggota', AnggotaIndex::class)->name('admin.anggota.index');
-    Route::get('/anggota/export', fn() => Excel::download(new AnggotaExport, 'daftar_anggota.xlsx'))->name('anggota.export');
+    Route::get('/anggota/export/siswa', fn() => Excel::download(new Export('siswa'), 'daftar_siswa.xlsx'))->name('export.siswa');
+    Route::get('/anggota/export/guru', fn() => Excel::download(new Export('guru'), 'daftar_guru.xlsx'))->name('export.guru');
     Route::get('/anggota/siswa', Siswa::class)->name('anggota.siswa');
     Route::get('/anggota/guru', Guru::class)->name('anggota.guru');
     Route::get('/buku', BukuIndexAdmin::class)->name('admin.buku.index');

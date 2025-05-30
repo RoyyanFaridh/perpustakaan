@@ -8,9 +8,18 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class Export implements FromCollection, WithHeadings
 {
+    protected $role;
+
+    public function __construct($role)
+    {
+        $this->role = $role;
+    }
+
     public function collection()
     {
-        return Anggota::select('nama', 'nis_nip', 'email', 'plain_password')->get();
+        return Anggota::where('role', $this->role)
+            ->select('nama', 'nis_nip', 'email', 'plain_password')
+            ->get();
     }
 
     public function headings(): array

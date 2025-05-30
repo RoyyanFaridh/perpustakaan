@@ -5,6 +5,11 @@ namespace App\Livewire\Admin\Anggota;
 
 use Livewire\Component;
 use App\Models\Anggota;
+use App\Models\User;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Guru extends Component
 {
@@ -17,8 +22,8 @@ class Guru extends Component
         'nip' => 'required|numeric',
         'jenis_kelamin' => 'required',
         'alamat' => 'required',
-        'no_telp' => 'required',
-        'email' => 'required|email',
+        // 'no_telp' => 'required',
+        // 'email' => 'required|email',
     ];
 
     public function render()
@@ -34,54 +39,62 @@ class Guru extends Component
     public function store()
     {
         $this->validate();
-        Anggota::create([
-            'nama' => $this->nama,
-            'status' => $this->status,
-            'role' => $this->role,  // ← Tambahkan ini
-            'nis_nip' => $this->nip,
-            'jenis_kelamin' => $this->jenis_kelamin,
-            'alamat' => $this->alamat,
-            'no_telp' => $this->no_telp,
-            'email' => $this->email,
-        ]);
+        $plainPassword = Str::random(8);
+
+        $email = $this->email !== '' ? $this->email : null;
+
+        DB::transaction(function () use ($plainPassword, $email) {
+            Anggota::create([
+                'nama' => $this->nama,
+                'status' => $this->status,
+                'role' => $this->role,
+                'nis_nip' => $this->nip,
+                'jenis_kelamin' => $this->jenis_kelamin,
+                'alamat' => $this->alamat,
+                'no_telp' => $this->no_telp,
+                'email' => $email,
+                'plain_password' => $plainPassword,
+            ]);
+
+            User::create([
+                'name' => $this->nama,
+                'nis_nip' => $this->nip,
+                'email' => $email,
+                'password' => Hash::make($plainPassword),
+                'is_default_password' => true,
+                'no_telp' => $this->no_telp,
+            ])->assignRole($this->role);
+        });
+
         $this->closeModal();
         $this->dispatch('anggotaUpdated');
     }
 
-    public function edit($id)
-    {
-        $data = Anggota::findOrFail($id);
-        $this->selectedId = $id;
-        $this->nama = $data->nama;
-        $this->status = $data->status;
-        $this->nip = $data->nis_nip;
-        $this->jenis_kelamin = $data->jenis_kelamin;
-        $this->alamat = $data->alamat;
-        $this->no_telp = $data->no_telp;
-        $this->email = $data->email;
-        $this->showModal = true;
-        $this->isEdit = true;
-    }
 
     public function update()
     {
         $this->validate();
+
+        $email = $this->email !== '' ? $this->email : null;
+
         if ($this->selectedId) {
             $data = Anggota::find($this->selectedId);
             $data->update([
                 'nama' => $this->nama,
                 'status' => $this->status,
-                'role' => $this->role,  // ← Tambahkan ini
+                'role' => $this->role,
                 'nis_nip' => $this->nip,
                 'jenis_kelamin' => $this->jenis_kelamin,
                 'alamat' => $this->alamat,
                 'no_telp' => $this->no_telp,
-                'email' => $this->email,
+                'email' => $email,
             ]);
         }
+
         $this->closeModal();
         $this->dispatch('anggota-updated');
     }
+
 
     public function delete($id)
     {
@@ -94,5 +107,10 @@ class Guru extends Component
         $this->selectedId = null;
 
         $this->role = 'guru';
+    }
+
+    public function exportGuru()
+    {
+        return Excel::download(new Export('guru'), 'data-guru.xlsx');
     }
 }
