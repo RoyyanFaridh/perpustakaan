@@ -45,33 +45,46 @@
                             class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm" />
                     </div>
                 
-                    <!-- Status -->
-                    <div>
-                        <label for="status" class="block text-black text-xs mb-1">Status</label>
-                        <select wire:model="status" id="status" 
-                            class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm">
-                            <option value="">-- Pilih Status --</option>
-                            <option value="active">Aktif</option>
-                            <option value="inactive">Tidak Aktif</option>
-                        </select>
+                    <!-- Status & NIP dalam satu baris -->
+                    <div class="flex gap-4">
+                        <!-- Status -->
+                        <div class="w-1/2">
+                            <label for="status" class="block text-black text-xs mb-1">Status</label>
+                            <select wire:model="status" id="status"
+                                class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm">
+                                <option value="">-- Pilih Status --</option>
+                                <option value="active">Aktif</option>
+                                <option value="inactive">Tidak Aktif</option>
+                            </select>
+                        </div>
+
+                        <!-- NIP -->
+                        <div class="w-1/2">
+                            <label for="nip" class="block text-black text-xs mb-1">Nomor Induk Pegawai (NIP)</label>
+                            <input type="text" wire:model="nip" id="nip"
+                                class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm" />
+                        </div>
                     </div>
 
-                    <!-- NIP -->
-                    <div>
-                        <label for="nip" class="block text-black text-xs mb-1">Nomor Induk Pegawai (NIP)</label>
-                        <input type="text" wire:model="nip" id="nip"
-                            class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm" />
-                    </div>
+                    <!-- Jenis Kelamin & Nomor Telepon dalam satu baris -->
+                    <div class="flex gap-4">
+                        <!-- Jenis Kelamin -->
+                        <div class="w-1/2">
+                            <label for="jenis_kelamin" class="block text-black text-xs mb-1">Jenis Kelamin</label>
+                            <select wire:model="jenis_kelamin" id="jenis_kelamin"
+                                class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm">
+                                <option value="">-- Pilih Jenis Kelamin --</option>
+                                <option value="L">Laki-laki</option>
+                                <option value="P">Perempuan</option>
+                            </select>
+                        </div>
 
-                    <!-- Jenis Kelamin -->
-                    <div>
-                        <label for="jenis_kelamin" class="block text-black text-xs mb-1">Jenis Kelamin</label>
-                        <select wire:model="jenis_kelamin" id="jenis_kelamin" 
-                            class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm">
-                            <option value="">-- Pilih Jenis Kelamin --</option>
-                            <option value="L">Laki-laki</option>
-                            <option value="P">Perempuan</option>
-                        </select>
+                        <!-- Nomor Telepon -->
+                        <div class="w-1/2">
+                            <label for="no_telp" class="block text-black text-xs mb-1">Nomor Telepon</label>
+                            <input type="text" wire:model="no_telp" id="no_telp"
+                                class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm" />
+                        </div>
                     </div>
 
                     <!-- Alamat -->
@@ -81,12 +94,6 @@
                             class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm"></textarea>
                     </div>
                 
-                    <!-- Nomor Telepon -->
-                    <div>
-                        <label for="no_telp" class="block text-black text-xs mb-1">Nomor Telepon</label>
-                        <input type="text" wire:model="no_telp" id="no_telp"
-                            class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm" />
-                    </div>
 
                     <!-- Email -->
                     <div>
