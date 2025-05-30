@@ -72,14 +72,14 @@ new #[Layout('layouts.guest')] class extends Component
     <form wire:submit.prevent="login">
         <!-- Email Address -->
         <div>
-            <x-input-label for="nis_nip" :value="__('NIS / NIP')" />
+            <x-input-label for="nis_nip" :value="('NIS / NIP')" />
             <x-text-input wire:model="form.nis_nip" id="nis_nip" class="block mt-1 w-full" type="text" name="nis_nip" required autofocus autocomplete="username" />
             <x-input-error :messages="$errors->get('form.nis_nip')" class="mt-2" />
         </div>
 
         <!-- Password -->
         <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+            <x-input-label for="password" :value="('Password')" />
             <x-text-input wire:model="form.password" id="password" class="block mt-1 w-full"
                           type="password"
                           name="password"

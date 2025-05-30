@@ -156,7 +156,7 @@
                     <tr class="hover:bg-gray-50">
                         <td class="px-4 py-2"><?php echo e($index + 1); ?></td>
                         <td class="px-4 py-2"><?php echo e($item->judul); ?></td>
-                        <td class="px-4 py-2"><?php echo e(Str::limit($item->deskripsi, 100)); ?>...</td>
+                        <td class="px-4 py-2"><?php echo e(Str::limit($item->deskripsi, 100, '...')); ?></td>
                         <td class="px-4 py-2"><?php echo e($item->kategori); ?></td>
                         <td class="px-4 py-2"><?php echo e($item->penulis); ?></td>
                         <td class="px-4 py-2"><?php echo e($item->penerbit); ?></td>
@@ -173,5 +173,4 @@
             </tbody>
         </table>
     </div>
-</div>
-<?php /**PATH D:\Perkuliahan Duniawi\New folder\New folder\perpustakaan\resources\views/livewire/admin/buku/index.blade.php ENDPATH**/ ?>
+</div><?php /**PATH D:\Perkuliahan Duniawi\New folder\New folder\perpustakaan\resources\views/livewire/admin/buku/index.blade.php ENDPATH**/ ?>

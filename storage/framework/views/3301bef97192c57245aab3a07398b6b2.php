@@ -37,7 +37,7 @@ unset($__split);
 if (isset($__slots)) unset($__slots);
 ?>
             </aside>
-
+            
             <!-- Mobile Navbar -->
             <div class="sm:hidden w-full">
                 <?php
@@ -69,7 +69,7 @@ if (isset($__slots)) unset($__slots);
                         </div>
                     </header>
                 <?php endif; ?>
-
+                
                 <!-- Page Content -->
                 <main class="">
                     <?php echo e($slot); ?>

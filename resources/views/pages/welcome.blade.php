@@ -118,25 +118,6 @@
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="bg-white px-6 md:px-20 py-10 border-t text-sm">
-    <div class="flex flex-col md:flex-row justify-between gap-6">
-      <div>
-        <h3 class="font-semibold text-red-500 mb-2">SMP Negeri 12 Yogyakarta</h3>
-        <p>Jl. Tegal Gendu No.16, Pringgokusuman, Gedong Tengen, Yogyakarta</p>
-        <p>Website: <a href="https://smpn12jogja.sch.id" class="text-red-500 hover:underline">smpn12jogja.sch.id</a></p>
-      </div>
-      <div>
-        <h3 class="font-semibold text-red-500 mb-2">Ikuti Kami</h3>
-        <ul>
-          <li><a href="https://instagram.com/smpn12jogja" class="hover:underline">Instagram</a></li>
-          <li><a href="https://facebook.com/smpn12jogja" class="hover:underline">Facebook</a></li>
-          <li><a href="mailto:info@smpn12jogja.sch.id" class="hover:underline">Email</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="mt-8 text-center text-gray-500">&copy; {{ date('Y') }} Perpustakaan Digital SMP Negeri 12 Yogyakarta.</div>
-  </footer>
 
   @livewireScripts
 

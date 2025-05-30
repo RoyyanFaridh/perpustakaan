@@ -8,9 +8,8 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::styles(); ?>
 
-
 </head>
-<body class="font-sans antialiased bg-white">
+<body class="font-sans antialiased text-gray-800">
 
   <!-- Navbar Sticky -->
   <header class="sticky top-0 z-50 flex justify-between items-center p-6 bg-white shadow-md">
@@ -120,65 +119,62 @@
     </div>
   </section>
 
+
+  <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::scripts(); ?>
+
+
   <script>
     const ctx = document.getElementById('statistikChart').getContext('2d');
     const statistikChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: <?php echo json_encode($bulanLabels, 15, 512) ?>,
-            datasets: [
-                {
-                    label: '<?php echo e($tahunSebelumnya); ?>',
-                    data: <?php echo json_encode($jumlahPengunjungTahunLalu, 15, 512) ?>,
-                    borderColor: '#60A5FA',
-                    backgroundColor: 'rgba(96, 165, 250, 0.2)',
-                    borderWidth: 2,
-                    fill: true,
-                    pointRadius: 4,
-                    tension: 0.4
-                },
-                {
-                    label: '<?php echo e($tahunSekarang); ?>',
-                    data: <?php echo json_encode($jumlahPengunjungTahunIni, 15, 512) ?>,
-                    borderColor: '#FB7185',
-                    backgroundColor: 'rgba(251, 113, 133, 0.2)',
-                    borderWidth: 2,
-                    fill: true,
-                    pointRadius: 4,
-                    tension: 0.4
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'bottom',
-                    labels: {
-                        color: '#374151',
-                        font: { weight: 'bold' }
-                    }
-                },
-                tooltip: { mode: 'index', intersect: false }
-            },
-            interaction: { mode: 'nearest', intersect: false },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: { color: '#6B7280' },
-                    grid: { color: '#E5E7EB' }
-                },
-                x: {
-                    ticks: { color: '#6B7280' },
-                    grid: { display: false }
-                }
+      type: 'line',
+      data: {
+        labels: <?php echo json_encode($bulanLabels, 15, 512) ?>,
+        datasets: [
+          {
+            label: '<?php echo e($tahunSebelumnya); ?>',
+            data: <?php echo json_encode($jumlahPengunjungTahunLalu, 15, 512) ?>,
+            borderColor: '#60A5FA',
+            backgroundColor: 'rgba(96, 165, 250, 0.1)',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.4
+          },
+          {
+            label: '<?php echo e($tahunSekarang); ?>',
+            data: <?php echo json_encode($jumlahPengunjungTahunIni, 15, 512) ?>,
+            borderColor: '#EF4444',
+            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.4
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              color: '#374151',
+              font: { weight: 'bold' }
             }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: { color: '#6B7280' },
+            grid: { color: '#E5E7EB' }
+          },
+          x: {
+            ticks: { color: '#6B7280' },
+            grid: { display: false }
+          }
         }
+      }
     });
   </script>
-
-<?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::scripts(); ?>
-
 </body>
 
 <!-- Footer -->
@@ -214,4 +210,5 @@
     &copy; <?php echo e(date('Y')); ?> Perpustakaan Digital SMP Negeri 12 Yogyakarta. All rights reserved.
   </div>
 </footer>
-</html><?php /**PATH D:\Perkuliahan Duniawi\New folder\New folder\perpustakaan\resources\views/pages/welcome.blade.php ENDPATH**/ ?>
+</html>
+<?php /**PATH D:\Perkuliahan Duniawi\New folder\New folder\perpustakaan\resources\views/pages/welcome.blade.php ENDPATH**/ ?>
