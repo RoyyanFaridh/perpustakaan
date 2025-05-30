@@ -17,22 +17,10 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="font-sans bg-gray-50 text-gray-900 antialiased">
-    <div class="min-h-screen flex items-center justify-center px-4">
-        <div class="w-full max-w-md space-y-6">
-            <div class="flex justify-center">
-                <a href="/" wire:navigate>
-                    <x-application-logo class="h-10 w-auto text-blue-600" />
-                </a>
-            </div>
-
-            <div class="bg-white p-6 rounded-xl shadow-lg">
-                {{ $slot }}
-            </div>
-        </div>
-    </div>
+<body class="font-sans text-gray-900 antialiased bg-gray-100">
+    {{ $slot }}
 
     @livewireScripts
-        <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </body>
 </html>
