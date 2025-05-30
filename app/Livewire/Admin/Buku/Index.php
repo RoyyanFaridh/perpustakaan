@@ -4,7 +4,7 @@ namespace App\Livewire\Admin\Buku;
 
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use App\Models\Buku as BukuModel;
+use App\Models\Buku;
 use Illuminate\Support\Facades\Storage;
 
 class Index extends Component
@@ -20,15 +20,12 @@ class Index extends Component
 
     public function render()
     {
-        // Menampilkan buku berdasarkan pencarian
-        $this->buku = BukuModel::where('judul', 'like', '%' . $this->search . '%')->get();
-        return view('livewire.admin.buku.index')->layout('layouts.app');
+        $this->buku = Buku::where('judul', 'like', '%' . $this->search . '%')->get();
+        return view('livewire.admin.buku.index');
     }
 
     public function store()
     {
-        // dd($this->judul, $this->kategori, $this->penulis, $this->penerbit, $this->tahun_terbit, $this->isbn, $this->deskripsi, $this->jumlah_stok, $this->lokasi_rak); // Debug data
-        // Validasi inputan
         $this->validate([
             'judul' => 'required|string|max:255',
             'kategori' => 'required|string|max:100',
@@ -41,16 +38,13 @@ class Index extends Component
             'lokasi_rak' => 'required|string|max:50',
             'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-        // dd('validasi sukses');
 
-        // Menyimpan gambar cover jika ada
         $coverPath = null;
         if ($this->cover) {
             $coverPath = $this->cover->store('covers', 'public');
         }
 
-        // Membuat entri buku baru
-        BukuModel::create([
+        Buku::create([
             'judul' => $this->judul,
             'kategori' => $this->kategori,
             'penulis' => $this->penulis,
@@ -69,8 +63,8 @@ class Index extends Component
 
     public function edit($id)
     {
-        $buku = BukuModel::findOrFail($id);
-        // Mengisi data yang ada pada form modal untuk edit
+        $buku = Buku::findOrFail($id);
+
         $this->bukuId = $buku->id;
         $this->judul = $buku->judul;
         $this->kategori = $buku->kategori;
@@ -88,7 +82,6 @@ class Index extends Component
 
     public function update()
     {
-        // Validasi inputan saat melakukan update
         $this->validate([
             'judul' => 'required|string|max:255',
             'kategori' => 'required|string|max:100',
@@ -102,21 +95,16 @@ class Index extends Component
             'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Ambil data buku yang akan diperbarui
-        $buku = BukuModel::findOrFail($this->bukuId);
+        $buku = Buku::findOrFail($this->bukuId);
         $coverPath = $buku->cover;
 
-        // Proses upload gambar cover jika ada
         if ($this->cover) {
-            // Hapus gambar lama jika ada
             if ($coverPath) {
                 Storage::disk('public')->delete($coverPath);
             }
-            // Simpan gambar baru
             $coverPath = $this->cover->store('covers', 'public');
         }
 
-        // Perbarui data buku
         $buku->update([
             'judul' => $this->judul,
             'kategori' => $this->kategori,
@@ -130,23 +118,18 @@ class Index extends Component
             'cover' => $coverPath,
         ]);
 
-        // Emit event untuk memberitahukan bahwa buku telah diperbarui
-        $this->emit('bookUpdated'); 
-
         session()->flash('message', 'Buku berhasil diperbarui!');
         $this->resetForm();
     }
 
     public function delete($id)
     {
-        $buku = BukuModel::findOrFail($id);
+        $buku = Buku::findOrFail($id);
 
-        // Hapus gambar cover jika ada
         if ($buku->cover) {
             Storage::disk('public')->delete($buku->cover);
         }
 
-        // Hapus data buku dari database
         $buku->delete();
 
         session()->flash('message', 'Buku berhasil dihapus!');

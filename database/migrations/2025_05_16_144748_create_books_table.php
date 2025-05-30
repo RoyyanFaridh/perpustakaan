@@ -7,24 +7,29 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('books', function (Blueprint $table) {
+        Schema::create('buku', function (Blueprint $table) {
             $table->id();
             $table->string('judul');
             $table->string('kategori');
             $table->string('penulis')->nullable();
             $table->string('penerbit')->nullable();
-            $table->year('tahun_terbit')->nullable(); // Simpan sebagai string kalau SQLite error
+
+            // Jika kamu pakai database selain SQLite, bisa pakai year
+            // Tapi kalau SQLite error, bisa diganti jadi string:
+            // $table->string('tahun_terbit', 4)->nullable();
+            $table->year('tahun_terbit')->nullable();
+
             $table->string('isbn')->nullable()->unique();
             $table->text('deskripsi')->nullable();
             $table->integer('jumlah_stok')->default(0);
             $table->string('lokasi_rak')->nullable();
-            $table->string('cover')->nullable(); // Path ke file cover
+            $table->string('cover')->nullable(); // path ke file cover
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('books');
+        Schema::dropIfExists('buku');
     }
 };

@@ -1,7 +1,5 @@
 <?php
 
-namespace Database\Seeders;
-
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -9,36 +7,46 @@ use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
+        // Roles
         Role::firstOrCreate(['name' => 'admin']);
         Role::firstOrCreate(['name' => 'guru']);
         Role::firstOrCreate(['name' => 'siswa']);
 
-        // Admin
+        /* =======================
+         |  ADMIN
+         |=======================*/
         $admin = User::factory()->create([
-            'name' => 'Admin',
-            'email' => 'admin_perpustakaan@smp12yk.sch.id',
-            'password' => Hash::make('akuAdminKeren_13579'),
+            'name'                => 'Admin Perpustakaan',
+            'nis_nip'             => 'ADM001',                         // ← untuk login
+            'email'               => 'admin_perpustakaan@smp12yk.sch.id',
+            'password'            => Hash::make('akuAdminKeren_13579'), // bukan default
+            'is_default_password' => false,                             // tidak dipaksa ubah
         ]);
         $admin->assignRole('admin');
 
-        // Guru
+        /* =======================
+         |  GURU
+         |=======================*/
         $guru = User::factory()->create([
-            'name' => 'Guru Contoh',
-            'email' => 'guru@example.com',
-            'password' => Hash::make('guruPassword123'),
+            'name'                => 'Guru Contoh',
+            'nis_nip'             => '198506012023051002',              // contoh NIP
+            'email'               => 'guru@example.com',
+            'password'            => Hash::make('12345678'),            // password default
+            'is_default_password' => true,
         ]);
         $guru->assignRole('guru');
 
-        // Siswa
+        /* =======================
+         |  SISWA
+         |=======================*/
         $siswa = User::factory()->create([
-            'name' => 'Siswa Contoh',
-            'email' => 'siswa@example.com',
-            'password' => Hash::make('siswaPassword123'),
+            'name'                => 'Siswa Contoh',
+            'nis_nip'             => '2023123456',                      // contoh NIS
+            'email'               => 'siswa@example.com',
+            'password'            => Hash::make('12345678'),           // password default
+            'is_default_password' => true,
         ]);
         $siswa->assignRole('siswa');
     }

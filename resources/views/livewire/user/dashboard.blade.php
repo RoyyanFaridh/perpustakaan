@@ -5,9 +5,14 @@
         </h2>
     </x-slot>
 
+    {{-- Modal input email akan muncul jika session ada --}}
+    @if(session('show_email_modal'))
+        @livewire('input-email-modal')
+    @endif
+
     <div class="py-4">
         <div class="mx-auto sm:px-4 lg:px-6">
-                <!-- Wrapper untuk Card -->
+            <!-- Wrapper untuk Card -->
             <div class="flex flex-wrap gap-4 mb-4">
                 <x-card 
                     title="Total Koleksi Buku"
@@ -17,7 +22,6 @@
                     :delta="8"
                     :icon="view('components.icon.books')->render()"
                 />
-
 
                 <x-card 
                     title="Total Anggota"
@@ -46,7 +50,6 @@
                     :icon="view('components.icon.calendar-x-2')->render()"  
                 />
             </div>
-            
         </div>
 
         <div class="font-bold text-3xl text-gray-900 mb-4 ml-4">
@@ -57,7 +60,7 @@
             <canvas id="statistikChart" height="100"></canvas>
         </div>
     </div>
-    
+
     <script>
         const ctx = document.getElementById('statistikChart').getContext('2d');
         const statistikChart = new Chart(ctx, {
@@ -129,5 +132,5 @@
                 }
             }
         });
-    </script>    
+    </script>
 </x-user-layout>

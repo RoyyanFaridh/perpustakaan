@@ -14,6 +14,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'role' => RoleMiddleware::class,
+            'check.default.password' => \App\Http\Middleware\CheckDefaultPassword::class,
+            'email.filled' => \App\Http\Middleware\EnsureAnggotaEmailIsFilled::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

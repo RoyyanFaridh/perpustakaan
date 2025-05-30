@@ -19,8 +19,6 @@ class User extends Authenticatable
         'nis_nip',
         'email',
         'password',
-        'no_telp',
-        'role',
     ];
 
     protected $hidden = [

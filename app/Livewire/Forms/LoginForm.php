@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Forms;
 
+use App\Http\Middleware\RedirectIfAuthenticated;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
@@ -12,8 +13,8 @@ use Livewire\Form;
 
 class LoginForm extends Form
 {
-    #[Validate('required|string|email')]
-    public string $email = ''; // Validasi email dengan format yang benar.
+    #[Validate('required|string')]
+    public string $nis_nip = '';
 
     #[Validate('required|string|min:8')]
     public string $password = ''; // Menambahkan validasi panjang minimal password (misalnya 8 karakter).
@@ -28,21 +29,37 @@ class LoginForm extends Form
      */
     public function authenticate(): void
     {
-        // Pastikan request tidak dibatasi berdasarkan rate limit.
         $this->ensureIsNotRateLimited();
 
-        // Mencoba autentikasi dengan email dan password yang diberikan.
-        if (! Auth::attempt($this->only(['email', 'password']), $this->remember)) {
-            // Jika autentikasi gagal, tingkatkan rate limit dan lempar error.
+        // Cari user berdasarkan nis_nip
+        $user = \App\Models\User::where('nis_nip', $this->nis_nip)->first();
+
+        // Kalau user tidak ditemukan atau password salah, hit rate limiter dan throw error
+        if (!$user || !\Illuminate\Support\Facades\Hash::check($this->password, $user->password)) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'form.email' => trans('auth.failed'), // Pesan error jika kredensial salah.
+                'form.nis_nip' => trans('auth.failed'),
             ]);
         }
 
-        // Jika login berhasil, bersihkan rate limit.
+        // Login user
+        Auth::login($user, $this->remember);
+
         RateLimiter::clear($this->throttleKey());
+
+        // Cek apakah user menggunakan password default
+        if ($user->is_default_password) {
+            redirect()->route('password.change.form');
+            return;
+        }
+        if ($user->hasRole('admin')) {
+            redirect()->route('admin.dashboard');
+        } else {
+            redirect()->route('user.dashboard');
+        }
+
+
     }
 
     /**
@@ -61,7 +78,7 @@ class LoginForm extends Form
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'form.email' => trans('auth.throttle', [
+            'form.nis_nip' => trans('auth.throttle', [
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60), // Menampilkan waktu dalam menit jika perlu.
             ]),
@@ -74,6 +91,6 @@ class LoginForm extends Form
     protected function throttleKey(): string
     {
         // Menggabungkan email dan IP pengguna untuk menghasilkan throttle key yang unik.
-        return Str::transliterate(Str::lower($this->email).'|'.request()->ip());
+        return Str::transliterate(Str::lower($this->nis_nip).'|'.request()->ip());
     }
 }

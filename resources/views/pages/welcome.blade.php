@@ -7,9 +7,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   @livewireStyles
-
 </head>
-<body class="font-sans antialiased bg-white">
+<body class="font-sans antialiased text-gray-800">
 
   <!-- Navbar Sticky -->
   <header class="sticky top-0 z-50 flex justify-between items-center p-6 bg-white shadow-md">
@@ -119,64 +118,80 @@
     </div>
   </section>
 
+  <!-- Footer -->
+  <footer class="bg-white px-6 md:px-20 py-10 border-t text-sm">
+    <div class="flex flex-col md:flex-row justify-between gap-6">
+      <div>
+        <h3 class="font-semibold text-red-500 mb-2">SMP Negeri 12 Yogyakarta</h3>
+        <p>Jl. Tegal Gendu No.16, Pringgokusuman, Gedong Tengen, Yogyakarta</p>
+        <p>Website: <a href="https://smpn12jogja.sch.id" class="text-red-500 hover:underline">smpn12jogja.sch.id</a></p>
+      </div>
+      <div>
+        <h3 class="font-semibold text-red-500 mb-2">Ikuti Kami</h3>
+        <ul>
+          <li><a href="https://instagram.com/smpn12jogja" class="hover:underline">Instagram</a></li>
+          <li><a href="https://facebook.com/smpn12jogja" class="hover:underline">Facebook</a></li>
+          <li><a href="mailto:info@smpn12jogja.sch.id" class="hover:underline">Email</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-8 text-center text-gray-500">&copy; {{ date('Y') }} Perpustakaan Digital SMP Negeri 12 Yogyakarta.</div>
+  </footer>
+
+  @livewireScripts
+
   <script>
     const ctx = document.getElementById('statistikChart').getContext('2d');
     const statistikChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: @json($bulanLabels),
-            datasets: [
-                {
-                    label: '{{ $tahunSebelumnya }}',
-                    data: @json($jumlahPengunjungTahunLalu),
-                    borderColor: '#60A5FA',
-                    backgroundColor: 'rgba(96, 165, 250, 0.2)',
-                    borderWidth: 2,
-                    fill: true,
-                    pointRadius: 4,
-                    tension: 0.4
-                },
-                {
-                    label: '{{ $tahunSekarang }}',
-                    data: @json($jumlahPengunjungTahunIni),
-                    borderColor: '#FB7185',
-                    backgroundColor: 'rgba(251, 113, 133, 0.2)',
-                    borderWidth: 2,
-                    fill: true,
-                    pointRadius: 4,
-                    tension: 0.4
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'bottom',
-                    labels: {
-                        color: '#374151',
-                        font: { weight: 'bold' }
-                    }
-                },
-                tooltip: { mode: 'index', intersect: false }
-            },
-            interaction: { mode: 'nearest', intersect: false },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: { color: '#6B7280' },
-                    grid: { color: '#E5E7EB' }
-                },
-                x: {
-                    ticks: { color: '#6B7280' },
-                    grid: { display: false }
-                }
+      type: 'line',
+      data: {
+        labels: @json($bulanLabels),
+        datasets: [
+          {
+            label: '{{ $tahunSebelumnya }}',
+            data: @json($jumlahPengunjungTahunLalu),
+            borderColor: '#60A5FA',
+            backgroundColor: 'rgba(96, 165, 250, 0.1)',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.4
+          },
+          {
+            label: '{{ $tahunSekarang }}',
+            data: @json($jumlahPengunjungTahunIni),
+            borderColor: '#EF4444',
+            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.4
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              color: '#374151',
+              font: { weight: 'bold' }
             }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: { color: '#6B7280' },
+            grid: { color: '#E5E7EB' }
+          },
+          x: {
+            ticks: { color: '#6B7280' },
+            grid: { display: false }
+          }
         }
+      }
     });
   </script>
-
-@livewireScripts
 </body>
 
 <!-- Footer -->
