@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\User\Dashboard;
+namespace App\Livewire\Admin\Dashboard;
 
 use App\Models\User;
 use App\Models\Buku;
@@ -112,7 +112,7 @@ class Index extends Component
 
         $cardData = $this->getCardData();
 
-        return view('livewire.user.dashboard.index', compact(
+        return view('livewire.admin.dashboard.index', compact(
             'bulanLabels',
             'jumlahPengunjungTahunIni',
             'jumlahPengunjungTahunLalu',
@@ -123,6 +123,6 @@ class Index extends Component
             'totalPeminjaman',
             'totalKeterlambatan',
             'cardData'
-        ))->layout('layouts.user');
+        ))->layout('layouts.app');
     }
 }

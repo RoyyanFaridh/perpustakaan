@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Livewire\User\Dashboard;
+namespace App\Http\Controllers;
 
+use App\Models\Pengunjung;
 use App\Models\User;
 use App\Models\Buku;
 use App\Models\Anggota;
 use App\Models\Peminjaman;
-use App\Models\Pengunjung;
 use Illuminate\Support\Carbon;
-use Livewire\Component;
 
-class Index extends Component
+class WelcomeController extends Controller
 {
     protected function getCardData()
     {
@@ -85,8 +84,7 @@ class Index extends Component
             ],
         ];
     }
-
-    public function render()
+    public function index()
     {
         $tahunSekarang = now()->year;
         $tahunSebelumnya = $tahunSekarang - 1;
@@ -96,12 +94,12 @@ class Index extends Component
         $jumlahPengunjungTahunLalu = [];
 
         for ($i = 1; $i <= 12; $i++) {
-            $jumlahPengunjungTahunIni[] = Pengunjung::whereYear('tanggal', $tahunSekarang)
-                ->whereMonth('tanggal', $i)
+            $jumlahPengunjungTahunIni[] = Pengunjung::whereYear('created_at', $tahunSekarang)
+                ->whereMonth('created_at', $i)
                 ->count();
 
-            $jumlahPengunjungTahunLalu[] = Pengunjung::whereYear('tanggal', $tahunSebelumnya)
-                ->whereMonth('tanggal', $i)
+            $jumlahPengunjungTahunLalu[] = Pengunjung::whereYear('created_at', $tahunSebelumnya)
+                ->whereMonth('created_at', $i)
                 ->count();
         }
 
@@ -112,7 +110,7 @@ class Index extends Component
 
         $cardData = $this->getCardData();
 
-        return view('livewire.user.dashboard.index', compact(
+        return view('pages.welcome', compact(
             'bulanLabels',
             'jumlahPengunjungTahunIni',
             'jumlahPengunjungTahunLalu',
@@ -123,6 +121,6 @@ class Index extends Component
             'totalPeminjaman',
             'totalKeterlambatan',
             'cardData'
-        ))->layout('layouts.user');
+        ));
     }
 }

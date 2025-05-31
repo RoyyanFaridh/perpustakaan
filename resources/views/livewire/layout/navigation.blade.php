@@ -28,44 +28,59 @@ new class extends Component
                 </a>
             </div>
 
-            <!-- Sidebar Menu -->
             <nav class="flex-grow space-y-2">
-                <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')" class="transition-all">Dashboard</x-nav-link>
+                <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')" class="flex items-center transition-all">
+                    <x-icon.dashboard-icon class="w-5 h-5 mr-2" />
+                    <span class="ml-4">Dashboard</span>
+                </x-nav-link>
 
                 <!-- Dropdown Anggota -->
                 <div>
                     <button @click="anggotaOpen = !anggotaOpen"
-                        class="flex items-center w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 rounded-md transition">
-                        <i class="fas fa-users mr-2"></i>
-                        <span class="flex-1">Anggota</span>
-                        <svg class="w-4 h-4 transform transition-transform duration-200"
-                            :class="{ 'rotate-180': anggotaOpen }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        class="flex items-center w-full px-4 py-2 hover:bg-gray-100 rounded-md transition">
+                        <x-icon.user class="w-5 h-5 mr-2" />
+                        <span class="flex-1 text-left ml-4">Anggota</span>
+                        <svg class="w-4 h-4 transform transition-transform duration-200" :class="{ 'rotate-180': anggotaOpen }"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
                     <div x-show="anggotaOpen" x-transition class="ml-8 space-y-1">
-                        <x-nav-link :href="route('anggota.guru')" :active="request()->routeIs('anggota.guru')">Guru</x-nav-link>
-                        <x-nav-link :href="route('anggota.siswa')" :active="request()->routeIs('anggota.siswa')">Siswa</x-nav-link>
+                        <x-nav-link :href="route('anggota.guru')" :active="request()->routeIs('anggota.guru')" class="flex items-center">
+                            <span>Guru</span>
+                        </x-nav-link>
+                        <x-nav-link :href="route('anggota.siswa')" :active="request()->routeIs('anggota.siswa')" class="flex items-center">
+                            <span>Siswa</span>
+                        </x-nav-link>
                     </div>
                 </div>
-                <x-nav-link :href="route('admin.buku.index')" :active="request()->routeIs('admin.buku.*')">Buku</x-nav-link>
-                <x-nav-link :href="route('admin.peminjaman.index')" :active="request()->routeIs('admin.peminjaman.*')">Peminjaman</x-nav-link>
-                <x-nav-link :href="route('admin.broadcast.index')" :active="request()->routeIs('admin.broadcast.*')">Broadcast</x-nav-link>
+
+                <x-nav-link :href="route('admin.buku.index')" :active="request()->routeIs('admin.buku.*')" class="flex items-center">
+                    <x-icon.book class="w-5 h-5 mr-2" />
+                    <span class="ml-4">Buku</span>
+                </x-nav-link>
+
+                <x-nav-link :href="route('admin.peminjaman.index')" :active="request()->routeIs('admin.peminjaman.*')" class="flex items-center">
+                    <x-icon.calendar class="w-5 h-5 mr-2" />
+                    <span class="ml-4">Peminjaman</span>
+                </x-nav-link>
+
+                <x-nav-link :href="route('admin.broadcast.index')" :active="request()->routeIs('admin.broadcast.*')" class="flex items-center">
+                    <x-icon.megaphone class="w-5 h-5 mr-2" />
+                    <span class="ml-4">Broadcast</span>
+                </x-nav-link>
             </nav>
 
             <!-- Profile & Logout -->
             <div class="pt-4 border-t">
                 <x-dropdown align="left" width="48" position="top">
                     <x-slot name="trigger">
-                        <div class="flex items-center text-sm text-gray-700 cursor-pointer">
-                            <svg class="h-6 w-6 mr-2 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
-                                    d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.657 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
-                            <span x-text="@js(auth()->user()->name)"></span>
-                            <svg class="h-4 w-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
+                        <div class="flex items-center text-base cursor-pointer">
+                            <x-icon.user class="w-5 h-5 mr-2" />
+                            <span class="ml-4" x-text="@js(auth()->user()->name)"></span>
+                            <svg class="w-4 h-4 ml-4 transform transition-transform duration-200" :class="{ 'rotate-180': anggotaOpen }"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path d="M19 9l-7 7-7-7" />
                             </svg>
                         </div>
                     </x-slot>

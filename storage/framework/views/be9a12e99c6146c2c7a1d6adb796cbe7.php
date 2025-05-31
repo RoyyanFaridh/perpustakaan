@@ -27,7 +27,7 @@
             </button>
 
             <!-- Login -->
-            <a href="{{ route('login') }}"
+            <a href="<?php echo e(route('login')); ?>"
                class="rounded-md px-8 py-2 text-white bg-red-400 hover:bg-red-500 transition text-sm md:ml-12 lg:ml-20">
                 Login
             </a>
@@ -51,3 +51,4 @@
         </a>
     </div>
 </div>
+<?php /**PATH C:\Users\ASUS\perpustakaan\resources\views/livewire/welcome/navigation.blade.php ENDPATH**/ ?>
