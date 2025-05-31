@@ -61,7 +61,7 @@ new #[Layout('layouts.guest')] class extends Component
     <!-- Kiri: Form Login -->
     <div class="w-full md:w-1/2 flex items-center justify-center p-8 bg-white">
         <!-- Container utama -->
-        <div class="bg-white p-10 max-w- w-full h-[90vh] max-h-[800px] rounded-2xl shadow-lg overflow-hidden ml-4 mr-4 flex flex-col items-center relative">
+        <div class="bg-white p-10 max-w- w-full h-[90vh] max-h-[800px] rounded-2xl shadow-2xl overflow-hidden ml-4 mr-4 flex flex-col items-center relative">
             
             <!-- Logo -->
             <div class="absolute top-6 left-1/2 transform -translate-x-1/2 mt-10">
@@ -144,7 +144,7 @@ new #[Layout('layouts.guest')] class extends Component
     <div class="hidden md:flex md:w-1/2 items-center justify-center bg-white">
         <div class="w-full max-h-[800px] h-[90vh] rounded-2xl overflow-hidden mt-2 mb-2 mx-4">
             <img src="/images/cover.jpg" alt="Gambar Perpustakaan"
-                class="object-cover w-full h-full rounded-2xl shadow-xl">
+                class="object-cover w-full h-full rounded-2xl shadow-3xl">
         </div>
     </div>
 </div>
