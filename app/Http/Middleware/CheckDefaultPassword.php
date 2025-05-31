@@ -23,7 +23,6 @@ class CheckDefaultPassword
                 return redirect()->route('user.profile');
             }
         }
-
         return $next($request);
     }
 }

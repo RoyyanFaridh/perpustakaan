@@ -33,8 +33,6 @@ Route::middleware(['auth', 'check.default.password'])->group(function () {
     Volt::route('user/profile', 'user.profile')->name('user.profile');
     Volt::route('admin/profile', 'admin.profile')->name('admin.profile');
 
-    // Dashboard tetap sesuai user
-    Volt::route('dashboard', 'user.dashboard')->name('user.dashboard');
 });
 
 
