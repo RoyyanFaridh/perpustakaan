@@ -23,26 +23,35 @@ class RoleMiddleware
     {
         $user = $request->user();
 
-
         if (!$user) {
-            return response()->json([
-                'message' => 'Not authenticated',
-                'auth' => Auth::check(),
-                'user' => Auth::id()
-            ], 401);
+            return redirect()->route('login');
         }
 
         if (!$user->hasAnyRole($roles)) {
-            return response()->json([
-                'message' => 'Insufficient permissions',
-                'required_roles' => $roles,
-                'user_roles' => $user->getRoleNames(),
-                'user_id' => $user->id
-            ], 403);
+            // Jika request ingin JSON, beri JSON response error
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'message' => 'Insufficient permissions',
+                    'required_roles' => $roles,
+                    'user_roles' => $user->getRoleNames(),
+                    'user_id' => $user->id,
+                ], 403);
+            }
+
+            if ($user->hasRole('admin')) {
+                return redirect()->route('admin.dashboard')->with('error', 'You do not have access to that page.');
+            } elseif ($user->hasRole('siswa')) {
+                return redirect()->route('user.dashboard')->with('error', 'You do not have access to that page.');
+            } elseif ($user->hasRole('guru')) {
+                return redirect()->route('user.dashboard')->with('error', 'You do not have access to that page.');
+            }
+
+            abort(403, 'Unauthorized');
         }
 
         return $next($request);
     }
+
 
     /**
      * Return consistent unauthorized response

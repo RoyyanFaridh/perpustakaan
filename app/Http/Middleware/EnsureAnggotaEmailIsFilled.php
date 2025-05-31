@@ -16,7 +16,6 @@ class EnsureAnggotaEmailIsFilled
                 return redirect()->route('user.profile')->with('force_fill_email', true);
             }
         }
-
         return $next($request);
     }
 

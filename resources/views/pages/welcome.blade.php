@@ -6,50 +6,59 @@
   <title>Perpustakaan Digital SMP 12 Yogyakarta</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
   @livewireStyles
 </head>
 <body class="font-sans antialiased text-gray-800">
 
   <!-- Navbar Sticky -->
-  <header class="sticky top-0 z-50 flex justify-between items-center p-6 bg-white shadow-md">
-    <!-- Logo -->
-    <div class="flex items-center space-x-4">
-      <img src="/images/logo_smp12yk.png" alt="Logo SMPN 12 Yogyakarta" class="h-10 w-auto" />
-    </div>
+  <header class="sticky top-0 z-50 flex justify-between items-center p-4 sm:p-6 bg-white shadow-md">
+      <!-- Logo -->
+      <div class="flex items-center space-x-4">
+          <img
+              src="/images/logo_smp12yk.png"
+              alt="Logo SMPN 12 Yogyakarta"
+              class="h-8 sm:h-10 md:h-12 w-auto max-h-14"
+          />
+      </div>
 
-    <!-- Menu + Login (dibungkus agar lebih dekat) -->
-    <div class="flex items-center justify-between w-full md:w-auto">
-      <nav class="space-x-3 sm:space-x-6 text-sm text-gray-700">
-        <a href="#hero" class="hover:underline">Beranda</a>
-        <a href="#tentang" class="hover:underline">Tentang</a>
-        <a href="#kontak" class="hover:underline">Kontak</a>
-      </nav>
-      <a href="{{ route('login') }}" class="mx-10 px-5 py-2 rounded bg-red-400 text-white hover:bg-red-500 transition">Login</a>
-    </div>
+      <!-- Menu + Login -->
+      <div class="flex items-center justify-between w-full md:w-auto">
+          @include('livewire.welcome.navigation')
+      </div>
   </header>
 
-  <!-- Hero Section -->
-  <section id="hero" class="relative min-h-screen flex items-start justify-start text-white bg-cover bg-center pt-40" style="background-image: url('/images/gedungsmpn12ykasli.jpg');">
-    <!-- Overlay hitam semi-transparan -->
+
+  <section id="hero"
+    class="relative flex items-start justify-start text-white bg-cover bg-center pt-40
+           min-h-[60vh] sm:min-h-[70vh] md:min-h-screen"
+    style="background-image: url('/images/gedungsmpn12ykasli.jpg');">
+
+    <!-- Overlay -->
     <div class="absolute inset-0 bg-black bg-opacity-30"></div>
 
-    <!-- Kontainer isi -->
+    <!-- Isi konten -->
     <div class="relative z-10">
-      <div class="mb-2 max-w-3xl px-6 sm:px-12 md:pl-20">
-        <span class="inline-block px-4 py-1 text-sm font-medium rounded-full bg-white bg-opacity-10 backdrop-blur-sm border border-white border-opacity-20">
-          Hai, Selamat Datang
-        </span>
-      </div>
-      <div class="w-full max-w-8xl pl-20">
-        <h1 class="text-4xl sm:text-5xl md:text-8xl font-bold leading-tight">
-          Perpustakaan Digital <br> SMP Negeri 12 Yogyakarta
-        </h1>
-      </div>
+        <!-- Welcome Message -->
+        <div class="mb-2 max-w-3xl px-4 sm:px-6 md:px-12 lg:px-20">
+            <span class="inline-block px-4 py-1 text-sm font-medium rounded-full bg-white bg-opacity-10 backdrop-blur-sm border border-white border-opacity-20">
+                Hai, Selamat Datang
+            </span>
+        </div>
+
+        <!-- Heading -->
+        <div class="w-full px-4 sm:px-6 md:px-12 lg:px-20">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight">
+                Perpustakaan Digital <br class="hidden sm:block">
+                SMP Negeri 12 Yogyakarta
+            </h1>
+        </div>
     </div>
 
-    <!-- Gradasi transisi -->
+    <!-- Gradasi bawah -->
     <div class="absolute bottom-0 left-0 w-full h-20 bg-gradient-to-b from-transparent to-gray-100 z-0"></div>
   </section>
+
 
   <!-- Statistik Section -->
   <section class="relative z-10 px-6 md:px-20 py-20 bg-gray-100">
