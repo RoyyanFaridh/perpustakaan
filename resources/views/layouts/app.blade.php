@@ -15,6 +15,8 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+        @livewireStyles
+        <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     </head>
     <body class="font-sans antialiased bg-gray-50">
         <div class="min-h-screen flex">
@@ -30,7 +32,6 @@
 
             <!-- Main Content -->
             <div class="flex-auto bg-white m-2 border border-gray-100 rounded-md ">
-                <!-- Page Heading -->
                 @if (isset($header))
                     <header>
                         <div class="mx-auto p-4">
@@ -38,12 +39,13 @@
                         </div>
                     </header>
                 @endif
-                
-                <!-- Page Content -->
-                <main class="">
+
+                <main>
                     {{ $slot }}
                 </main>
             </div>
         </div>
+        
+        @livewireScripts
     </body>
 </html>

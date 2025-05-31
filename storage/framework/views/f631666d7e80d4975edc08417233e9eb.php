@@ -15,9 +15,6 @@
         <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-        <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::styles(); ?>
-
-        <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     </head>
     <body class="font-sans antialiased bg-gray-50">
         <div class="min-h-screen flex">
@@ -27,9 +24,9 @@
 $__split = function ($name, $params = []) {
     return [$name, $params];
 };
-[$__name, $__params] = $__split('layout.navigation', []);
+[$__name, $__params] = $__split('layout.user-navigation', []);
 
-$__html = app('livewire')->mount($__name, $__params, 'lw-3277078540-0', $__slots ?? [], get_defined_vars());
+$__html = app('livewire')->mount($__name, $__params, 'lw-1967333979-0', $__slots ?? [], get_defined_vars());
 
 echo $__html;
 
@@ -40,16 +37,16 @@ unset($__split);
 if (isset($__slots)) unset($__slots);
 ?>
             </aside>
-            
+
             <!-- Mobile Navbar -->
             <div class="sm:hidden w-full">
                 <?php
 $__split = function ($name, $params = []) {
     return [$name, $params];
 };
-[$__name, $__params] = $__split('layout.navigation', []);
+[$__name, $__params] = $__split('layout.user-navigation', []);
 
-$__html = app('livewire')->mount($__name, $__params, 'lw-3277078540-1', $__slots ?? [], get_defined_vars());
+$__html = app('livewire')->mount($__name, $__params, 'lw-1967333979-1', $__slots ?? [], get_defined_vars());
 
 echo $__html;
 
@@ -63,24 +60,23 @@ if (isset($__slots)) unset($__slots);
 
             <!-- Main Content -->
             <div class="flex-auto bg-white m-2 border border-gray-100 rounded-md ">
-                <?php if(isset($header)): ?>
+                <!-- Page Heading -->
+                <!--[if BLOCK]><![endif]--><?php if(isset($header)): ?>
                     <header>
                         <div class="mx-auto p-4">
                             <?php echo e($header); ?>
 
                         </div>
                     </header>
-                <?php endif; ?>
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-                <main>
+                <!-- Page Content -->
+                <main class="">
                     <?php echo e($slot); ?>
 
                 </main>
             </div>
         </div>
-        
-        <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::scripts(); ?>
-
     </body>
 </html>
-<?php /**PATH C:\Users\ACER\perpustakaan\resources\views/layouts/app.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\Users\ACER\perpustakaan\resources\views/layouts/user.blade.php ENDPATH**/ ?>

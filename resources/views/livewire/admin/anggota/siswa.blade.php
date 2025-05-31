@@ -7,9 +7,9 @@
                     Export Excel
                 </a>
                 <button wire:click="openModal" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-2 px-4 rounded-lg">
-                    + Tambah Siswa
+                    + Tambah siswa
                 </button> 
-            </div>        
+            </div>   
         </div>
 
         <div class="mb-4">
@@ -49,7 +49,7 @@
                         <label for="status" class="block text-black text-xs mb-1">Status</label>
                         <select wire:model="status" id="status" 
                             class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm">
-                            <option value="">Pilih Status</option>
+                            <option value="">-- Pilih Status --</option>
                             <option value="active">Aktif</option>
                             <option value="inactive">Tidak Aktif</option>
                         </select>
@@ -65,13 +65,8 @@
                     <!-- Kelas -->
                     <div>
                         <label for="kelas" class="block text-black text-xs mb-1">Kelas</label>
-                        <select wire:model="kelas" id="kelas" 
-                            class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm">
-                            <option value="">Pilih Kelas</option>
-                            <option value="7">Kelas 7</option>
-                            <option value="8">Kelas 8</option>
-                             <option value="9">Kelas 9</option>
-                        </select>
+                        <input type="text" wire:model="kelas" id="kelas"
+                            class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm" />
                     </div>
 
                     <!-- Jenis Kelamin -->
@@ -79,7 +74,7 @@
                         <label for="jenis_kelamin" class="block text-black text-xs mb-1">Jenis Kelamin</label>
                         <select wire:model="jenis_kelamin" id="jenis_kelamin" 
                             class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm">
-                            <option value="">Pilih Jenis Kelamin</option>
+                            <option value="">-- Pilih Jenis Kelamin --</option>
                             <option value="L">Laki-laki</option>
                             <option value="P">Perempuan</option>
                         </select>

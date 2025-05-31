@@ -1,11 +1,11 @@
-<?php if (isset($component)) { $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54 = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54 = $attributes; } ?>
-<?php $component = App\View\Components\AppLayout::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('app-layout'); ?>
+<?php if (isset($component)) { $__componentOriginal951024bfcf58033c82ac11d797616473 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal951024bfcf58033c82ac11d797616473 = $attributes; } ?>
+<?php $component = App\View\Components\UserLayout::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('user-layout'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\App\View\Components\AppLayout::ignoredParameterNames()); ?>
+<?php $attributes = $attributes->except(\App\View\Components\UserLayout::ignoredParameterNames()); ?>
 <?php endif; ?>
 <?php $component->withAttributes([]); ?>
      <?php $__env->slot('header', null, []); ?> 
@@ -15,9 +15,29 @@
         </h2>
      <?php $__env->endSlot(); ?>
 
+    
+    <!--[if BLOCK]><![endif]--><?php if(session('show_email_modal')): ?>
+        <?php
+$__split = function ($name, $params = []) {
+    return [$name, $params];
+};
+[$__name, $__params] = $__split('input-email-modal');
+
+$__html = app('livewire')->mount($__name, $__params, 'lw-3697963787-0', $__slots ?? [], get_defined_vars());
+
+echo $__html;
+
+unset($__html);
+unset($__name);
+unset($__params);
+unset($__split);
+if (isset($__slots)) unset($__slots);
+?>
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+
     <div class="py-4">
         <div class="mx-auto sm:px-4 lg:px-6">
-                <!-- Wrapper untuk Card -->
+            <!-- Wrapper untuk Card -->
             <div class="flex flex-wrap gap-4 mb-4">
                 <?php if (isset($component)) { $__componentOriginal53747ceb358d30c0105769f8471417f6 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal53747ceb358d30c0105769f8471417f6 = $attributes; } ?>
@@ -39,7 +59,6 @@
 <?php $component = $__componentOriginal53747ceb358d30c0105769f8471417f6; ?>
 <?php unset($__componentOriginal53747ceb358d30c0105769f8471417f6); ?>
 <?php endif; ?>
-
 
                 <?php if (isset($component)) { $__componentOriginal53747ceb358d30c0105769f8471417f6 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal53747ceb358d30c0105769f8471417f6 = $attributes; } ?>
@@ -104,7 +123,6 @@
 <?php unset($__componentOriginal53747ceb358d30c0105769f8471417f6); ?>
 <?php endif; ?>
             </div>
-            
         </div>
 
         <div class="font-bold text-3xl text-gray-900 mb-4 ml-4">
@@ -116,7 +134,7 @@
             <canvas id="statistikChart" height="100"></canvas>
         </div>
     </div>
-    
+
     <script>
         const ctx = document.getElementById('statistikChart').getContext('2d');
         const statistikChart = new Chart(ctx, {
@@ -188,15 +206,15 @@
                 }
             }
         });
-    </script>    
+    </script>
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
-<?php if (isset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
-<?php $attributes = $__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
-<?php unset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
+<?php if (isset($__attributesOriginal951024bfcf58033c82ac11d797616473)): ?>
+<?php $attributes = $__attributesOriginal951024bfcf58033c82ac11d797616473; ?>
+<?php unset($__attributesOriginal951024bfcf58033c82ac11d797616473); ?>
 <?php endif; ?>
-<?php if (isset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
-<?php $component = $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
-<?php unset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
+<?php if (isset($__componentOriginal951024bfcf58033c82ac11d797616473)): ?>
+<?php $component = $__componentOriginal951024bfcf58033c82ac11d797616473; ?>
+<?php unset($__componentOriginal951024bfcf58033c82ac11d797616473); ?>
 <?php endif; ?>
-<?php /**PATH C:\Users\ACER\perpustakaan\resources\views/livewire/admin/dashboard.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\Users\ACER\perpustakaan\resources\views/livewire/user/dashboard.blade.php ENDPATH**/ ?>
