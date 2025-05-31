@@ -27,24 +27,24 @@ class Index extends Component
             'isi' => $this->isi,
         ]);
 
-        // Kirim ke semua user
-        $users = User::all();
+        // Kirim email ke semua user yang punya email
+        $users = User::whereNotNull('email')->where('email', '!=', '')->get();
         foreach ($users as $user) {
             Mail::to($user->email)->queue(new BroadcastMail($this->judul, $this->isi));
+            // Mail::to($user->email)->send(new BroadcastMail($this->judul, $this->isi));
         }
 
         // Reset form
         $this->reset();
 
-        // Optional: notifikasi
+        // Flash message sukses
         session()->flash('message', 'Broadcast berhasil dikirim ke semua pengguna.');
-        Mail::to($user->email)->send(new BroadcastMail($this->judul, $this->isi));
-
     }
-
 
     public function render()
     {
-        return view('livewire.admin.broadcast.index', ['broadcast' => Broadcast::all()]);
+        return view('livewire.admin.broadcast.index', [
+            'broadcast' => Broadcast::latest()->get()
+        ]);
     }
 }

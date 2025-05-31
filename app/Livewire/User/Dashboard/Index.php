@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\User;
+namespace App\Livewire\User\Dashboard;
 
 use App\Models\Buku;
 use App\Models\Anggota;
@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 use Livewire\Component;
 
-class Dashboard extends Component
+class Index extends Component
 {
     public function render()
     {

@@ -5,10 +5,10 @@
         </h2>
     </x-slot>
 
-    {{-- Modal input email akan muncul jika session ada --}}
     @if(session('show_email_modal'))
-        @livewire('input-email-modal')
+        @livewire('user.dashboard.input-email-modal')
     @endif
+
 
     <div class="py-4">
         <div class="mx-auto sm:px-4 lg:px-6">

@@ -7,18 +7,13 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('buku', function (Blueprint $table) {
+        Schema::create('books', function (Blueprint $table) {
             $table->id();
             $table->string('judul');
             $table->string('kategori');
             $table->string('penulis')->nullable();
             $table->string('penerbit')->nullable();
-
-            // Jika kamu pakai database selain SQLite, bisa pakai year
-            // Tapi kalau SQLite error, bisa diganti jadi string:
-            // $table->string('tahun_terbit', 4)->nullable();
             $table->year('tahun_terbit')->nullable();
-
             $table->string('isbn')->nullable()->unique();
             $table->text('deskripsi')->nullable();
             $table->integer('jumlah_stok')->default(0);
@@ -30,6 +25,6 @@ return new class extends Migration {
 
     public function down(): void
     {
-        Schema::dropIfExists('buku');
+        Schema::dropIfExists('books');
     }
 };

@@ -8,10 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Buku extends Model
 {
     use HasFactory;
-
-    // Nama tabel di database
-    protected $table = 'buku'; // sesuaikan dengan tabel di database
-
+    
+    protected $table = 'books';
     protected $fillable = [
         'judul',
         'kategori',

@@ -44,40 +44,52 @@
                             class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm" />
                     </div>
                 
-                    <!-- Status -->
-                    <div>
-                        <label for="status" class="block text-black text-xs mb-1">Status</label>
-                        <select wire:model="status" id="status" 
-                            class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm">
-                            <option value="">-- Pilih Status --</option>
-                            <option value="active">Aktif</option>
-                            <option value="inactive">Tidak Aktif</option>
-                        </select>
+                    <!-- Status dan NIS berdampingan -->
+                    <div class="flex gap-4">
+                        <!-- Status -->
+                        <div class="w-1/2">
+                            <label for="status" class="block text-black text-xs mb-1">Status</label>
+                            <select wire:model="status" id="status" 
+                                class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm">
+                                <option value="">Pilih Status</option>
+                                <option value="active">Aktif</option>
+                                <option value="inactive">Tidak Aktif</option>
+                            </select>
+                        </div>
+
+                        <!-- NIS -->
+                        <div class="w-1/2">
+                            <label for="nis" class="block text-black text-xs mb-1">Nomor Induk Siswa (NIS)</label>
+                            <input type="text" wire:model="nis" id="nis"
+                                class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm" />
+                        </div>
+>>>>>>> 01b2d25a5f30061df3f1f40d6da84321c1f1c9f0
                     </div>
 
-                    <!-- NIS -->
-                    <div>
-                        <label for="nis" class="block text-black text-xs mb-1">Nomor Induk Siswa (NIS)</label>
-                        <input type="text" wire:model="nis" id="nis"
-                            class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm" />
-                    </div>
+                    <!-- Kelas dan Jenis Kelamin berdampingan -->
+                    <div class="flex gap-4">
+                        <!-- Kelas -->
+                        <div class="w-1/2">
+                            <label for="kelas" class="block text-black text-xs mb-1">Kelas</label>
+                            <select wire:model="kelas" id="kelas" 
+                                class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm">
+                                <option value="">Pilih Kelas</option>
+                                <option value="7">Kelas 7</option>
+                                <option value="8">Kelas 8</option>
+                                <option value="9">Kelas 9</option>
+                            </select>
+                        </div>
 
-                    <!-- Kelas -->
-                    <div>
-                        <label for="kelas" class="block text-black text-xs mb-1">Kelas</label>
-                        <input type="text" wire:model="kelas" id="kelas"
-                            class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm" />
-                    </div>
-
-                    <!-- Jenis Kelamin -->
-                    <div>
-                        <label for="jenis_kelamin" class="block text-black text-xs mb-1">Jenis Kelamin</label>
-                        <select wire:model="jenis_kelamin" id="jenis_kelamin" 
-                            class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm">
-                            <option value="">-- Pilih Jenis Kelamin --</option>
-                            <option value="L">Laki-laki</option>
-                            <option value="P">Perempuan</option>
-                        </select>
+                        <!-- Jenis Kelamin -->
+                        <div class="w-1/2">
+                            <label for="jenis_kelamin" class="block text-black text-xs mb-1">Jenis Kelamin</label>
+                            <select wire:model="jenis_kelamin" id="jenis_kelamin" 
+                                class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm">
+                                <option value="">Pilih Jenis Kelamin</option>
+                                <option value="L">Laki-laki</option>
+                                <option value="P">Perempuan</option>
+                            </select>
+                        </div>
                     </div>
 
                     <!-- Alamat -->

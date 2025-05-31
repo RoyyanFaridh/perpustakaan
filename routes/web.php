@@ -1,10 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Pengunjung;
 use App\Livewire\Pages\Auth\Register;
-use App\Http\Controllers\BroadcastController;
-use App\Livewire\Pages\Auth\ChangePasswordForm;
 
 // Admin
 use App\Http\Controllers\Admin\AdminController;
@@ -15,28 +14,29 @@ use App\Livewire\Admin\Buku\Index as BukuIndexAdmin;
 use App\Livewire\Admin\Peminjaman\Index as PeminjamanIndex;
 use App\Livewire\Admin\Anggota\Export;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Livewire\Admin\Broadcast\Index as BroadcastIndex;
 
 // User
-use App\Livewire\User\Dashboard;
+use App\Livewire\User\Dashboard\Index as DashboardIndex;
 use App\Livewire\User\Buku\Index as BukuIndexUser;
 use App\Livewire\User\Peminjaman\Index as PeminjamanIndexUser;
+use \App\Livewire\User\Profile as ProfileIndexUser;
 
 use App\Models\Buku;
 use App\Models\User;
 use App\Models\Peminjaman;
 
+
 // Public routes
-Route::get('/', fn() => view('pages.welcome'))->name('welcome');
 Route::get('/register', Register::class)->name('register');
 
-// Broadcast routes (boleh di middleware auth kalau perlu)
-Route::middleware(['auth'])->group(function () {
-    Route::get('/broadcast', [BroadcastController::class, 'index'])->name('broadcast.index');
-    Route::get('/broadcast/create', [BroadcastController::class, 'create'])->name('broadcast.create');
-    Route::post('/broadcast', [BroadcastController::class, 'store'])->name('broadcast.store');
-    Route::get('/broadcast/{id}', [BroadcastController::class, 'show']);
-});
-
+// Broadcast routes
+// Route::middleware(['auth'])->group(function () {
+//     Route::get('/broadcast', [BroadcastController::class, 'index'])->name('broadcast.index');
+//     Route::get('/broadcast/create', [BroadcastController::class, 'create'])->name('broadcast.create');
+//     Route::post('/broadcast', [BroadcastController::class, 'store'])->name('broadcast.store');
+//     Route::get('/broadcast/{id}', [BroadcastController::class, 'show'])->name('broadcast.show');
+// });
 
 // Admin routes
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->group(function () {
@@ -48,58 +48,62 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->group(fu
     Route::get('/anggota/guru', Guru::class)->name('anggota.guru');
     Route::get('/buku', BukuIndexAdmin::class)->name('admin.buku.index');
     Route::get('/peminjaman', PeminjamanIndex::class)->name('admin.peminjaman.index');
-    Route::view('/broadcast', 'livewire.admin.broadcast')->name('admin.broadcast.index');
+    Route::get('/broadcast', BroadcastIndex::class)->name('admin.broadcast.index');
+    Route::view('/profile', 'livewire.admin.profile')->name('admin.profile');
 });
 
-// Routes untuk guru dan siswa
-Route::middleware(['auth', 'verified', 'role:siswa,guru', 'check.default.password', 'email.filled'])->group(function () {
-    Route::get('/dashboard', Dashboard::class)->name('user.dashboard');
+// Siswa & Guru routes
+Route::middleware(['auth', 'verified', 'role:siswa,guru', 'check.default.password', 'check.anggota.email'])->group(function () {
+    Route::get('/dashboard', DashboardIndex::class)->name('user.dashboard');
     Route::get('/buku', BukuIndexUser::class)->name('user.buku.index');
     Route::get('/peminjaman', PeminjamanIndexUser::class)->name('user.peminjaman.index');
 });
 
-// Route ganti password
-Route::middleware(['auth'])->group(function () {
-    Route::get('/change-password-form', ChangePasswordForm::class)->name('password.change.form');
+Route::middleware(['auth', 'verified', 'role:siswa,guru'])->get('/profile', ProfileIndexUser::class)->name('user.profile');
+
+Route::get('/test-email', function () {
+    Mail::raw('Tes kirim email Laravel menggunakan Gmail SMTP.', function ($message) {
+        $message->to('roynashruddin18@gmail.com')
+                ->subject('Test Email');
+    });
+
+    return 'Email terkirim (jika tidak error).';
 });
 
-// Profile route
-Route::view('/profile', 'pages.profile')->middleware('auth')->name('profile');
-
-// Auth routes default Laravel
+// Auth routes (login, register, etc)
 require __DIR__.'/auth.php';
 
+// Halaman utama dengan statistik
 Route::get('/', function () {
-$tahunSekarang = now()->year;
-$tahunSebelumnya = now()->year - 1;
-$bulanLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+    $tahunSekarang = now()->year;
+    $tahunSebelumnya = now()->year - 1;
+    $bulanLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
 
-$jumlahPengunjungTahunIni = [];
-$jumlahPengunjungTahunLalu = [];
+    $jumlahPengunjungTahunIni = [];
+    $jumlahPengunjungTahunLalu = [];
 
-for ($i = 1; $i <= 12; $i++) {
-    $jumlahPengunjungTahunIni[] = Pengunjung::whereYear('created_at', $tahunSekarang)
-        ->whereMonth('created_at', $i)->count();
+    for ($i = 1; $i <= 12; $i++) {
+        $jumlahPengunjungTahunIni[] = Pengunjung::whereYear('created_at', $tahunSekarang)
+            ->whereMonth('created_at', $i)->count();
 
-    $jumlahPengunjungTahunLalu[] = Pengunjung::whereYear('created_at', $tahunSebelumnya)
-        ->whereMonth('created_at', $i)->count();
-}
+        $jumlahPengunjungTahunLalu[] = Pengunjung::whereYear('created_at', $tahunSebelumnya)
+            ->whereMonth('created_at', $i)->count();
+    }
 
-// Total Data
-$totalKoleksiBuku = Buku::count();
-$totalAnggota = User::whereIn('role', ['siswa', 'guru'])->count();
-$totalPeminjaman = Peminjaman::count();
-$totalKeterlambatan = Peminjaman::where('tanggal_kembali', '>', 'batas_pengembalian')->count();
+    $totalKoleksiBuku = Buku::count();
+    $totalAnggota = User::whereIn('role', ['siswa', 'guru'])->count();
+    $totalPeminjaman = Peminjaman::count();
+    $totalKeterlambatan = Peminjaman::where('tanggal_kembali', '>', 'batas_pengembalian')->count();
 
-return view('pages.welcome', compact(
-    'bulanLabels',
-    'jumlahPengunjungTahunIni',
-    'jumlahPengunjungTahunLalu',
-    'tahunSekarang',
-    'tahunSebelumnya',
-    'totalKoleksiBuku',
-    'totalAnggota',
-    'totalPeminjaman',
-    'totalKeterlambatan'
-));
+    return view('pages.welcome', compact(
+        'bulanLabels',
+        'jumlahPengunjungTahunIni',
+        'jumlahPengunjungTahunLalu',
+        'tahunSekarang',
+        'tahunSebelumnya',
+        'totalKoleksiBuku',
+        'totalAnggota',
+        'totalPeminjaman',
+        'totalKeterlambatan'
+    ));
 })->name('welcome');
