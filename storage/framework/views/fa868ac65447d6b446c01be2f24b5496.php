@@ -7,7 +7,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-  @livewireStyles
+  <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::styles(); ?>
+
 </head>
 <body class="font-sans antialiased text-gray-800">
 
@@ -25,7 +26,7 @@
         <a href="#tentang" class="hover:underline">Tentang</a>
         <a href="#kontak" class="hover:underline">Kontak</a>
       </nav>
-      <a href="{{ route('login') }}" class="px-5 py-2 rounded bg-red-400 text-white hover:bg-red-500 transition">Login</a>
+      <a href="<?php echo e(route('login')); ?>" class="px-5 py-2 rounded bg-red-400 text-white hover:bg-red-500 transition">Login</a>
     </div>
   </header>
 
@@ -59,28 +60,37 @@
     <div class="absolute bottom-0 left-0 w-full h-20 bg-gradient-to-b from-transparent to-gray-100 z-0"></div>
   </section>
 
+
   <!-- Statistik Section -->
   <section class="relative z-10 px-6 md:px-20 py-20 bg-gray-100">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-      @foreach ($cardData as $card)
-        <div class="bg-white shadow-md rounded-lg p-6">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background-color: {{ $card['bgColor'] }}">
-              {!! $card['icon'] !!}
-            </div>
-            <h3 class="text-lg font-semibold" style="color: {{ $card['bgColor'] }}">{{ $card['title'] }}</h3>
-          </div>
-          <div class="flex items-center justify-between mt-4">
-            <p class="text-3xl font-bold">{{ $card['value'] }}</p>
-            @if (!is_null($card['delta']))
-              <span class="text-sm font-semibold px-3 py-1 rounded {{ $card['delta'] >= 0 ? 'bg-green-100 text-green-500 border border-green-500' : 'bg-red-100 text-red-600' }}">
-                {{ $card['delta'] >= 0 ? '+' : '' }}{{ number_format($card['delta'], 0, ',', '.') }}
-              </span>
-            @endif
-          </div>
-          <p class="text-xs text-gray-500 mt-2">pada {{ $card['periode'] }}</p>
-        </div>
-      @endforeach
+      <!-- Total Koleksi Buku -->
+      <div class="bg-white shadow-md rounded-lg p-6">
+        <h3 class="text-lg font-semibold text-pink-600">Total Koleksi Buku</h3>
+        <p class="text-3xl font-bold mt-4"><?php echo e(number_format($totalKoleksiBuku, 0, ',', '.')); ?></p> 
+        <p class="text-xs text-gray-500 mt-2">pada Maret 2025</p>
+      </div>
+
+      <!-- Total Anggota -->
+      <div class="bg-white shadow-md rounded-lg p-6">
+        <h3 class="text-lg font-semibold text-blue-600">Total Anggota</h3>
+        <p class="text-3xl font-bold mt-4"><?php echo e(number_format($totalAnggota, 0, ',', '.')); ?></p> 
+        <p class="text-xs text-gray-500 mt-2">pada Maret 2025</p>
+      </div>
+
+      <!-- Total Peminjaman Buku -->
+      <div class="bg-white shadow-md rounded-lg p-6">
+        <h3 class="text-lg font-semibold text-teal-600">Total Peminjaman Buku</h3>
+        <p class="text-3xl font-bold mt-4"><?php echo e(number_format($totalPeminjaman, 0, ',', '.')); ?></p> 
+        <p class="text-xs text-gray-500 mt-2">pada Maret 2025</p>
+      </div>
+
+      <!-- Total Terlambat Pengembalian -->
+      <div class="bg-white shadow-md rounded-lg p-6">
+        <h3 class="text-lg font-semibold text-green-600">Total Terlambat Pengembalian</h3>
+        <p class="text-3xl font-bold mt-4"><?php echo e(number_format($totalKeterlambatan, 0, ',', '.')); ?></p> 
+        <p class="text-xs text-gray-500 mt-2">pada Maret 2025</p>
+      </div>
     </div>
   </section>
 
@@ -116,18 +126,19 @@
     </div>
   </section>
 
-  @livewireScripts
+  <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::scripts(); ?>
+
 
   <script>
     const ctx = document.getElementById('statistikChart').getContext('2d');
     const statistikChart = new Chart(ctx, {
       type: 'line',
       data: {
-        labels: @json($bulanLabels),
+        labels: <?php echo json_encode($bulanLabels, 15, 512) ?>,
         datasets: [
           {
-            label: '{{ $tahunSebelumnya }}',
-            data: @json($jumlahPengunjungTahunLalu),
+            label: '<?php echo e($tahunSebelumnya); ?>',
+            data: <?php echo json_encode($jumlahPengunjungTahunLalu, 15, 512) ?>,
             borderColor: '#60A5FA',
             backgroundColor: 'rgba(96, 165, 250, 0.1)',
             borderWidth: 2,
@@ -135,8 +146,8 @@
             tension: 0.4
           },
           {
-            label: '{{ $tahunSekarang }}',
-            data: @json($jumlahPengunjungTahunIni),
+            label: '<?php echo e($tahunSekarang); ?>',
+            data: <?php echo json_encode($jumlahPengunjungTahunIni, 15, 512) ?>,
             borderColor: '#EF4444',
             backgroundColor: 'rgba(239, 68, 68, 0.1)',
             borderWidth: 2,
@@ -203,7 +214,8 @@
 
   <!-- Copyright -->
   <div class="mt-8 text-center text-sm text-white">
-    &copy; {{ date('Y') }} Perpustakaan Digital SMP Negeri 12 Yogyakarta. All rights reserved.
+    &copy; <?php echo e(date('Y')); ?> Perpustakaan Digital SMP Negeri 12 Yogyakarta. All rights reserved.
   </div>
 </footer>
 </html>
+<?php /**PATH D:\Perkuliahan Duniawi\New folder\New folder\perpustakaan\resources\views/pages/welcome.blade.php ENDPATH**/ ?>
