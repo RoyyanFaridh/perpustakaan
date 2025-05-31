@@ -18,7 +18,7 @@ export default {
 
             colors: {
                 red:{
-                    400 : '#1D4ED8',
+                    400 : '#ef4444',
                 }
                 
             }

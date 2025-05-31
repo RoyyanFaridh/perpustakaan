@@ -1,30 +1,29 @@
 <!DOCTYPE html>
 <html lang="<?php echo e(str_replace('_', '-', app()->getLocale())); ?>">
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>" />
 
         <title><?php echo e(config('app.name', 'Laravel')); ?></title>
 
         <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
+        <link rel="preconnect" href="https://fonts.bunny.net" />
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
         <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     </head>
     <body class="font-sans antialiased bg-gray-50">
-        <div class="min-h-screen flex">
-            <!-- Sidebar -->
-            <aside class="w-64 bg-white border-r hidden sm:block">
+        <div class="min-h-screen flex flex-col sm:flex-row">
+            <!-- Sidebar Desktop -->
+            <aside class="hidden sm:block w-64 bg-white border-r">
                 <?php
 $__split = function ($name, $params = []) {
     return [$name, $params];
 };
-[$__name, $__params] = $__split('layout.navigation', []);
+[$__name, $__params] = $__split('layout.navigation', ['desktop' => true]);
 
 $__html = app('livewire')->mount($__name, $__params, 'lw-2487691127-0', $__slots ?? [], get_defined_vars());
 
@@ -37,14 +36,16 @@ unset($__split);
 if (isset($__slots)) unset($__slots);
 ?>
             </aside>
-            
-            <!-- Mobile Navbar -->
-            <div class="sm:hidden w-full">
-                <?php
+
+            <!-- Main Content Area -->
+            <div class="flex-1 flex flex-col min-h-screen bg-white m-2 border border-gray-100 rounded-md">
+                <!-- Mobile Navbar -->
+                <div class="sm:hidden border-b p-4">
+                    <?php
 $__split = function ($name, $params = []) {
     return [$name, $params];
 };
-[$__name, $__params] = $__split('layout.navigation', []);
+[$__name, $__params] = $__split('layout.navigation', ['mobile' => true]);
 
 $__html = app('livewire')->mount($__name, $__params, 'lw-2487691127-1', $__slots ?? [], get_defined_vars());
 
@@ -56,22 +57,18 @@ unset($__params);
 unset($__split);
 if (isset($__slots)) unset($__slots);
 ?>
-            </div>
+                </div>
 
-            <!-- Main Content -->
-            <div class="flex-auto bg-white m-2 border border-gray-100 rounded-md ">
                 <!-- Page Heading -->
                 <?php if(isset($header)): ?>
-                    <header>
-                        <div class="mx-auto p-4">
-                            <?php echo e($header); ?>
+                    <header class="p-4 border-b">
+                        <?php echo e($header); ?>
 
-                        </div>
                     </header>
                 <?php endif; ?>
-                
+
                 <!-- Page Content -->
-                <main class="">
+                <main class="flex-grow p-4 overflow-auto">
                     <?php echo e($slot); ?>
 
                 </main>

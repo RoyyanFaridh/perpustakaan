@@ -12,7 +12,7 @@ use Livewire\Volt\Component;
         <aside class="hidden sm:flex min-h-screen bg-gray-50 w-64 flex-col fixed inset-y-0 left-0 p-4 border-r overflow-auto">
             <!-- Logo -->
             <div class="h-16 flex items-center justify-center border-b mb-4">
-                <a href="<?php echo e(route('admin.dashboard')); ?>">
+                <a href="<?php echo e(route('user.dashboard')); ?>">
                     <?php if (isset($component)) { $__componentOriginal8892e718f3d0d7a916180885c6f012e7 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal8892e718f3d0d7a916180885c6f012e7 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.application-logo','data' => ['class' => 'h-9 w-auto text-gray-800']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -40,86 +40,14 @@ use Livewire\Volt\Component;
             <nav class="flex-grow space-y-2">
                 <?php if (isset($component)) { $__componentOriginalc295f12dca9d42f28a259237a5724830 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalc295f12dca9d42f28a259237a5724830 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.nav-link','data' => ['href' => route('admin.dashboard'),'active' => request()->routeIs('admin.dashboard'),'class' => 'transition-all']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.nav-link','data' => ['href' => route('user.dashboard'),'active' => request()->routeIs('user.dashboard'),'class' => 'transition-all']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('nav-link'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('admin.dashboard')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('admin.dashboard')),'class' => 'transition-all']); ?>Dashboard <?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginalc295f12dca9d42f28a259237a5724830)): ?>
-<?php $attributes = $__attributesOriginalc295f12dca9d42f28a259237a5724830; ?>
-<?php unset($__attributesOriginalc295f12dca9d42f28a259237a5724830); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginalc295f12dca9d42f28a259237a5724830)): ?>
-<?php $component = $__componentOriginalc295f12dca9d42f28a259237a5724830; ?>
-<?php unset($__componentOriginalc295f12dca9d42f28a259237a5724830); ?>
-<?php endif; ?>
-
-                <!-- Dropdown Anggota -->
-                <div>
-                    <button @click="anggotaOpen = !anggotaOpen"
-                        class="flex items-center w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 rounded-md transition">
-                        <i class="fas fa-users mr-2"></i>
-                        <span class="flex-1">Anggota</span>
-                        <svg class="w-4 h-4 transform transition-transform duration-200"
-                            :class="{ 'rotate-180': anggotaOpen }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <div x-show="anggotaOpen" x-transition class="ml-8 space-y-1">
-                        <?php if (isset($component)) { $__componentOriginalc295f12dca9d42f28a259237a5724830 = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginalc295f12dca9d42f28a259237a5724830 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.nav-link','data' => ['href' => route('anggota.guru'),'active' => request()->routeIs('anggota.guru')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('nav-link'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('anggota.guru')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('anggota.guru'))]); ?>Guru <?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginalc295f12dca9d42f28a259237a5724830)): ?>
-<?php $attributes = $__attributesOriginalc295f12dca9d42f28a259237a5724830; ?>
-<?php unset($__attributesOriginalc295f12dca9d42f28a259237a5724830); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginalc295f12dca9d42f28a259237a5724830)): ?>
-<?php $component = $__componentOriginalc295f12dca9d42f28a259237a5724830; ?>
-<?php unset($__componentOriginalc295f12dca9d42f28a259237a5724830); ?>
-<?php endif; ?>
-                        <?php if (isset($component)) { $__componentOriginalc295f12dca9d42f28a259237a5724830 = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginalc295f12dca9d42f28a259237a5724830 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.nav-link','data' => ['href' => route('anggota.siswa'),'active' => request()->routeIs('anggota.siswa')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('nav-link'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('anggota.siswa')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('anggota.siswa'))]); ?>Siswa <?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginalc295f12dca9d42f28a259237a5724830)): ?>
-<?php $attributes = $__attributesOriginalc295f12dca9d42f28a259237a5724830; ?>
-<?php unset($__attributesOriginalc295f12dca9d42f28a259237a5724830); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginalc295f12dca9d42f28a259237a5724830)): ?>
-<?php $component = $__componentOriginalc295f12dca9d42f28a259237a5724830; ?>
-<?php unset($__componentOriginalc295f12dca9d42f28a259237a5724830); ?>
-<?php endif; ?>
-                    </div>
-                </div>
-                <?php if (isset($component)) { $__componentOriginalc295f12dca9d42f28a259237a5724830 = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginalc295f12dca9d42f28a259237a5724830 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.nav-link','data' => ['href' => route('admin.buku.index'),'active' => request()->routeIs('admin.buku.*')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('nav-link'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('admin.buku.index')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('admin.buku.*'))]); ?>Buku <?php echo $__env->renderComponent(); ?>
+<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('user.dashboard')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('user.dashboard')),'class' => 'transition-all']); ?>Dashboard <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginalc295f12dca9d42f28a259237a5724830)): ?>
 <?php $attributes = $__attributesOriginalc295f12dca9d42f28a259237a5724830; ?>
@@ -131,14 +59,14 @@ use Livewire\Volt\Component;
 <?php endif; ?>
                 <?php if (isset($component)) { $__componentOriginalc295f12dca9d42f28a259237a5724830 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalc295f12dca9d42f28a259237a5724830 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.nav-link','data' => ['href' => route('admin.peminjaman.index'),'active' => request()->routeIs('admin.peminjaman.*')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.nav-link','data' => ['href' => route('user.buku.index'),'active' => request()->routeIs('buku.*'),'class' => 'transition-all']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('nav-link'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('admin.peminjaman.index')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('admin.peminjaman.*'))]); ?>Peminjaman <?php echo $__env->renderComponent(); ?>
+<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('user.buku.index')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('buku.*')),'class' => 'transition-all']); ?>Buku <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginalc295f12dca9d42f28a259237a5724830)): ?>
 <?php $attributes = $__attributesOriginalc295f12dca9d42f28a259237a5724830; ?>
@@ -150,14 +78,14 @@ use Livewire\Volt\Component;
 <?php endif; ?>
                 <?php if (isset($component)) { $__componentOriginalc295f12dca9d42f28a259237a5724830 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalc295f12dca9d42f28a259237a5724830 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.nav-link','data' => ['href' => route('admin.broadcast.index'),'active' => request()->routeIs('admin.broadcast.*')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.nav-link','data' => ['href' => route('user.peminjaman.index'),'active' => request()->routeIs('peminjaman.*'),'class' => 'transition-all']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('nav-link'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('admin.broadcast.index')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('admin.broadcast.*'))]); ?>Broadcast <?php echo $__env->renderComponent(); ?>
+<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('user.peminjaman.index')),'active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->routeIs('peminjaman.*')),'class' => 'transition-all']); ?>Peminjaman <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginalc295f12dca9d42f28a259237a5724830)): ?>
 <?php $attributes = $__attributesOriginalc295f12dca9d42f28a259237a5724830; ?>
@@ -197,14 +125,14 @@ use Livewire\Volt\Component;
                      <?php $__env->slot('content', null, []); ?> 
                         <?php if (isset($component)) { $__componentOriginal68cb1971a2b92c9735f83359058f7108 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal68cb1971a2b92c9735f83359058f7108 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.dropdown-link','data' => ['href' => route('admin.profile'),'wire:navigate' => true]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.dropdown-link','data' => ['href' => route('user.profile'),'wire:navigate' => true]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('dropdown-link'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('admin.profile')),'wire:navigate' => true]); ?>Profile <?php echo $__env->renderComponent(); ?>
+<?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('user.profile')),'wire:navigate' => true]); ?>Profile <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal68cb1971a2b92c9735f83359058f7108)): ?>
 <?php $attributes = $__attributesOriginal68cb1971a2b92c9735f83359058f7108; ?>
@@ -251,7 +179,7 @@ use Livewire\Volt\Component;
 
         <!-- Mobile Navbar -->
         <div class="flex items-center justify-between w-full sm:hidden">
-            <a href="<?php echo e(route('admin.dashboard')); ?>" class="text-lg font-semibold text-gray-800">
+            <a href="<?php echo e(route('user.dashboard')); ?>" class="text-lg font-semibold text-gray-800">
                 <?php if (isset($component)) { $__componentOriginal8892e718f3d0d7a916180885c6f012e7 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal8892e718f3d0d7a916180885c6f012e7 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.application-logo','data' => ['class' => 'h-8 w-auto inline-block']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -290,45 +218,21 @@ use Livewire\Volt\Component;
         <!-- Mobile Dropdown Menu -->
         <div x-show="open" x-transition class="absolute right-4 top-20 w-64 bg-white rounded-lg shadow-lg z-50 border sm:hidden">
             <div class="px-4 py-3 space-y-2">
-                <a href="<?php echo e(route('admin.dashboard')); ?>"
-                    class="block px-3 py-2 rounded hover:bg-gray-100 transition <?php echo e(request()->routeIs('admin.dashboard') ? 'font-semibold bg-gray-200' : ''); ?>">
+                <a href="<?php echo e(route('user.dashboard')); ?>"
+                    class="block px-3 py-2 rounded hover:bg-gray-100 transition <?php echo e(request()->routeIs('user.dashboard') ? 'font-semibold bg-gray-200' : ''); ?>">
                     Dashboard
                 </a>
-
-                <button @click="anggotaOpen = !anggotaOpen"
-                    class="flex items-center w-full px-3 py-2 text-left hover:bg-gray-100 rounded transition">
-                    <span>Anggota</span>
-                    <svg class="w-4 h-4 ml-auto transform transition-transform duration-200"
-                        :class="{ 'rotate-180': anggotaOpen }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path d="M19 9l-7 7-7-7" />
-                    </svg>
-                </button>
-                <div x-show="anggotaOpen" x-transition class="pl-4 space-y-1">
-                    <a href="<?php echo e(route('anggota.guru')); ?>"
-                        class="block px-3 py-2 rounded hover:bg-gray-100 <?php echo e(request()->routeIs('anggota.guru') ? 'font-semibold bg-gray-200' : ''); ?>">
-                        Guru
-                    </a>
-                    <a href="<?php echo e(route('anggota.siswa')); ?>"
-                        class="block px-3 py-2 rounded hover:bg-gray-100 <?php echo e(request()->routeIs('anggota.siswa') ? 'font-semibold bg-gray-200' : ''); ?>">
-                        Siswa
-                    </a>
-                </div>
-
-                <a href="<?php echo e(route('admin.buku.index')); ?>"
-                    class="block px-3 py-2 rounded hover:bg-gray-100 <?php echo e(request()->routeIs('admin.buku.*') ? 'font-bold bg-gray-200' : ''); ?>">
+                <a href="<?php echo e(route('user.buku.index')); ?>"
+                    class="block px-3 py-2 rounded hover:bg-gray-100 transition <?php echo e(request()->routeIs('buku.*') ? 'font-semibold bg-gray-200' : ''); ?>">
                     Buku
                 </a>
-                <a href="<?php echo e(route('admin.peminjaman.index')); ?>"
-                    class="block px-3 py-2 rounded hover:bg-gray-100 <?php echo e(request()->routeIs('admin.peminjaman.*') ? 'font-bold bg-gray-200' : ''); ?>">
+                <a href="<?php echo e(route('user.peminjaman.index')); ?>"
+                    class="block px-3 py-2 rounded hover:bg-gray-100 transition <?php echo e(request()->routeIs('peminjaman.*') ? 'font-semibold bg-gray-200' : ''); ?>">
                     Peminjaman
-                </a>
-                <a href="<?php echo e(route('admin.broadcast.index')); ?>"
-                    class="block px-3 py-2 rounded hover:bg-gray-100 <?php echo e(request()->routeIs('admin.broadcast.*') ? 'font-bold bg-gray-200' : ''); ?>">
-                    Broadcast
                 </a>
 
                 <div class="border-t pt-3">
-                    <a href="<?php echo e(route('admin.profile')); ?>"
+                    <a href="<?php echo e(route('user.profile')); ?>"
                         class="block px-3 py-2 rounded hover:bg-gray-100">Profile</a>
                     <button wire:click="logout"
                         class="w-full text-start px-3 py-2 rounded hover:bg-gray-100 text-red-500 hover:text-red-700">
@@ -338,4 +242,4 @@ use Livewire\Volt\Component;
             </div>
         </div>
     </div>
-</nav><?php /**PATH D:\Perkuliahan Duniawi\New folder\New folder\perpustakaan\resources\views\livewire/layout/navigation.blade.php ENDPATH**/ ?>
+</nav><?php /**PATH D:\Perkuliahan Duniawi\New folder\New folder\perpustakaan\resources\views\livewire/layout/user-navigation.blade.php ENDPATH**/ ?>

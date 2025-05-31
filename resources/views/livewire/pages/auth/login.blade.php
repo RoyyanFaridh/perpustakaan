@@ -59,7 +59,7 @@ new #[Layout('layouts.guest')] class extends Component
 
 <div class="min-h-screen flex flex-col md:flex-row">
     <!-- Kiri: Form Login -->
-    <div class="w-full md:w-1/2 flex items-center justify-center p-8 bg-white">
+    <div class="w-full md:w-1/2 flex items-center justify-center p-8">
         <!-- Container utama -->
         <div class="bg-white p-10 max-w- w-full h-[90vh] max-h-[800px] rounded-2xl shadow-2xl overflow-hidden ml-4 mr-4 flex flex-col items-center relative">
             
@@ -71,22 +71,6 @@ new #[Layout('layouts.guest')] class extends Component
                     </div>
                 </a>
             </div>
-<div class="min-h-screen flex flex-col md:flex-row bg-white">
-  <!-- Kiri: Form Login -->
-  <div
-    class="w-full md:w-1/2 flex items-center justify-center p-8 md:p-12 min-h-screen md:min-h-auto"
-  >
-    <!-- Container utama -->
-    <div
-      class="p-6 sm:p-10 w-full h-auto md:h-[90vh] max-h-[1000px] rounded-2xl shadow-lg overflow-hidden flex flex-col items-center"
-      style="max-width: 100%;" 
-    >
-      <!-- Logo -->
-      <div class="mb-6 flex justify-center">
-        <a href="/" wire:navigate>
-          <img src="/images/logo_smp12yk.png" alt="Logo" class="h-16 sm:h-20 w-auto" />
-        </a>
-      </div>
 
       <!-- Session status -->
       <x-auth-session-status class="mb-2 mt-2 sm:mt-4" :status="session('status')" />
@@ -98,14 +82,14 @@ new #[Layout('layouts.guest')] class extends Component
           <div>
             <x-input-label for="nis_nip" :value="('NIS / NIP')" class="text-sm sm:text-base" />
             <x-text-input
-              wire:model="form.nis_nip"
-              id="nis_nip"
-              class="block mt-1 w-full text-sm sm:text-base"
-              type="text"
-              name="nis_nip"
-              required
-              autofocus
-              autocomplete="username"
+            wire:model="form.nis_nip"
+            id="nis_nip"
+            class="block mt-1 w-full text-sm sm:text-base focus:border-red-400 focus:ring-red-400"
+            type="text"
+            name="nis_nip"
+            required
+            autofocus
+            autocomplete="username"
             />
             <x-input-error :messages="$errors->get('form.nis_nip')" class="mt-2 text-xs sm:text-sm" />
           </div>
@@ -114,13 +98,13 @@ new #[Layout('layouts.guest')] class extends Component
           <div class="mt-4">
             <x-input-label for="password" :value="('Password')" class="text-sm sm:text-base" />
             <x-text-input
-              wire:model="form.password"
-              id="password"
-              class="block mt-1 w-full text-sm sm:text-base"
-              type="password"
-              name="password"
-              required
-              autocomplete="current-password"
+            wire:model="form.password"
+            id="password"
+            class="block mt-1 w-full text-sm sm:text-base focus:border-red-400 focus:ring-red-400"
+            type="password"
+            name="password"
+            required
+            autocomplete="current-password"
             />
             <x-input-error :messages="$errors->get('form.password')" class="mt-2 text-xs sm:text-sm" />
           </div>
@@ -153,8 +137,15 @@ new #[Layout('layouts.guest')] class extends Component
 
           <!-- Submit -->
           <div class="mt-6 flex justify-center">
-            <x-primary-button class="w-full text-sm sm:text-base">
-              {{ __('Log in') }}
+            <x-primary-button
+            class="w-full text-sm sm:text-base
+                    bg-red-400 hover:bg-red-500
+                    active:bg-red-600 focus:bg-red-600
+                    border border-red-400
+                    active:border-red-600 focus:border-red-600
+                    focus:outline-none focus:ring-0"
+            >
+            {{ __('Log in') }}
             </x-primary-button>
           </div>
         </div>
@@ -163,20 +154,10 @@ new #[Layout('layouts.guest')] class extends Component
   </div>
 
     <!-- Kanan: Gambar dalam Card -->
-    <div class="hidden md:flex md:w-1/2 items-center justify-center bg-white">
+    <div class="hidden md:flex md:w-1/2 items-center justify-center">
         <div class="w-full max-h-[800px] h-[90vh] rounded-2xl overflow-hidden mt-2 mb-2 mx-4">
             <img src="/images/cover.jpg" alt="Gambar Perpustakaan"
                 class="object-cover w-full h-full rounded-2xl shadow-3xl">
         </div>
     </div>
-  <!-- Kanan: Gambar dalam Card -->
-  <div class="hidden md:flex md:w-1/2 items-center justify-center p-6">
-    <div class="w-full max-h-[1000px] h-[90vh] rounded-2xl overflow-hidden mx-4">
-      <img
-        src="/images/cover.jpg"
-        alt="Gambar Perpustakaan"
-        class="object-cover w-full h-full rounded-2xl shadow-xl"
-      />
-    </div>
-  </div>
 </div>

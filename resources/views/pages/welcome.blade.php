@@ -12,22 +12,22 @@
 <body class="font-sans antialiased text-gray-800">
 
   <!-- Navbar Sticky -->
-  <header class="sticky top-0 z-50 flex justify-between items-center p-4 sm:p-6 bg-white shadow-md">
-      <!-- Logo -->
-      <div class="flex items-center space-x-4">
-          <img
-              src="/images/logo_smp12yk.png"
-              alt="Logo SMPN 12 Yogyakarta"
-              class="h-8 sm:h-10 md:h-12 w-auto max-h-14"
-          />
-      </div>
+  <header class="sticky top-0 z-50 flex justify-between items-center p-6 bg-white shadow-md">
+    <!-- Logo -->
+    <div class="flex items-center space-x-4">
+      <img src="/images/logo_smp12yk.png" alt="Logo SMPN 12 Yogyakarta" class="h-10 w-auto" />
+    </div>
 
-      <!-- Menu + Login -->
-      <div class="flex items-center justify-between w-full md:w-auto">
-          @include('livewire.welcome.navigation')
-      </div>
+    <!-- Menu + Login (dibungkus agar lebih dekat) -->
+    <div class="flex items-center space-x-6">
+      <nav class="space-x-6 text-sm text-gray-700">
+        <a href="#hero" class="hover:underline">Beranda</a>
+        <a href="#tentang" class="hover:underline">Tentang</a>
+        <a href="#kontak" class="hover:underline">Kontak</a>
+      </nav>
+      <a href="{{ route('login') }}" class="px-5 py-2 rounded bg-red-400 text-white hover:bg-red-500 transition">Login</a>
+    </div>
   </header>
-
 
   <section id="hero"
     class="relative flex items-start justify-start text-white bg-cover bg-center pt-40
