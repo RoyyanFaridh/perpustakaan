@@ -10,7 +10,7 @@ class Buku extends Model
     use HasFactory;
 
     // Nama tabel di database
-    protected $table = 'buku'; // sesuaikan dengan tabel di database
+    protected $table = 'books'; // sesuaikan dengan tabel di database
 
     protected $fillable = [
         'judul',

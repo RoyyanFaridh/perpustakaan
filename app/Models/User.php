@@ -33,6 +33,6 @@ class User extends Authenticatable
 
     public function anggota()
     {
-        return $this->hasOne(Anggota::class, 'nis_nip', 'nis_nip');
+        return $this->hasOne(\App\Models\Anggota::class, 'nis_nip', 'nis_nip');
     }
 }

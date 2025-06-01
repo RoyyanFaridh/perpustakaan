@@ -24,6 +24,17 @@ use App\Livewire\User\Peminjaman\Index as PeminjamanIndexUser;
 use App\Models\Buku;
 use App\Models\User;
 use App\Models\Peminjaman;
+use App\Http\Controllers\PeminjamanController;
+use App\Livewire\Admin\Peminjaman\Index;
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/peminjaman', Index::class)->name('admin.peminjaman');
+});
+
+
+Route::get('/peminjaman', [PeminjamanController::class, 'index'])->name('peminjaman.index');
+
+
 
 // Public routes
 Route::get('/', fn() => view('pages.welcome'))->name('welcome');
