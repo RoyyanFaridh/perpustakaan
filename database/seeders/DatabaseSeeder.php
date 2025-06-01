@@ -4,6 +4,7 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
+use App\Models\Anggota;
 
 class DatabaseSeeder extends Seeder
 {
@@ -48,6 +49,14 @@ class DatabaseSeeder extends Seeder
             'password'            => Hash::make('12345678'),           // password default
             'is_default_password' => true,
         ]);
+
         $siswa->assignRole('siswa');
+
+        // Tambahkan anggota terkait
+        Anggota::create([
+            'nama'    => $siswa->name,
+            'nis_nip' => $siswa->nis_nip,
+            'kelas'   => '9', // ganti sesuai kelas siswa
+        ]);
     }
 }

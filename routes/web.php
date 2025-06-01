@@ -14,6 +14,8 @@ use App\Livewire\Admin\Peminjaman\Index as PeminjamanIndex;
 use App\Livewire\Admin\Anggota\Export;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Livewire\Admin\Broadcast\Index as BroadcastIndex;
+use App\Http\Controllers\PeminjamanController;
+use App\Livewire\Admin\Peminjaman\Index;
 
 // User
 use App\Livewire\User\Dashboard\Index as DashboardIndexUser;
@@ -22,6 +24,17 @@ use App\Livewire\User\Peminjaman\Index as PeminjamanIndexUser;
 use \App\Livewire\User\Profile as ProfileIndexUser;
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/peminjaman', Index::class)->name('admin.peminjaman');
+});
+
+
+Route::get('/peminjaman', [PeminjamanController::class, 'index'])->name('peminjaman.index');
+
+// Public routes
+Route::get('/', fn() => view('pages.welcome'))->name('welcome');
+
 
 // Admin routes
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->group(function () {
