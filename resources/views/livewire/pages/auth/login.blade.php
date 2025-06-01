@@ -60,14 +60,14 @@ new #[Layout('layouts.guest')] class extends Component
 <!-- Wrapper tengah halaman -->
 <div class="flex items-center justify-center min-h-screen bg-gray-100 px-4">
   <!-- Kontainer utama dibatasi lebarnya -->
-  <div class="flex w-full max-w-3xl shadow-xl rounded-2xl overflow-hidden bg-white">
+  <div class="flex w-full max-w-4xl shadow-xl rounded-2xl overflow-hidden bg-white">
     
     <!-- Kiri: Form Login -->
-    <div class="w-1/2 p-6 sm:p-8 flex flex-col justify-center">
+    <div class="w-1/2 p-8 sm:p-12 flex flex-col justify-center">
       <!-- Logo -->
       <div class="mb-4 flex justify-center">
         <a href="/" wire:navigate>
-          <img src="/images/logo_smp12yk.png" alt="Logo" class="h-12 sm:h-15 w-auto" />
+          <img src="/images/logo_smp12yk.png" alt="Logo" class="h-12 sm:h-14 w-auto" />
         </a>
       </div>
 
