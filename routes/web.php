@@ -32,10 +32,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 Route::get('/peminjaman', [PeminjamanController::class, 'index'])->name('peminjaman.index');
 
-// Public routes
-Route::get('/', fn() => view('pages.welcome'))->name('welcome');
-
-
 // Admin routes
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard-admin', DashboardIndex::class)->name('admin.dashboard');

@@ -7,7 +7,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-  @livewireStyles
+  <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::styles(); ?>
+
 </head>
 <body class="font-sans antialiased text-gray-800">
   <header x-data="{ open: false, active: '#hero' }" class="sticky top-0 z-50 bg-white shadow-md px-4 py-3 md:px-6 md:py-2">
@@ -36,7 +37,7 @@
           </svg>
         </button>
 
-        <a href="{{ route('login') }}" class="rounded px-5 py-2 bg-red-400 text-white hover:bg-red-500 text-sm transition">
+        <a href="<?php echo e(route('login')); ?>" class="rounded px-5 py-2 bg-red-400 text-white hover:bg-red-500 text-sm transition">
           Login
         </a>
       </div>
@@ -88,16 +89,28 @@
   <!-- Statistik Section -->
   <section class="relative z-10 px-6 md:px-20 py-8 bg-gray-100">
     <div class="flex flex-wrap gap-4">
-        @foreach ($cardData as $card)
-          <x-card
-              :title="$card['title']"
-              :value="$card['value']"
-              :periode="$card['periode'] ?? null"
-              :delta="$card['delta'] ?? null"
-              :icon="$card['icon'] ?? null"
-              :bgColor="$card['bgColor'] ?? '#f43f5e'"
-          />
-      @endforeach
+        <?php $__currentLoopData = $cardData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $card): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+          <?php if (isset($component)) { $__componentOriginal53747ceb358d30c0105769f8471417f6 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal53747ceb358d30c0105769f8471417f6 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.card','data' => ['title' => $card['title'],'value' => $card['value'],'periode' => $card['periode'] ?? null,'delta' => $card['delta'] ?? null,'icon' => $card['icon'] ?? null,'bgColor' => $card['bgColor'] ?? '#f43f5e']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['title' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['title']),'value' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['value']),'periode' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['periode'] ?? null),'delta' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['delta'] ?? null),'icon' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['icon'] ?? null),'bgColor' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['bgColor'] ?? '#f43f5e')]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal53747ceb358d30c0105769f8471417f6)): ?>
+<?php $attributes = $__attributesOriginal53747ceb358d30c0105769f8471417f6; ?>
+<?php unset($__attributesOriginal53747ceb358d30c0105769f8471417f6); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal53747ceb358d30c0105769f8471417f6)): ?>
+<?php $component = $__componentOriginal53747ceb358d30c0105769f8471417f6; ?>
+<?php unset($__componentOriginal53747ceb358d30c0105769f8471417f6); ?>
+<?php endif; ?>
+      <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     </div>
   </section>
 
@@ -133,18 +146,19 @@
     </div>
   </section>
 
-  @livewireScripts
+  <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::scripts(); ?>
+
 
   <script>
     const ctx = document.getElementById('statistikChart').getContext('2d');
     const statistikChart = new Chart(ctx, {
       type: 'line',
       data: {
-        labels: @json($bulanLabels),
+        labels: <?php echo json_encode($bulanLabels, 15, 512) ?>,
         datasets: [
           {
-            label: '{{ $tahunSebelumnya }}',
-            data: @json($jumlahPengunjungTahunLalu),
+            label: '<?php echo e($tahunSebelumnya); ?>',
+            data: <?php echo json_encode($jumlahPengunjungTahunLalu, 15, 512) ?>,
             borderColor: '#60A5FA',
             backgroundColor: 'rgba(96, 165, 250, 0.1)',
             borderWidth: 2,
@@ -152,8 +166,8 @@
             tension: 0.4
           },
           {
-            label: '{{ $tahunSekarang }}',
-            data: @json($jumlahPengunjungTahunIni),
+            label: '<?php echo e($tahunSekarang); ?>',
+            data: <?php echo json_encode($jumlahPengunjungTahunIni, 15, 512) ?>,
             borderColor: '#EF4444',
             backgroundColor: 'rgba(239, 68, 68, 0.1)',
             borderWidth: 2,
@@ -229,7 +243,8 @@
 
   <!-- Copyright -->
   <div class="mt-10 border-t border-red-300 pt-4 text-center text-sm text-white">
-    &copy; {{ date('Y') }} Perpustakaan Digital SMP Negeri 12 Yogyakarta. All rights reserved.
+    &copy; <?php echo e(date('Y')); ?> Perpustakaan Digital SMP Negeri 12 Yogyakarta. All rights reserved.
   </div>
 </footer>
 </html>
+<?php /**PATH C:\Users\ASUS\perpustakaan\resources\views/pages/welcome.blade.php ENDPATH**/ ?>
