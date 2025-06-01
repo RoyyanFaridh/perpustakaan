@@ -10,24 +10,54 @@
   @livewireStyles
 </head>
 <body class="font-sans antialiased text-gray-800">
-
-  <!-- Navbar Sticky -->
-  <header class="sticky top-0 z-50 flex justify-between items-center p-4 sm:p-6 bg-white shadow-md">
-      <!-- Logo -->
-      <div class="flex items-center space-x-4">
-          <img
-              src="/images/logo_smp12yk.png"
-              alt="Logo SMPN 12 Yogyakarta"
-              class="h-8 sm:h-10 md:h-12 w-auto max-h-14"
-          />
+  <header x-data="{ open: false, active: '#hero' }" class="sticky top-0 z-50 bg-white shadow-md px-4 py-3 md:px-6 md:py-2">
+    <div class="flex items-center justify-between w-full py-2">
+      <div class="flex-shrink-0">
+        <img src="/images/logo_smp12yk.png" class="h-10 w-auto" />
       </div>
 
-      <!-- Menu + Login -->
-      <div class="flex items-center justify-between w-full md:w-auto">
-          @include('livewire.welcome.navigation')
+      <nav class="hidden md:flex flex-grow justify-center space-x-8 text-sm text-gray-700">
+        <a href="#hero" :class="{ 'font-bold': active === '#hero' }" @click="active = '#hero'" class="transition">Beranda</a>
+        <a href="#tentang" :class="{ 'font-bold': active === '#tentang' }" @click="active = '#tentang'" class="transition">Tentang</a>
+        <a href="#kontak" :class="{ 'font-bold': active === '#kontak' }" @click="active = '#kontak'" class="transition">Kontak</a>
+      </nav>
+
+      <div class="flex items-center">
+        <button @click="open = !open" class="md:hidden text-black mr-4 z-50 relative">
+          <svg x-show="!open" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-black" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg x-show="open" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-black" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
+        <a href="{{ route('login') }}" class="rounded px-5 py-2 bg-red-400 text-white hover:bg-red-500 text-sm transition">
+          Login
+        </a>
       </div>
+    </div>
+
+    <div x-show="open" x-transition
+        class="md:hidden absolute right-4 top-full mt-2 w-64 bg-white shadow-lg rounded border px-4 py-3 space-y-2 z-40 text-black">
+      <a href="#hero" @click="active = '#hero'; open = false"
+        :class="{ 'font-bold': active === '#hero' }" class="block hover:bg-gray-100 px-2 py-1 rounded transition">
+        Beranda
+      </a>
+      <a href="#tentang" @click="active = '#tentang'; open = false"
+        :class="{ 'font-bold': active === '#tentang' }" class="block hover:bg-gray-100 px-2 py-1 rounded transition">
+        Tentang
+      </a>
+      <a href="#kontak" @click="active = '#kontak'; open = false"
+        :class="{ 'font-bold': active === '#kontak' }" class="block hover:bg-gray-100 px-2 py-1 rounded transition">
+        Kontak
+      </a>
+    </div>
   </header>
-
 
   <section id="hero"
     class="relative flex items-start justify-start text-white bg-cover bg-center pt-40
@@ -37,16 +67,13 @@
     <!-- Overlay -->
     <div class="absolute inset-0 bg-black bg-opacity-30"></div>
 
-    <!-- Isi konten -->
     <div class="relative z-10">
-        <!-- Welcome Message -->
         <div class="mb-2 max-w-3xl px-4 sm:px-6 md:px-12 lg:px-20">
             <span class="inline-block px-4 py-1 text-sm font-medium rounded-full bg-white bg-opacity-10 backdrop-blur-sm border border-white border-opacity-20">
                 Hai, Selamat Datang
             </span>
         </div>
 
-        <!-- Heading -->
         <div class="w-full px-4 sm:px-6 md:px-12 lg:px-20">
             <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight">
                 Perpustakaan Digital <br class="hidden sm:block">
@@ -55,47 +82,37 @@
         </div>
     </div>
 
-    <!-- Gradasi bawah -->
     <div class="absolute bottom-0 left-0 w-full h-20 bg-gradient-to-b from-transparent to-gray-100 z-0"></div>
   </section>
 
-
   <!-- Statistik Section -->
-  <section class="relative z-10 px-6 md:px-20 py-20 bg-gray-100">
+  <section class="relative z-10 px-6 md:px-20 py-8 bg-gray-100">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-      <!-- Total Koleksi Buku -->
-      <div class="bg-white shadow-md rounded-lg p-6">
-        <h3 class="text-lg font-semibold text-pink-600">Total Koleksi Buku</h3>
-        <p class="text-3xl font-bold mt-4">{{ number_format($totalKoleksiBuku, 0, ',', '.') }}</p> 
-        <p class="text-xs text-gray-500 mt-2">pada Maret 2025</p>
-      </div>
-
-      <!-- Total Anggota -->
-      <div class="bg-white shadow-md rounded-lg p-6">
-        <h3 class="text-lg font-semibold text-blue-600">Total Anggota</h3>
-        <p class="text-3xl font-bold mt-4">{{ number_format($totalAnggota, 0, ',', '.') }}</p> 
-        <p class="text-xs text-gray-500 mt-2">pada Maret 2025</p>
-      </div>
-
-      <!-- Total Peminjaman Buku -->
-      <div class="bg-white shadow-md rounded-lg p-6">
-        <h3 class="text-lg font-semibold text-teal-600">Total Peminjaman Buku</h3>
-        <p class="text-3xl font-bold mt-4">{{ number_format($totalPeminjaman, 0, ',', '.') }}</p> 
-        <p class="text-xs text-gray-500 mt-2">pada Maret 2025</p>
-      </div>
-
-      <!-- Total Terlambat Pengembalian -->
-      <div class="bg-white shadow-md rounded-lg p-6">
-        <h3 class="text-lg font-semibold text-green-600">Total Terlambat Pengembalian</h3>
-        <p class="text-3xl font-bold mt-4">{{ number_format($totalKeterlambatan, 0, ',', '.') }}</p> 
-        <p class="text-xs text-gray-500 mt-2">pada Maret 2025</p>
-      </div>
+      @foreach ($cardData as $card)
+        <div class="bg-white shadow-md rounded-lg p-6">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background-color: {{ $card['bgColor'] }}">
+              {!! $card['icon'] !!}
+            </div>
+            <h3 class="text-lg font-semibold" style="color: {{ $card['bgColor'] }}">{{ $card['title'] }}</h3>
+          </div>
+          <div class="flex items-center justify-between mt-4">
+            <p class="text-3xl font-bold">{{ $card['value'] }}</p>
+            @if (!is_null($card['delta']))
+              <span class="text-sm font-semibold px-3 py-1 rounded {{ $card['delta'] >= 0 ? 'bg-green-100 text-green-500 border border-green-500' : 'bg-red-100 text-red-600' }}">
+                {{ $card['delta'] >= 0 ? '+' : '' }}{{ number_format($card['delta'], 0, ',', '.') }}
+              </span>
+            @endif
+          </div>
+          <p class="text-xs text-gray-500 mt-2">pada {{ $card['periode'] }}</p>
+        </div>
+      @endforeach
     </div>
   </section>
 
   <!-- Tentang Perpustakaan dan Statistik Pengunjung -->
-  <section id="tentang" class="px-6 md:px-20 py-16 bg-gray-100 text-gray-800">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start gap-y-16">
+  <section id="tentang" class="px-6 md:px-20 py-8 bg-gray-100 text-gray-800">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start gap-y-8">
       <!-- Tentang Perpustakaan -->
       <div>
         <h2 class="text-3xl font-semibold mb-6 text-red-400">Tentang Perpustakaan Digital</h2>
@@ -181,37 +198,46 @@
     });
   </script>
 </body>
+<footer id="kontak" class="bg-red-400 text-white px-6 md:px-20 py-10 border-t border-red-300 shadow-2xl">
+  <div class="w-full flex flex-col md:flex-row justify-between px-0 md:px-0 ...">
 
-<!-- Footer -->
-<footer id="kontak" class="bg-red-400 text-white px-6 md:px-20 py-10 border-t border-gray-200 shadow-2xl">
-  <div class="flex flex-col md:flex-row md:justify-between md:items-center space-y-6 md:space-y-0">
-    <!-- Informasi Sekolah -->
-    <div>
-      <h3 class="text-lg font-semibold mb-2 text-white">SMP Negeri 12 Yogyakarta</h3>
-      <p class="text-sm text-white">Jalan Tentara Pelajar No.9 Yogyakarta 55272</p>
-      <p class="text-sm text-white">Telp : (0274) 563012</>
-      <p class="text-sm text-white">Website: <a href="https://smpn12jogja.sch.id" target="_blank" class="text-white hover:underline">smpn12jogja.sch.id</a></p>
+    <div class="md:w-1/2 text-left mb-8 md:mb-0">
+      <h3 class="text-xl font-bold mb-3">SMP Negeri 12 Yogyakarta</h3>
+      <p class="text-sm mb-1">Jalan Tentara Pelajar No.9, Yogyakarta 55272</p>
+      <p class="text-sm mb-1">Telp: (0274) 563012</p>
+      <p class="text-sm">
+        Website:
+        <a href="https://smpn12jogja.sch.id" target="_blank" class="underline hover:text-gray-200">
+          smpn12jogja.sch.id
+        </a>
+      </p>
     </div>
 
-    <!-- Sosial Media -->
-    <div>
-      <h3 class="text-lg font-semibold mb-2 text-white">Ikuti Kami</h3>
-      <ul class="space-y-1">
+    <div class="md:w-1/2 text-left md:text-right">
+      <h3 class="text-xl font-bold mb-3">Ikuti Kami</h3>
+      <ul class="space-y-2 text-sm">
         <li>
-          <a href="https://www.instagram.com/smpn12jogja" target="_blank" class="hover:text-white transition">Instagram: @smpn12jogja</a>
+          <a href="https://www.instagram.com/smpn12jogja" target="_blank" class="hover:text-gray-200 transition">
+            Instagram: @smpn12jogja
+          </a>
         </li>
         <li>
-          <a href="https://www.facebook.com/smpn12jogja" target="_blank" class="hover:text-white transition">Facebook: SMPN 12 Jogja</a>
+          <a href="https://www.facebook.com/smpn12jogja" target="_blank" class="hover:text-gray-200 transition">
+            Facebook: SMPN 12 Jogja
+          </a>
         </li>
         <li>
-          <a href="mailto:smpn12jogja@gmail.com" class="hover:text-white transition">Email: smpn12jogja@gmail.com</a>
+          <a href="mailto:smpn12jogja@gmail.com" class="hover:text-gray-200 transition">
+            Email: smpn12jogja@gmail.com
+          </a>
         </li>
       </ul>
     </div>
+
   </div>
 
   <!-- Copyright -->
-  <div class="mt-8 text-center text-sm text-white">
+  <div class="mt-10 border-t border-red-300 pt-4 text-center text-sm text-white">
     &copy; {{ date('Y') }} Perpustakaan Digital SMP Negeri 12 Yogyakarta. All rights reserved.
   </div>
 </footer>

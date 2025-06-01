@@ -7,7 +7,9 @@
 
     <div class="py-4">
         <div class="mx-auto sm:px-4 lg:px-6">
-            @livewire('admin.broadcast.index')
+            <div class="container mx-auto">
+                @livewire('admin.broadcast.index')
+            </div>
         </div>
     </div>
 </x-app-layout>
