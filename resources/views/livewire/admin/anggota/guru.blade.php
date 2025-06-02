@@ -1,17 +1,19 @@
 <div class="space-y-6">
     <div class="bg-white p-6 rounded-2xl shadow-md overflow-x-auto">
-        <div class="flex justify-between items-center mb-6">
-            <h2 class="text-xl font-semibold text-gray-800">Daftar Guru</h2>
-            <div class="flex gap-2">
-                <a href="{{ route('export.guru') }}" target="_blank" class="bg-green-500 hover:bg-green-600 text-white text-sm font-medium py-2 px-4 rounded-lg">
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4 sm:gap-0">
+            <h2 class="text-lg sm:text-xl font-semibold text-gray-800">Daftar Guru</h2>
+            <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                <a href="{{ route('export.guru') }}" target="_blank"
+                class="bg-green-500 hover:bg-green-600 text-white text-sm font-medium py-2 px-3 sm:px-4 rounded-lg text-center">
                     Export Excel
                 </a>
-                <button wire:click="openModal" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-2 px-4 rounded-lg">
+                <button wire:click="openModal"
+                        class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-2 px-3 sm:px-4 rounded-lg text-center">
                     + Tambah Guru
-                </button> 
-            </div>     
+                </button>
+            </div>
         </div>
-
+        
         <div class="mb-4">
             <input 
                 type="text" 
@@ -145,15 +147,38 @@
                     <tr class="hover:bg-gray-50">
                         <td class="px-4 py-2">{{ $index + 1 }}</td>
                         <td class="px-4 py-2">{{ $item->nama }}</td>
-                        <td class="px-4 py-2">{{ $item->status == 'active' ? 'Aktif' : 'Tidak Aktif' }}</td>
+                        <td class="px-4 py-2 whitespace-nowrap">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold border
+                                {{ $item->status == 'active' 
+                                    ? 'text-green-700 bg-green-200 border-green-500' 
+                                    : 'text-red-700 bg-red-200 border-red-500' }}">
+                                {{ $item->status == 'active' ? 'Aktif' : 'Tidak Aktif' }}
+                            </span>
+                        </td>
                         <td class="px-4 py-2">{{ $item->nis_nip }}</td>
-                        <td class="px-4 py-2">{{ $item->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
+                        <td class="px-4 py-2 text-center">
+                            @if($item->jenis_kelamin == 'L')
+                                <span class="inline-block px-3 py-1 text-blue-700 bg-blue-200 border border-blue-500 rounded-full text-xs font-semibold">
+                                    Laki-laki
+                                </span>
+                            @else
+                                <span class="inline-block px-3 py-1 text-pink-700 bg-pink-200 border border-pink-500 rounded-full text-xs font-semibold">
+                                    Perempuan
+                                </span>
+                            @endif
+                        </td>
                         <td class="px-4 py-2">{{ \Illuminate\Support\Str::limit($item->alamat, 100) }}</td>
                         <td class="px-4 py-2">{{ $item->no_telp }}</td>
-                        <td class="px-4 py-2">{{ $item->email }}</td>
-                        <td class="px-4 py-2 text-center space-x-2">
-                            <button wire:click="edit({{ $item->id }})" class="px-3 py-1 bg-yellow-400 hover:bg-yellow-500 text-white rounded-md shadow text-xs">Edit</button>
-                            <button wire:click="delete({{ $item->id }})" class="px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded-md shadow text-xs">Hapus</button>
+                        <td>{{ $item->email ?: ($item->user->email ?? '-') }}</td>
+                        <td class="px-4 py-2 text-center">
+                            <div class="flex flex-col items-center space-y-2 md:flex-row md:justify-center md:space-y-0 md:space-x-2">
+                                <button wire:click="edit({{ $item->id }})" class="px-3 py-1 bg-yellow-400 hover:bg-yellow-500 text-white rounded-md shadow text-xs">
+                                    Edit
+                                </button>
+                                <button wire:click="delete({{ $item->id }})" class="px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded-md shadow text-xs">
+                                    Hapus
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 @endforeach

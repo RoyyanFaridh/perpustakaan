@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->foreignId('buku_id')->constrained('books')->onDelete('cascade');
             $table->date('tanggal_pinjam');
             $table->date('tanggal_kembali')->nullable();
-            $table->string('status')->default('dipinjam'); // contoh: dipinjam, dikembalikan, telat
+            $table->string('status')->default('booking'); // contoh: dipinjam, dikembalikan, telat
             $table->text('keterangan')->nullable();
             $table->timestamps();
         });

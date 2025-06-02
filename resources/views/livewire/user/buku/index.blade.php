@@ -39,31 +39,39 @@
                     @endif
 
                     {{-- Konten Buku --}}
-                    <div class="flex flex-col justify-between flex-1">
+                    <div class="flex flex-col justify-between flex-1 overflow-hidden">
                         <div>
-                            <h3 class="text-xl font-bold text-black">{{ $item->judul }}</h3>
-                            <span class="inline-block mt-1 mb-2 px-4 py-0.5 text-xs font-medium bg-green-100 text-green-700 rounded-full border border-green-300">
+                            {{-- Judul dengan truncate --}}
+                            <h3 class="text-lg font-bold text-black truncate" title="{{ $item->judul }}">
+                                {{ $item->judul }}
+                            </h3>
+                    
+                            {{-- Kategori --}}
+                            <span class="inline-block mt-1 mb-2 px-3 py-0.5 text-xs font-medium bg-green-100 text-green-700 rounded-full border border-green-300">
                                 {{ $item->kategori }}
                             </span>
-
-                            <p class="text-sm text-gray-500 mb-3 line-clamp-3">
+                    
+                            {{-- Deskripsi maksimal 3 baris --}}
+                            <p class="text-sm text-gray-500 mb-3 line-clamp-3 break-words">
                                 {{ $item->deskripsi }}
                             </p>
                         </div>
-
+                    
+                        {{-- Detail --}}
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 text-sm text-gray-700">
-                            <div class="space-y-1">
-                                <p><span class="font-sm">Penulis:</span> {{ $item->penulis }}</p>
-                                <p><span class="font-sm">Penerbit:</span> {{ $item->penerbit }}</p>
+                            <div class="space-y-1 overflow-hidden">
+                                <p class="truncate"><span class="font-sm">Penulis:</span> {{ $item->penulis }}</p>
+                                <p class="truncate"><span class="font-sm">Penerbit:</span> {{ $item->penerbit }}</p>
                                 <p><span class="font-sm">Tahun:</span> {{ $item->tahun_terbit }}</p>
                             </div>
-                            <div class="space-y-1">
-                                <p><span class="font-sm">ISBN:</span> {{ $item->isbn }}</p>
+                            <div class="space-y-1 overflow-hidden">
+                                <p class="truncate"><span class="font-sm">ISBN:</span> {{ $item->isbn }}</p>
                                 <p><span class="font-sm">Stok:</span> {{ $item->jumlah_stok }}</p>
                                 <p><span class="font-sm">Rak:</span> {{ $item->lokasi_rak }}</p>
                             </div>
                         </div>
                     </div>
+
                 </div>
                 <div class="mt-4">
                 @if($item->jumlah_stok > 0)

@@ -57,16 +57,35 @@ class Index extends Component
             $book->jumlah_stok -= 1;
             $book->save();
 
-            // Simpan peminjaman
+            $tanggalPinjam = now();
+        
+
+            // Cek apakah anggota punya NIP atau NIS
+            if (!empty($anggota->nip)) {
+                $lamaPeminjaman = 14; // Dosen/staf
+            } elseif (!empty($anggota->nis)) {
+                $lamaPeminjaman = 7;  // Siswa
+            } else {
+                session()->flash('error', 'Data NIP/NIS tidak ditemukan.');
+                return;
+            }
+
+            $tanggalKembali = $tanggalPinjam->copy()->addDays($lamaPeminjaman); 
+
+
             Peminjaman::create([
                 'anggota_id' => $anggota->id,
                 'buku_id' => $book->id,
-                'tanggal_pinjam' => now(),
-                'tanggal_kembali' => null, // Belum dikembalikan
+                'tanggal_pinjam' => $tanggalPinjam,
+                'tanggal_kembali' => $tanggalKembali,
+                'status' => 'booking',
             ]);
 
+
             session()->flash('message', 'Berhasil meminjam buku: ' . $book->judul);
-            $this->loadBooks(); // kalau kamu punya method untuk reload data buku
+            $this->loadBooks();
+            // return redirect()->to('peminjaman');
+             // kalau kamu punya method untuk reload data buku
         } else {
             session()->flash('error', 'Stok buku tidak cukup.');
         }

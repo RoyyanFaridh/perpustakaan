@@ -70,22 +70,7 @@ class Guru extends Component
         $this->dispatch('anggotaUpdated');
     }
 
-    public function edit($id)
-    {
-        $anggota = Anggota::findOrFail($id);
 
-        $this->selectedId = $anggota->id;
-        $this->nama = $anggota->nama;
-        $this->status = $anggota->status;
-        $this->nip = $anggota->nis_nip;
-        $this->jenis_kelamin = $anggota->jenis_kelamin;
-        $this->alamat = $anggota->alamat;
-        $this->no_telp = $anggota->no_telp;
-        $this->email = $anggota->email;
-
-        $this->isEdit = true;
-        $this->showModal = true;
-    }
     public function update()
     {
         $this->validate();
