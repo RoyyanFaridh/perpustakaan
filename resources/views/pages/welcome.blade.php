@@ -48,8 +48,8 @@
 
         <!-- Heading -->
         <div class="w-full px-4 sm:px-6 md:px-12 lg:px-20">
-            <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight">
-                Perpustakaan Digital <br class="hidden sm:block">
+            <h1 class="text-6xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight">
+                Sistem Informasi Perpustakaan <br class="hidden sm:block">
                 SMP Negeri 12 Yogyakarta
             </h1>
         </div>
