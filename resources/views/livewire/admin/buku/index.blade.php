@@ -1,11 +1,14 @@
-<div class="bg-white p-6 rounded-2xl shadow-md overflow-x-auto">
-    <div class="flex justify-between items-center mb-6">
-        <h2 class="text-xl font-semibold text-gray-800">Daftar Buku</h2>
-        <button wire:click="openModal" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-2 px-4 rounded-lg">
-            + Tambah Buku
-        </button>
+<div class="bg-white p-6 rounded-2xl shadow-md max-w-full">
+    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4 sm:gap-0">
+        <h2 class="text-lg sm:text-xl font-semibold text-gray-800">Daftar Buku</h2>
+        <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+            <button wire:click="openModal"
+                class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-2 px-3 sm:px-4 rounded-lg text-center">
+                    + Tambah Buku
+            </button>
+        </div>
     </div>
-    <div class="mb-4">
+    <div class="mb-4 flex justify-between items-center">
         <input 
             type="text" 
             wire:model.debounce.300ms="search" 
@@ -134,43 +137,172 @@
     @endif
 
     <!-- Tabel Daftar Buku -->
-    <div class="overflow-x-auto">
-        <table class="min-w-full text-sm text-left text-gray-700 border border-gray-200 rounded-lg overflow-hidden">
-            <thead class="bg-gray-50">
-                <tr>
-                    <th class="px-4 py-3 font-semibold">No</th>
-                    <th class="px-4 py-3 font-semibold">Judul Buku</th>
-                    <th class="px-4 py-3 font-semibold">Deskripsi</th>
-                    <th class="px-4 py-3 font-semibold">Kategori</th>
-                    <th class="px-4 py-3 font-semibold">Penulis</th>
-                    <th class="px-4 py-3 font-semibold">Penerbit</th>
-                    <th class="px-4 py-3 font-semibold">Tahun</th>
-                    <th class="px-4 py-3 font-semibold">ISBN</th>
-                    <th class="px-4 py-3 font-semibold">Jumlah Stok</th>
-                    <th class="px-4 py-3 font-semibold">Lokasi Rak</th>
-                    <th class="px-4 py-3 text-center font-semibold">Aksi</th>
-                </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-100">
-                @foreach($buku as $index => $item)
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-4 py-2">{{ $index + 1 }}</td>
-                        <td class="px-4 py-2">{{ $item->judul }}</td>
-                        <td class="px-4 py-2">{{ Str::limit($item->deskripsi, 100, '...') }}</td>
-                        <td class="px-4 py-2">{{ $item->kategori }}</td>
-                        <td class="px-4 py-2">{{ $item->penulis }}</td>
-                        <td class="px-4 py-2">{{ $item->penerbit }}</td>
-                        <td class="px-4 py-2">{{ $item->tahun_terbit }}</td>
-                        <td class="px-4 py-2">{{ $item->isbn }}</td>
-                        <td class="px-4 py-2">{{ $item->jumlah_stok }}</td>
-                        <td class="px-4 py-2">{{ $item->lokasi_rak }}</td>
-                        <td class="px-4 py-2 text-center space-x-2">
-                            <button wire:click="edit({{ $item->id }})" class="px-3 py-1 bg-yellow-400 hover:bg-yellow-500 text-white rounded-md shadow text-xs">Edit</button>
-                            <button wire:click="delete({{ $item->id }})" class="px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded-md shadow text-xs">Hapus</button>
-                        </td>
+    <div class="w-full rounded-lg border border-gray-200 shadow-sm overflow-visible">
+        <div class="w-full overflow-x-auto">
+            <table class="w-full text-sm text-left text-gray-700">
+                <thead class="border-b border-gray-200">
+                    <tr>
+                        <th class="px-4 py-3 font-semibold text-center">No</th>
+                        <th class="px-4 py-3 font-semibold text-center">Judul Buku</th>
+                        <th class="px-4 py-3 font-semibold text-center">Deskripsi</th>
+                        <th class="px-4 py-3 font-semibold text-center relative overflow-visible"> <!-- pastikan overflow visible -->
+                            <div class="flex items-center justify-center space-x-2">
+                                <span>Kategori</span>
+                                <button wire:click="toggleKategoriSort" class="border p-1 rounded-lg hover:bg-gray-100 relative z-20">
+                                    <x-icon.sort />
+                                </button>
+                            </div>
+                            @if($showKategoriDropdown)
+                            <div 
+                                class="absolute top-full mt-2 left-1/2 transform -translate-x-1/2 w-40 max-h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg z-50"
+                                wire:click.away="closeKategoriDropdown">
+                                <ul class="text-sm text-gray-700 font-normal text-center"> <!-- text-center supaya pilihan kategori rata tengah -->
+                                    <li>
+                                        <button wire:click="setKategoriFilter('')" class="block w-full px-4 py-2 hover:bg-gray-100 text-center font-normal">
+                                            Semua Kategori
+                                        </button>
+                                    </li>
+                                    @foreach ($kategoriList as $kategori)
+                                    <li>
+                                        <button wire:click="setKategoriFilter('{{ $kategori }}')" class="block w-full px-4 py-2 hover:bg-gray-100 text-center font-normal">
+                                            {{ $kategori }}
+                                        </button>
+                                    </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            @endif
+                        </th>
+                        <th class="px-4 py-3 font-semibold text-center">Penulis</th>
+                        <th class="px-4 py-3 font-semibold text-center">Penerbit</th>
+                        <th class="px-4 py-3 font-semibold text-center">Tahun</th>
+                        <th class="px-4 py-3 font-semibold text-center">ISBN</th>
+                        <th class="px-4 py-3 font-semibold text-center">Jumlah Stok</th>
+                        <th class="px-4 py-3 font-semibold text-center">Lokasi Rak</th>
+                        <th class="px-4 py-3 text-center font-semibold">Aksi</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    @foreach($buku as $index => $item)
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-2 text-center">{{ $index + 1 }}</td>
+
+                            <td class="px-4 py-2">{{ $item->judul }}</td>
+                            <td class="px-4 py-2">{{ Str::limit($item->deskripsi, 100, '...') }}</td>
+
+                            <td class="px-4 py-2 text-center">
+                                @switch($item->kategori)
+                                    @case('Fiksi')
+                                        <span class="inline-block px-3 py-1 text-green-700 bg-green-200 border border-green-500 rounded-full text-xs font-semibold">
+                                            Fiksi
+                                        </span>
+                                        @break
+                                    @case('Non-Fiksi')
+                                        <span class="inline-block px-3 py-1 text-blue-700 bg-blue-200 border border-blue-500 rounded-full text-xs font-semibold">
+                                            Non-Fiksi
+                                        </span>
+                                        @break
+                                    @case('Biografi')
+                                        <span class="inline-block px-3 py-1 text-yellow-700 bg-yellow-200 border border-yellow-500 rounded-full text-xs font-semibold">
+                                            Biografi
+                                        </span>
+                                        @break
+                                    @case('Teknologi')
+                                        <span class="inline-block px-3 py-1 text-purple-700 bg-purple-200 border border-purple-500 rounded-full text-xs font-semibold">
+                                            Teknologi
+                                        </span>
+                                        @break
+                                    @case('Sejarah')
+                                        <span class="inline-block px-3 py-1 text-pink-700 bg-pink-200 border border-pink-500 rounded-full text-xs font-semibold">
+                                            Sejarah
+                                        </span>
+                                        @break
+                                    @case('Pendidikan')
+                                        <span class="inline-block px-3 py-1 text-indigo-700 bg-indigo-200 border border-indigo-500 rounded-full text-xs font-semibold">
+                                            Pendidikan
+                                        </span>
+                                        @break
+                                    @case('Komik')
+                                        <span class="inline-block px-3 py-1 text-orange-700 bg-orange-200 border border-orange-500 rounded-full text-xs font-semibold">
+                                            Komik
+                                        </span>
+                                        @break
+                                    @case('Sains')
+                                        <span class="inline-block px-3 py-1 text-teal-700 bg-teal-200 border border-teal-500 rounded-full text-xs font-semibold">
+                                            Sains
+                                        </span>
+                                        @break
+                                    @case('Agama')
+                                        <span class="inline-block px-3 py-1 text-gray-700 bg-gray-200 border border-gray-500 rounded-full text-xs font-semibold">
+                                            Agama
+                                        </span>
+                                        @break
+                                    @case('Sosial')
+                                        <span class="inline-block px-3 py-1 text-red-700 bg-red-200 border border-red-500 rounded-full text-xs font-semibold">
+                                            Sosial
+                                        </span>
+                                        @break
+                                    @default
+                                        <span>{{ $item->kategori }}</span>
+                                @endswitch
+                            </td>
+
+                            <td class="px-4 py-2 text-center">{{ $item->penulis }}</td>
+                            <td class="px-4 py-2 text-center">{{ $item->penerbit }}</td>
+
+                            @php
+                                $tahunSekarang = date('Y');
+                                $selisih = $tahunSekarang - $item->tahun_terbit;
+                            @endphp
+                            <td class="px-4 py-2 text-center">
+                                @if($selisih <= 5)
+                                    <span class="inline-block px-3 py-1 text-green-700 bg-green-200 border border-green-500 rounded-full text-xs font-semibold">
+                                        {{ $item->tahun_terbit }}
+                                    </span>
+                                @elseif($selisih <= 10)
+                                    <span class="inline-block px-3 py-1 text-yellow-700 bg-yellow-200 border border-yellow-500 rounded-full text-xs font-semibold">
+                                        {{ $item->tahun_terbit }}
+                                    </span>
+                                @else
+                                    <span class="inline-block px-3 py-1 text-red-700 bg-red-200 border border-red-500 rounded-full text-xs font-semibold">
+                                        {{ $item->tahun_terbit }}
+                                    </span>
+                                @endif
+                            </td>
+
+                            <td class="px-4 py-2 text-center">{{ $item->isbn }}</td>
+
+                            <td class="px-4 py-2 text-center">
+                                @if($item->jumlah_stok == 0)
+                                    <span class="inline-block px-3 py-1 text-red-700 bg-red-200 border border-red-500 rounded-full text-xs font-semibold">
+                                        {{ $item->jumlah_stok }}
+                                    </span>
+                                @elseif($item->jumlah_stok <= 10)
+                                    <span class="inline-block px-3 py-1 text-yellow-700 bg-yellow-200 border border-yellow-500 rounded-full text-xs font-semibold">
+                                        {{ $item->jumlah_stok }}
+                                    </span>
+                                @else
+                                    <span class="inline-block px-3 py-1 text-green-700 bg-green-200 border border-green-500 rounded-full text-xs font-semibold">
+                                        {{ $item->jumlah_stok }}
+                                    </span>
+                                @endif
+                            </td>
+
+                            <td class="px-4 py-2 text-center">{{ $item->lokasi_rak }}</td>
+                            <td class="px-4 py-2 text-center">
+                                <div class="flex flex-col items-center space-y-2 md:flex-row md:justify-center md:space-y-0 md:space-x-2">
+                                    <button wire:click="edit({{ $item->id }})" class="px-3 py-1 bg-yellow-400 hover:bg-yellow-500 text-white rounded-md shadow text-xs">
+                                        Edit
+                                    </button>
+                                    <button wire:click="delete({{ $item->id }})" class="px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded-md shadow text-xs">
+                                        Hapus
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

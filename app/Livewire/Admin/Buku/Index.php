@@ -17,10 +17,22 @@ class Index extends Component
     public $isEdit = false;
     public $showModal = false;
     public $search = '';
+    public $showKategoriDropdown = false;
+    public $sortKategori = null;
+    public $kategoriSortIndex = 0;
+    public $kategoriList = ['Fiksi', 'Non-Fiksi', 'Biografi', 'Teknologi', 'Sejarah', 'Pendidikan', 'Komik', 'Sains', 'Agama', 'Sosial'];
 
     public function render()
     {
-        $this->buku = Buku::where('judul', 'like', '%' . $this->search . '%')->get();
+        $query = Buku::query();
+
+        if ($this->search) {
+            $query->where('judul', 'like', '%' . $this->search . '%');
+        }
+        if ($this->sortKategori) {
+            $query->where('kategori', $this->sortKategori);
+        }
+        $this->buku = $query->get();
         return view('livewire.admin.buku.index');
     }
 
@@ -162,4 +174,26 @@ class Index extends Component
     {
         $this->showModal = false;
     }
+    
+    public function mount()
+    {
+        $this->kategoriList = Buku::select('kategori')->distinct()->pluck('kategori')->toArray();
+    }
+
+    public function setKategoriFilter($kategori)
+    {
+        $this->sortKategori = $kategori ?: null; // kosongkan filter jika parameter kosong
+        $this->showKategoriDropdown = false; // tutup dropdown setelah pilih
+    }
+
+    public function toggleKategoriSort()
+    {
+        $this->showKategoriDropdown = !$this->showKategoriDropdown;
+    }
+
+    public function closeKategoriDropdown()
+    {
+        $this->showKategoriDropdown = false;
+    }
+
 }
