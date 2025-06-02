@@ -76,7 +76,7 @@ Route::middleware(['auth', 'role:siswa,guru', 'check.default.password', 'ensure.
 
 Route::get('/test-email-brevo', function () {
     Mail::raw('Tes email via Brevo SMTP', function ($message) {
-        $message->to('roynashruddin18@gmail.com') // ganti dengan email tujuanmu
+        $message->to('roynashruddin@gmail.com') // ganti dengan email tujuanmu
                 ->subject('Tes dari Laravel + Brevo');
     });
 

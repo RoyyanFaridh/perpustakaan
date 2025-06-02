@@ -53,7 +53,6 @@ class SetupAccount extends Component
             sleep(1); // beri waktu email terkirim sebelum logout
         }
 
-
         // Tambahkan delay sedikit agar pengiriman email sempat diproses
         usleep(500000); // 0.5 detik
 
