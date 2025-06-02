@@ -7,7 +7,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-  @livewireStyles
+  <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::styles(); ?>
+
 </head>
 <body class="font-sans antialiased text-gray-800">
   <header class="sticky top-0 z-50 bg-white shadow-md px-4 py-3 md:px-8 md:py-3">
@@ -24,7 +25,7 @@
           <a href="#tentang" class="hover:text-blue-800 font-semibold">Tentang</a>
           <a href="#kontak" class="hover:text-blue-800 font-semibold">Kontak</a>
         </nav>
-        <a href="{{ route('login') }}" class="rounded px-4 py-2 bg-blue-500 text-white hover:bg-blue-700 text-sm transition">
+        <a href="<?php echo e(route('login')); ?>" class="rounded px-4 py-2 bg-blue-500 text-white hover:bg-blue-700 text-sm transition">
           Login
         </a>
       </div>
@@ -45,24 +46,34 @@
       <div class="w-full md:w-1/3 mb-8 md:mb-0 flex justify-center md:justify-end">
         <img src="/images/perpus_4.png" alt="Perpustakaan" class="max-w-md md:max-w-lg h-auto object-contain pr-8">
       </div>
->>>>>>> origin/arinda_branch
     </div>
   </section>
   <!-- Statistik Section -->
   <section class="relative z-10 px-16 md:px-16 py-2 bg-gray-200 min-h-[250px]">
     <div class="absolute bottom-0 left-0 w-full h-14 bg-gradient-to-b from-transparent to-white pointer-events-none"></div>
     <div class="flex flex-wrap gap-4">
-        @foreach ($cardData as $card)
-          <x-card
-              :title="$card['title']"
-              :value="$card['value']"
-              :periode="$card['periode'] ?? null"
-              :delta="$card['delta'] ?? null"
-              :icon="$card['icon'] ?? null"
-              :bgColor="$card['bgColor'] ?? '#f43f5e'"
-          />
->>>>>>> origin/arinda_branch
-      @endforeach
+        <?php $__currentLoopData = $cardData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $card): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+          <?php if (isset($component)) { $__componentOriginal53747ceb358d30c0105769f8471417f6 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal53747ceb358d30c0105769f8471417f6 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.card','data' => ['title' => $card['title'],'value' => $card['value'],'periode' => $card['periode'] ?? null,'delta' => $card['delta'] ?? null,'icon' => $card['icon'] ?? null,'bgColor' => $card['bgColor'] ?? '#f43f5e']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['title' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['title']),'value' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['value']),'periode' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['periode'] ?? null),'delta' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['delta'] ?? null),'icon' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['icon'] ?? null),'bgColor' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['bgColor'] ?? '#f43f5e')]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal53747ceb358d30c0105769f8471417f6)): ?>
+<?php $attributes = $__attributesOriginal53747ceb358d30c0105769f8471417f6; ?>
+<?php unset($__attributesOriginal53747ceb358d30c0105769f8471417f6); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal53747ceb358d30c0105769f8471417f6)): ?>
+<?php $component = $__componentOriginal53747ceb358d30c0105769f8471417f6; ?>
+<?php unset($__componentOriginal53747ceb358d30c0105769f8471417f6); ?>
+<?php endif; ?>
+      <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     </div>
   </section>
 
@@ -127,18 +138,19 @@
 </section>
 
 
-  @livewireScripts
+  <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::scripts(); ?>
+
 
   <script>
     const ctx = document.getElementById('statistikChart').getContext('2d');
     const statistikChart = new Chart(ctx, {
       type: 'line',
       data: {
-        labels: @json($bulanLabels),
+        labels: <?php echo json_encode($bulanLabels, 15, 512) ?>,
         datasets: [
           {
-            label: '{{ $tahunSebelumnya }}',
-            data: @json($jumlahPengunjungTahunLalu),
+            label: '<?php echo e($tahunSebelumnya); ?>',
+            data: <?php echo json_encode($jumlahPengunjungTahunLalu, 15, 512) ?>,
             borderColor: '#60A5FA',
             backgroundColor: 'rgba(96, 165, 250, 0.1)',
             borderWidth: 2,
@@ -146,8 +158,8 @@
             tension: 0.4
           },
           {
-            label: '{{ $tahunSekarang }}',
-            data: @json($jumlahPengunjungTahunIni),
+            label: '<?php echo e($tahunSekarang); ?>',
+            data: <?php echo json_encode($jumlahPengunjungTahunIni, 15, 512) ?>,
             borderColor: '#EF4444',
             backgroundColor: 'rgba(239, 68, 68, 0.1)',
             borderWidth: 2,
@@ -223,7 +235,8 @@
 
   <!-- Copyright -->
   <div class="mt-10 border-t border-white pt-4 text-center text-sm text-white">
-    &copy; {{ date('Y') }} Perpustakaan Digital SMP Negeri 12 Yogyakarta. All rights reserved.
+    &copy; <?php echo e(date('Y')); ?> Perpustakaan Digital SMP Negeri 12 Yogyakarta. All rights reserved.
   </div>
 </footer>
 </html>
+<?php /**PATH C:\Users\ACER\perpustakaan\resources\views/pages/welcome.blade.php ENDPATH**/ ?>
