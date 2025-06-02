@@ -77,7 +77,7 @@
 
         <div class="w-full px-4 sm:px-6 md:px-12 lg:px-20">
             <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight">
-                Perpustakaan Digital <br class="hidden sm:block">
+                Sistem Informasi Perpustakaan <br class="hidden sm:block">
                 SMP Negeri 12 Yogyakarta
             </h1>
         </div>
@@ -88,28 +88,27 @@
 
   <!-- Statistik Section -->
   <section class="relative z-10 px-6 md:px-20 py-8 bg-gray-100">
-    <div class="flex flex-wrap gap-4">
-        <?php $__currentLoopData = $cardData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $card): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-          <?php if (isset($component)) { $__componentOriginal53747ceb358d30c0105769f8471417f6 = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal53747ceb358d30c0105769f8471417f6 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.card','data' => ['title' => $card['title'],'value' => $card['value'],'periode' => $card['periode'] ?? null,'delta' => $card['delta'] ?? null,'icon' => $card['icon'] ?? null,'bgColor' => $card['bgColor'] ?? '#f43f5e']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('card'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['title' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['title']),'value' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['value']),'periode' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['periode'] ?? null),'delta' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['delta'] ?? null),'icon' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['icon'] ?? null),'bgColor' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['bgColor'] ?? '#f43f5e')]); ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal53747ceb358d30c0105769f8471417f6)): ?>
-<?php $attributes = $__attributesOriginal53747ceb358d30c0105769f8471417f6; ?>
-<?php unset($__attributesOriginal53747ceb358d30c0105769f8471417f6); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal53747ceb358d30c0105769f8471417f6)): ?>
-<?php $component = $__componentOriginal53747ceb358d30c0105769f8471417f6; ?>
-<?php unset($__componentOriginal53747ceb358d30c0105769f8471417f6); ?>
-<?php endif; ?>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <?php $__currentLoopData = $cardData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $card): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <div class="bg-white shadow-md rounded-lg p-6">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background-color: <?php echo e($card['bgColor']); ?>">
+              <?php echo $card['icon']; ?>
+
+            </div>
+            <h3 class="text-lg font-semibold" style="color: <?php echo e($card['bgColor']); ?>"><?php echo e($card['title']); ?></h3>
+          </div>
+          <div class="flex items-center justify-between mt-4">
+            <p class="text-3xl font-bold"><?php echo e($card['value']); ?></p>
+            <?php if(!is_null($card['delta'])): ?>
+              <span class="text-sm font-semibold px-3 py-1 rounded <?php echo e($card['delta'] >= 0 ? 'bg-green-100 text-green-500 border border-green-500' : 'bg-red-100 text-red-600'); ?>">
+                <?php echo e($card['delta'] >= 0 ? '+' : ''); ?><?php echo e(number_format($card['delta'], 0, ',', '.')); ?>
+
+              </span>
+            <?php endif; ?>
+          </div>
+          <p class="text-xs text-gray-500 mt-2">pada <?php echo e($card['periode']); ?></p>
+        </div>
       <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     </div>
   </section>

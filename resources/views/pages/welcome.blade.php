@@ -76,7 +76,7 @@
 
         <div class="w-full px-4 sm:px-6 md:px-12 lg:px-20">
             <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight">
-                Perpustakaan Digital <br class="hidden sm:block">
+                Sistem Informasi Perpustakaan <br class="hidden sm:block">
                 SMP Negeri 12 Yogyakarta
             </h1>
         </div>
@@ -87,16 +87,25 @@
 
   <!-- Statistik Section -->
   <section class="relative z-10 px-6 md:px-20 py-8 bg-gray-100">
-    <div class="flex flex-wrap gap-4">
-        @foreach ($cardData as $card)
-          <x-card
-              :title="$card['title']"
-              :value="$card['value']"
-              :periode="$card['periode'] ?? null"
-              :delta="$card['delta'] ?? null"
-              :icon="$card['icon'] ?? null"
-              :bgColor="$card['bgColor'] ?? '#f43f5e'"
-          />
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      @foreach ($cardData as $card)
+        <div class="bg-white shadow-md rounded-lg p-6">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background-color: {{ $card['bgColor'] }}">
+              {!! $card['icon'] !!}
+            </div>
+            <h3 class="text-lg font-semibold" style="color: {{ $card['bgColor'] }}">{{ $card['title'] }}</h3>
+          </div>
+          <div class="flex items-center justify-between mt-4">
+            <p class="text-3xl font-bold">{{ $card['value'] }}</p>
+            @if (!is_null($card['delta']))
+              <span class="text-sm font-semibold px-3 py-1 rounded {{ $card['delta'] >= 0 ? 'bg-green-100 text-green-500 border border-green-500' : 'bg-red-100 text-red-600' }}">
+                {{ $card['delta'] >= 0 ? '+' : '' }}{{ number_format($card['delta'], 0, ',', '.') }}
+              </span>
+            @endif
+          </div>
+          <p class="text-xs text-gray-500 mt-2">pada {{ $card['periode'] }}</p>
+        </div>
       @endforeach
     </div>
   </section>

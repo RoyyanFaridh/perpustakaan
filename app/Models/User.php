@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -12,7 +13,7 @@ use App\Models\Anggota;
 class User extends Authenticatable implements MustVerifyEmail
 
 {
-    use HasFactory, Notifiable, HasRoles;
+    use HasFactory, Notifiable, HasRoles, MustVerifyEmailTrait;
 
     protected $fillable = [
         'name',
@@ -33,6 +34,6 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function anggota()
     {
-        return $this->hasOne(\App\Models\Anggota::class, 'nis_nip', 'nis_nip');
+        return $this->hasOne(Anggota::class, 'nis_nip', 'nis_nip');
     }
 }

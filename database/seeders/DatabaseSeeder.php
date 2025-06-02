@@ -51,12 +51,5 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $siswa->assignRole('siswa');
-
-        // Tambahkan anggota terkait
-        Anggota::create([
-            'nama'    => $siswa->name,
-            'nis_nip' => $siswa->nis_nip,
-            'kelas'   => '9', // ganti sesuai kelas siswa
-        ]);
     }
 }
