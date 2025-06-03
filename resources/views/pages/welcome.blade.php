@@ -10,40 +10,85 @@
   @livewireStyles
 </head>
 <body class="font-sans antialiased text-gray-800">
-  <header class="sticky top-0 z-50 bg-white shadow-md px-4 py-3 md:px-8 md:py-3">
+  <header class="sticky top-0 z-50 bg-white shadow-md px-4 py-3 md:px-8 md:py-3" x-data="{ open: false, active: '#hero' }">
     <div class="flex items-center justify-between w-full">
+      <!-- Logo -->
       <div class="flex items-center space-x-4">
-        <!-- Logo -->
-        <img src="/images/logo_smp12yk.png" class="h-12 w-auto" alt="Logo">
+        <img src="/images/logo_smp12yk.png" class="h-12 w-auto" alt="Logo SMPN 12 Yogyakarta" />
       </div>
-      <!-- Navigasi dan Login -->
+
+      <!-- Navigasi Desktop -->
+      <nav class="hidden md:flex space-x-6 text-sm text-gray-700">
+        <a href="#hero" :class="{ 'font-bold text-blue-800': active === '#hero' }" @click="active = '#hero'">Beranda</a>
+        <a href="#statistik" :class="{ 'font-bold text-blue-800': active === '#statistik' }" @click="active = '#statistik'">Statistik</a>
+        <a href="#tentang" :class="{ 'font-bold text-blue-800': active === '#tentang' }" @click="active = '#tentang'">Tentang</a>
+        <a href="#kontak" :class="{ 'font-bold text-blue-800': active === '#kontak' }" @click="active = '#kontak'">Kontak</a>
+      </nav>
+
+
+      <!-- Hamburger & Login -->
       <div class="flex items-center space-x-4">
-        <nav class="hidden md:flex space-x-6 text-sm text-gray-700">
-          <a href="#beranda" class="hover:text-blue-800 font-semibold">Beranda</a>
-          <a href="#statistik" class="hover:text-blue-800 font-semibold">Statistik</a>
-          <a href="#tentang" class="hover:text-blue-800 font-semibold">Tentang</a>
-          <a href="#kontak" class="hover:text-blue-800 font-semibold">Kontak</a>
-        </nav>
+        <!-- Hamburger button untuk mobile -->
+        <button @click="open = !open" class="md:hidden focus:outline-none" aria-label="Toggle Menu">
+          <svg x-show="!open" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" stroke="currentColor"
+              viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg x-show="open" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" stroke="currentColor"
+              viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
+        <!-- Tombol Login -->
         <a href="{{ route('login') }}" class="rounded px-4 py-2 bg-blue-500 text-white hover:bg-blue-700 text-sm transition">
           Login
         </a>
       </div>
     </div>
+
+    <!-- Dropdown menu mobile -->
+    <div x-show="open" x-transition class="md:hidden mt-2 space-y-1 px-4 pb-4 border-t border-gray-200 bg-white">
+      <a href="#hero" @click="active = '#hero'; open = false" 
+        :class="{ 'font-bold text-blue-800': active === '#hero' }" 
+        class="block py-2 px-3 rounded hover:bg-gray-100 transition">
+        Beranda
+      </a>
+      <a href="#statistik" @click="active = '#statistik'; open = false" 
+        :class="{ 'font-bold text-blue-800': active === '#statistik' }" 
+        class="block py-2 px-3 rounded hover:bg-gray-100 transition">
+        Statistik
+      </a>
+      <a href="#tentang" @click="active = '#tentang'; open = false" 
+        :class="{ 'font-bold text-blue-800': active === '#tentang' }" 
+        class="block py-2 px-3 rounded hover:bg-gray-100 transition">
+        Tentang
+      </a>
+      <a href="#kontak" @click="active = '#kontak'; open = false" 
+        :class="{ 'font-bold text-blue-800': active === '#kontak' }" 
+        class="block py-2 px-3 rounded hover:bg-gray-100 transition">
+        Kontak
+      </a>
+    </div>
   </header>
 
-  <section id="beranda" class="relative bg-white py-20 min-h-[320px]">
-  <div class="absolute bottom-0 left-0 w-full h-12 bg-gradient-to-b from-transparent to-gray-200 pointer-events-none"></div>
-  <div class="max-w-7xl mx-auto px-6 flex flex-col-reverse md:flex-row items-start relative z-10">
-      <div class="w-full md:w-2/3 text-center md:text-left px-10 md:pr-8 space-y-10">
-        <h1 class="text-4xl md:text-5xl font-bold leading-tight text-blue-800">
+
+  <section id="hero" class="relative bg-white py-20 min-h-[320px]">
+    <div class="absolute bottom-0 left-0 w-full h-12 bg-gradient-to-b from-transparent to-gray-200 pointer-events-none"></div>
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-col lg:flex-row items-start relative z-10">
+      <!-- Teks -->
+      <div class="w-full md:w-full lg:w-2/3 text-center md:text-center lg:text-left px-10 md:px-10 lg:pr-8 space-y-10 order-2 md:order-2 lg:order-1">
+        <h1 class="text-4xl lg:text-5xl font-bold leading-tight text-blue-800">
           Sistem Informasi Perpustakaan <br class="hidden md:block"> SMP Negeri 12 Yogyakarta
         </h1>
-        <p class="text-gray-600 max-w-md mx-auto md:mx-0">
+        <p class="text-gray-600 max-w-md mx-auto md:mx-auto lg:mx-0">
           Selamat datang di platform digital kami yang menyediakan berbagai layanan informasi dan peminjaman buku secara daring untuk mendukung kegiatan belajar siswa dan guru.
         </p>
       </div>
-      <div class="w-full md:w-1/3 mb-8 md:mb-0 flex justify-center md:justify-end">
-        <img src="/images/perpus_4.png" alt="Perpustakaan" class="max-w-md md:max-w-lg h-auto object-contain pr-8">
+      <!-- Gambar -->
+      <div class="w-full md:w-full lg:w-1/3 mb-8 md:mb-8 lg:mb-0 flex justify-center lg:justify-end order-1 md:order-1 lg:order-2">
+        <img src="/images/perpus_4.png" alt="Perpustakaan" 
+          class="max-w-sm md:max-w-md lg:max-w-lg h-auto object-contain pr-0">
       </div>
     </div>
   </section>
