@@ -1,11 +1,14 @@
-<div class="bg-white p-6 rounded-2xl shadow-md overflow-x-auto">
-    <div class="flex justify-between items-center mb-6">
-        <h2 class="text-xl font-semibold text-gray-800">Daftar Buku</h2>
-        <button wire:click="openModal" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-2 px-4 rounded-lg">
-            + Tambah Buku
-        </button>
+<div class="bg-white p-6 rounded-2xl shadow-md max-w-full">
+    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4 sm:gap-0">
+        <h2 class="text-lg sm:text-xl font-semibold text-gray-800">Daftar Buku</h2>
+        <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+            <button wire:click="openModal"
+                class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-2 px-3 sm:px-4 rounded-lg text-center">
+                    + Tambah Buku
+            </button>
+        </div>
     </div>
-    <div class="mb-4">
+    <div class="mb-4 flex justify-between items-center">
         <input 
             type="text" 
             wire:model.debounce.300ms="search" 
@@ -134,43 +137,198 @@
     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
     <!-- Tabel Daftar Buku -->
-    <div class="overflow-x-auto">
-        <table class="min-w-full text-sm text-left text-gray-700 border border-gray-200 rounded-lg overflow-hidden">
-            <thead class="bg-gray-50">
-                <tr>
-                    <th class="px-4 py-3 font-semibold">No</th>
-                    <th class="px-4 py-3 font-semibold">Judul Buku</th>
-                    <th class="px-4 py-3 font-semibold">Deskripsi</th>
-                    <th class="px-4 py-3 font-semibold">Kategori</th>
-                    <th class="px-4 py-3 font-semibold">Penulis</th>
-                    <th class="px-4 py-3 font-semibold">Penerbit</th>
-                    <th class="px-4 py-3 font-semibold">Tahun</th>
-                    <th class="px-4 py-3 font-semibold">ISBN</th>
-                    <th class="px-4 py-3 font-semibold">Jumlah Stok</th>
-                    <th class="px-4 py-3 font-semibold">Lokasi Rak</th>
-                    <th class="px-4 py-3 text-center font-semibold">Aksi</th>
-                </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-100">
-                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $buku; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-4 py-2"><?php echo e($index + 1); ?></td>
-                        <td class="px-4 py-2"><?php echo e($item->judul); ?></td>
-                        <td class="px-4 py-2"><?php echo e(Str::limit($item->deskripsi, 100, '...')); ?></td>
-                        <td class="px-4 py-2"><?php echo e($item->kategori); ?></td>
-                        <td class="px-4 py-2"><?php echo e($item->penulis); ?></td>
-                        <td class="px-4 py-2"><?php echo e($item->penerbit); ?></td>
-                        <td class="px-4 py-2"><?php echo e($item->tahun_terbit); ?></td>
-                        <td class="px-4 py-2"><?php echo e($item->isbn); ?></td>
-                        <td class="px-4 py-2"><?php echo e($item->jumlah_stok); ?></td>
-                        <td class="px-4 py-2"><?php echo e($item->lokasi_rak); ?></td>
-                        <td class="px-4 py-2 text-center space-x-2">
-                            <button wire:click="edit(<?php echo e($item->id); ?>)" class="px-3 py-1 bg-yellow-400 hover:bg-yellow-500 text-white rounded-md shadow text-xs">Edit</button>
-                            <button wire:click="delete(<?php echo e($item->id); ?>)" class="px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded-md shadow text-xs">Hapus</button>
-                        </td>
+    <div class="w-full rounded-lg border border-gray-200 shadow-sm overflow-visible">
+        <div class="w-full overflow-x-auto">
+            <table class="w-full text-sm text-left text-gray-700">
+                <thead class="border-b border-gray-200">
+                    <tr>
+                        <th class="px-4 py-3 font-semibold text-center">No</th>
+                        <th class="px-4 py-3 font-semibold text-center">Judul Buku</th>
+                        <th class="px-4 py-3 font-semibold text-center">Deskripsi</th>
+                        <th class="px-4 py-3 font-semibold text-center relative overflow-visible"> <!-- pastikan overflow visible -->
+                            <div class="flex items-center justify-center space-x-2">
+                                <span>Kategori</span>
+                                <button wire:click="toggleKategoriSort" class="border p-1 rounded-lg hover:bg-gray-100 relative z-20">
+                                    <?php if (isset($component)) { $__componentOriginal0daebc5008398ffe6151ed4136821e14 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal0daebc5008398ffe6151ed4136821e14 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.icon.sort','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('icon.sort'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal0daebc5008398ffe6151ed4136821e14)): ?>
+<?php $attributes = $__attributesOriginal0daebc5008398ffe6151ed4136821e14; ?>
+<?php unset($__attributesOriginal0daebc5008398ffe6151ed4136821e14); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal0daebc5008398ffe6151ed4136821e14)): ?>
+<?php $component = $__componentOriginal0daebc5008398ffe6151ed4136821e14; ?>
+<?php unset($__componentOriginal0daebc5008398ffe6151ed4136821e14); ?>
+<?php endif; ?>
+                                </button>
+                            </div>
+                            <!--[if BLOCK]><![endif]--><?php if($showKategoriDropdown): ?>
+                            <div 
+                                class="absolute top-full mt-2 left-1/2 transform -translate-x-1/2 w-40 max-h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg z-50"
+                                wire:click.away="closeKategoriDropdown">
+                                <ul class="text-sm text-gray-700 font-normal text-center"> <!-- text-center supaya pilihan kategori rata tengah -->
+                                    <li>
+                                        <button wire:click="setKategoriFilter('')" class="block w-full px-4 py-2 hover:bg-gray-100 text-center font-normal">
+                                            Semua Kategori
+                                        </button>
+                                    </li>
+                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $kategoriList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $kategori): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <li>
+                                        <button wire:click="setKategoriFilter('<?php echo e($kategori); ?>')" class="block w-full px-4 py-2 hover:bg-gray-100 text-center font-normal">
+                                            <?php echo e($kategori); ?>
+
+                                        </button>
+                                    </li>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                                </ul>
+                            </div>
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        </th>
+                        <th class="px-4 py-3 font-semibold text-center">Penulis</th>
+                        <th class="px-4 py-3 font-semibold text-center">Penerbit</th>
+                        <th class="px-4 py-3 font-semibold text-center">Tahun</th>
+                        <th class="px-4 py-3 font-semibold text-center">ISBN</th>
+                        <th class="px-4 py-3 font-semibold text-center">Jumlah Stok</th>
+                        <th class="px-4 py-3 font-semibold text-center">Lokasi Rak</th>
+                        <th class="px-4 py-3 text-center font-semibold">Aksi</th>
                     </tr>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
-            </tbody>
-        </table>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $buku; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-2 text-center"><?php echo e($index + 1); ?></td>
+
+                            <td class="px-4 py-2"><?php echo e($item->judul); ?></td>
+                            <td class="px-4 py-2"><?php echo e(Str::limit($item->deskripsi, 100, '...')); ?></td>
+
+                            <td class="px-4 py-2 text-center">
+                                <!--[if BLOCK]><![endif]--><?php switch($item->kategori):
+                                    case ('Fiksi'): ?>
+                                        <span class="inline-block px-3 py-1 text-green-700 bg-green-200 border border-green-500 rounded-full text-xs font-semibold">
+                                            Fiksi
+                                        </span>
+                                        <?php break; ?>
+                                    <?php case ('Non-Fiksi'): ?>
+                                        <span class="inline-block px-3 py-1 text-blue-700 bg-blue-200 border border-blue-500 rounded-full text-xs font-semibold">
+                                            Non-Fiksi
+                                        </span>
+                                        <?php break; ?>
+                                    <?php case ('Biografi'): ?>
+                                        <span class="inline-block px-3 py-1 text-yellow-700 bg-yellow-200 border border-yellow-500 rounded-full text-xs font-semibold">
+                                            Biografi
+                                        </span>
+                                        <?php break; ?>
+                                    <?php case ('Teknologi'): ?>
+                                        <span class="inline-block px-3 py-1 text-purple-700 bg-purple-200 border border-purple-500 rounded-full text-xs font-semibold">
+                                            Teknologi
+                                        </span>
+                                        <?php break; ?>
+                                    <?php case ('Sejarah'): ?>
+                                        <span class="inline-block px-3 py-1 text-pink-700 bg-pink-200 border border-pink-500 rounded-full text-xs font-semibold">
+                                            Sejarah
+                                        </span>
+                                        <?php break; ?>
+                                    <?php case ('Pendidikan'): ?>
+                                        <span class="inline-block px-3 py-1 text-indigo-700 bg-indigo-200 border border-indigo-500 rounded-full text-xs font-semibold">
+                                            Pendidikan
+                                        </span>
+                                        <?php break; ?>
+                                    <?php case ('Komik'): ?>
+                                        <span class="inline-block px-3 py-1 text-orange-700 bg-orange-200 border border-orange-500 rounded-full text-xs font-semibold">
+                                            Komik
+                                        </span>
+                                        <?php break; ?>
+                                    <?php case ('Sains'): ?>
+                                        <span class="inline-block px-3 py-1 text-teal-700 bg-teal-200 border border-teal-500 rounded-full text-xs font-semibold">
+                                            Sains
+                                        </span>
+                                        <?php break; ?>
+                                    <?php case ('Agama'): ?>
+                                        <span class="inline-block px-3 py-1 text-gray-700 bg-gray-200 border border-gray-500 rounded-full text-xs font-semibold">
+                                            Agama
+                                        </span>
+                                        <?php break; ?>
+                                    <?php case ('Sosial'): ?>
+                                        <span class="inline-block px-3 py-1 text-red-700 bg-red-200 border border-red-500 rounded-full text-xs font-semibold">
+                                            Sosial
+                                        </span>
+                                        <?php break; ?>
+                                    <?php default: ?>
+                                        <span><?php echo e($item->kategori); ?></span>
+                                <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
+                            </td>
+
+                            <td class="px-4 py-2 text-center"><?php echo e($item->penulis); ?></td>
+                            <td class="px-4 py-2 text-center"><?php echo e($item->penerbit); ?></td>
+
+                            <?php
+                                $tahunSekarang = date('Y');
+                                $selisih = $tahunSekarang - $item->tahun_terbit;
+                            ?>
+                            <td class="px-4 py-2 text-center">
+                                <!--[if BLOCK]><![endif]--><?php if($selisih <= 5): ?>
+                                    <span class="inline-block px-3 py-1 text-green-700 bg-green-200 border border-green-500 rounded-full text-xs font-semibold">
+                                        <?php echo e($item->tahun_terbit); ?>
+
+                                    </span>
+                                <?php elseif($selisih <= 10): ?>
+                                    <span class="inline-block px-3 py-1 text-yellow-700 bg-yellow-200 border border-yellow-500 rounded-full text-xs font-semibold">
+                                        <?php echo e($item->tahun_terbit); ?>
+
+                                    </span>
+                                <?php else: ?>
+                                    <span class="inline-block px-3 py-1 text-red-700 bg-red-200 border border-red-500 rounded-full text-xs font-semibold">
+                                        <?php echo e($item->tahun_terbit); ?>
+
+                                    </span>
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                            </td>
+
+                            <td class="px-4 py-2 text-center"><?php echo e($item->isbn); ?></td>
+
+                            <td class="px-4 py-2 text-center">
+                                <!--[if BLOCK]><![endif]--><?php if($item->jumlah_stok == 0): ?>
+                                    <span class="inline-block px-3 py-1 text-red-700 bg-red-200 border border-red-500 rounded-full text-xs font-semibold">
+                                        <?php echo e($item->jumlah_stok); ?>
+
+                                    </span>
+                                <?php elseif($item->jumlah_stok <= 10): ?>
+                                    <span class="inline-block px-3 py-1 text-yellow-700 bg-yellow-200 border border-yellow-500 rounded-full text-xs font-semibold">
+                                        <?php echo e($item->jumlah_stok); ?>
+
+                                    </span>
+                                <?php else: ?>
+                                    <span class="inline-block px-3 py-1 text-green-700 bg-green-200 border border-green-500 rounded-full text-xs font-semibold">
+                                        <?php echo e($item->jumlah_stok); ?>
+
+                                    </span>
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                            </td>
+
+                            <td class="px-4 py-2 text-center"><?php echo e($item->lokasi_rak); ?></td>
+                            <td class="px-4 py-2 text-center">
+                                <div class="flex flex-col items-center space-y-2 md:flex-row md:justify-center md:space-y-0 md:space-x-2">
+                                    <button wire:click="edit(<?php echo e($item->id); ?>)" class="px-3 py-1 bg-yellow-400 hover:bg-yellow-500 text-white rounded-md shadow text-xs">
+                                        Edit
+                                    </button>
+                                    <button wire:click="delete(<?php echo e($item->id); ?>)" class="px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded-md shadow text-xs">
+                                        Hapus
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                </tbody>
+            </table>
+        </div>
     </div>
 </div><?php /**PATH D:\Perkuliahan Duniawi\New folder\New folder\perpustakaan\resources\views/livewire/admin/buku/index.blade.php ENDPATH**/ ?>

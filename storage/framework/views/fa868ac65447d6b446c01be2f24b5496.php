@@ -22,8 +22,9 @@
       <nav class="hidden md:flex space-x-6 text-sm text-gray-700">
         <a href="#hero" :class="{ 'font-bold text-blue-800': active === '#hero' }" @click="active = '#hero'">Beranda</a>
         <a href="#statistik" :class="{ 'font-bold text-blue-800': active === '#statistik' }" @click="active = '#statistik'">Statistik</a>
-        <a href="#tentang" :class="{ 'font-bold text-blue-800': active === '#tentang' }" @click="active = '#tentang'">Tentang</a>
+        <a href="#informasi" :class="{ 'font-bold text-blue-800': active === '#informasi' }" @click="active = '#informasi'">Informasi</a>
         <a href="#kontak" :class="{ 'font-bold text-blue-800': active === '#kontak' }" @click="active = '#kontak'">Kontak</a>
+        <a href="#berita" :class="{ 'font-bold text-blue-800': active === '#berita' }" @click="active = '#berita'">Berita</a>
       </nav>
 
 
@@ -60,39 +61,44 @@
         class="block py-2 px-3 rounded hover:bg-gray-100 transition">
         Statistik
       </a>
-      <a href="#tentang" @click="active = '#tentang'; open = false" 
-        :class="{ 'font-bold text-blue-800': active === '#tentang' }" 
+      <a href="#informasi" @click="active = '#informasi'; open = false" 
+        :class="{ 'font-bold text-blue-800': active === '#informasi' }" 
         class="block py-2 px-3 rounded hover:bg-gray-100 transition">
-        Tentang
+        Informasi
       </a>
       <a href="#kontak" @click="active = '#kontak'; open = false" 
         :class="{ 'font-bold text-blue-800': active === '#kontak' }" 
         class="block py-2 px-3 rounded hover:bg-gray-100 transition">
         Kontak
       </a>
+      <a href="#berita" @click="active = '#berita'; open = false" 
+        :class="{ 'font-bold text-blue-800': active === '#berita' }" 
+        class="block py-2 px-3 rounded hover:bg-gray-100 transition">
+        Berita
+      </a>
     </div>
   </header>
 
 
-<section id="hero" class="relative bg-white py-20 min-h-[320px]">
-  <div class="absolute bottom-0 left-0 w-full h-12 bg-gradient-to-b from-transparent to-gray-200 pointer-events-none"></div>
-  <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-col lg:flex-row items-start relative z-10">
-    <!-- Teks -->
-    <div class="w-full md:w-full lg:w-2/3 text-center md:text-center lg:text-left px-10 md:px-10 lg:pr-8 space-y-10 order-2 md:order-2 lg:order-1">
-      <h1 class="text-4xl lg:text-5xl font-bold leading-tight text-blue-800">
-        Sistem Informasi Perpustakaan <br class="hidden md:block"> SMP Negeri 12 Yogyakarta
-      </h1>
-      <p class="text-gray-600 max-w-md mx-auto md:mx-auto lg:mx-0">
-        Selamat datang di platform digital kami yang menyediakan berbagai layanan informasi dan peminjaman buku secara daring untuk mendukung kegiatan belajar siswa dan guru.
-      </p>
+  <section id="hero" class="relative bg-white py-20 min-h-[320px]">
+    <div class="absolute bottom-0 left-0 w-full h-12 bg-gradient-to-b from-transparent to-gray-200 pointer-events-none"></div>
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-col lg:flex-row items-start relative z-10">
+      <!-- Teks -->
+      <div class="w-full md:w-full lg:w-2/3 text-center md:text-center lg:text-left px-10 md:px-10 lg:pr-8 space-y-10 order-2 md:order-2 lg:order-1">
+        <h1 class="text-4xl lg:text-5xl font-bold leading-tight text-blue-800">
+          Sistem Informasi Perpustakaan <br class="hidden md:block"> SMP Negeri 12 Yogyakarta
+        </h1>
+        <p class="text-gray-600 max-w-md mx-auto md:mx-auto lg:mx-0">
+          Selamat datang di platform digital kami yang menyediakan berbagai layanan informasi dan peminjaman buku secara daring untuk mendukung kegiatan belajar siswa dan guru.
+        </p>
+      </div>
+      <!-- Gambar -->
+      <div class="w-full md:w-full lg:w-1/3 mb-8 md:mb-8 lg:mb-0 flex justify-center lg:justify-end order-1 md:order-1 lg:order-2">
+        <img src="/images/perpus_4.png" alt="Perpustakaan" 
+          class="max-w-sm md:max-w-md lg:max-w-lg h-auto object-contain pr-0">
+      </div>
     </div>
-    <!-- Gambar -->
-    <div class="w-full md:w-full lg:w-1/3 mb-8 md:mb-8 lg:mb-0 flex justify-center lg:justify-end order-1 md:order-1 lg:order-2">
-      <img src="/images/perpus_4.png" alt="Perpustakaan" 
-        class="max-w-sm md:max-w-md lg:max-w-lg h-auto object-contain pr-0">
-    </div>
-  </div>
-</section>
+  </section>
   <!-- Statistik Section -->
   <section class="relative z-10 px-16 md:px-16 py-2 bg-gray-200 min-h-[250px]">
     <div class="absolute bottom-0 left-0 w-full h-14 bg-gradient-to-b from-transparent to-white pointer-events-none"></div>
@@ -122,65 +128,84 @@
     </div>
   </section>
 
-<!-- Statistik Pengunjung -->
-<section id="statistik" class="relative z-10 px-6 md:px-20 py-20 bg-white text-gray-800">
-  <!-- Gradasi bagian bawah -->
-  <div class="absolute bottom-0 left-0 w-full h-14 bg-gradient-to-b from-white to-gray-200 pointer-events-none"></div>
+  <!-- Statistik Pengunjung -->
+  <section id="statistik" class="relative z-10 px-6 md:px-20 py-20 bg-white text-gray-800">
+    <!-- Gradasi bagian bawah -->
+    <div class="absolute bottom-0 left-0 w-full h-14 bg-gradient-to-b from-white to-gray-200 pointer-events-none"></div>
 
-  <div class="max-w-4xl mx-auto">
-    <!-- Judul -->
-    <div class="relative mb-6">
-      <h2 class="text-4xl font-bold text-blue-800 text-left inline-block">
-        <span class="relative">
-          <span class="absolute -bottom-1 left-0 w-16 h-1 bg-blue-800 rounded-full"></span>
-          Statistik Pengunjung
-        </span>
-      </h2>
+    <div class="max-w-4xl mx-auto">
+      <!-- Judul -->
+      <div class="relative mb-6">
+        <h2 class="text-4xl font-bold text-blue-800 text-left inline-block">
+          <span class="relative">
+            <span class="absolute -bottom-1 left-0 w-16 h-1 bg-blue-800 rounded-full"></span>
+            Statistik Pengunjung
+          </span>
+        </h2>
+      </div>
+
+      <!-- Grafik -->
+      <div class="bg-gray-100 shadow-lg rounded-lg p-6 h-[400px] flex items-center justify-center">
+        <canvas id="statistikChart" class="w-full h-full max-w-full max-h-full"></canvas>
+      </div>
     </div>
+  </section>
 
-    <!-- Grafik -->
-    <div class="bg-gray-100 shadow-lg rounded-lg p-6 h-[400px] flex items-center justify-center">
-      <canvas id="statistikChart" class="w-full h-full max-w-full max-h-full"></canvas>
+
+  <!-- Informasi Perpustakaan -->
+  <section id="informasi" class="relative z-10 px-10 md:px-10 py-12 bg-gradient-to-b from-gray-200 via-white to-gray-200 text-gray-800 scroll-mt-24">
+    
+    <!-- Gradasi bagian atas -->
+    <div class="absolute top-0 left-0 w-full h- bg-gradient-to-t from-gray-200 to-white pointer-events-none"></div>
+
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+
+      <!-- Gambar -->
+      <div class="overflow-hidden rounded-lg shadow-md transform transition duration-500 hover:scale-105">
+        <img src="images/gedungsmpn12ykasli.jpg" alt="Gedung SMPN 12 Yogyakarta" class="w-full h-auto object-cover" />
+      </div>
+
+      <!-- Teks -->
+      <div>
+        <h2 class="text-4xl font-bold text-blue-800 mb-6 text-center md:text-left relative inline-block">
+          Informasi Perpustakaan Digital
+          <span class="block w-16 h-1 bg-blue-800 mt-2 rounded-full"></span>
+        </h2>
+        <p class="text-sm md:text-base leading-relaxed mb-4 text-justify">
+          Perpustakaan merupakan jantung literasi dan pembelajaran di sekolah. 
+          SMP Negeri 12 Yogyakarta menghadirkan Perpustakaan Digital sebagai inovasi untuk mendukung kebutuhan belajar siswa dan guru secara fleksibel, modern, dan inklusif. 
+          Koleksinya mencakup buku pelajaran, bacaan umum, hingga referensi yang dapat diakses daring kapan saja dan di mana saja. 
+          Layanan ini mendukung pembelajaran mandiri, membiasakan literasi digital, serta memudahkan guru menyediakan sumber belajar tambahan yang relevan.
+        </p>
+        <p class="text-sm md:text-base leading-relaxed mb-4 text-justify">
+          Jam Operasional : 08.00 - 16.00 WIB
+        </p>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-
-<!-- Tentang Perpustakaan -->
-<section id="tentang" class="relative z-10 px-10 md:px-10 py-12 bg-gradient-to-b from-gray-200 via-white to-gray-200 text-gray-800 scroll-mt-24">
-  
-  <!-- Gradasi bagian atas -->
-  <div class="absolute top-0 left-0 w-full h- bg-gradient-to-t from-gray-200 to-white pointer-events-none"></div>
-
-  <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-
-    <!-- Gambar -->
-    <div class="overflow-hidden rounded-lg shadow-md transform transition duration-500 hover:scale-105">
-      <img src="images/gedungsmpn12ykasli.jpg" alt="Gedung SMPN 12 Yogyakarta" class="w-full h-auto object-cover" />
-    </div>
-
-    <!-- Teks -->
-    <div>
-      <h2 class="text-4xl font-bold text-blue-800 mb-6 text-center md:text-left relative inline-block">
-        Tentang Perpustakaan Digital
+  <section id="berita" class="relative z-10 px-10 md:px-10 py-16 bg-white text-gray-800 scroll-mt-24 border-t border-gray-200">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-4xl font-bold text-blue-800 mb-8 text-center md:text-left relative inline-block">
+        Berita Terkini
         <span class="block w-16 h-1 bg-blue-800 mt-2 rounded-full"></span>
       </h2>
-      <p class="text-sm md:text-base leading-relaxed mb-4 text-justify">
-        Perpustakaan merupakan jantung dari kegiatan literasi dan pembelajaran di sekolah. Di era digital saat ini, 
-        SMP Negeri 12 Yogyakarta turut berinovasi dengan menghadirkan layanan Perpustakaan Digital sebagai bentuk komitmen untuk mendukung kebutuhan belajar siswa dan guru secara lebih fleksibel, modern, dan inklusif.
-      </p>
-      <p class="text-sm md:text-base leading-relaxed mb-4 text-justify">
-        Perpustakaan digital ini menyediakan berbagai koleksi buku pelajaran, bacaan umum, serta referensi lainnya yang dapat diakses secara daring kapan pun dan di mana pun. 
-        Dengan demikian, siswa tidak lagi terbatas oleh ruang dan waktu dalam menjelajahi ilmu pengetahuan.
-      </p>
-      <p class="text-sm md:text-base leading-relaxed text-justify">
-        Selain itu, perpustakaan digital ini juga menjadi sarana pembelajaran mandiri dan pembiasaan literasi digital bagi siswa. 
-        Guru pun dimudahkan dalam menyediakan sumber belajar tambahan yang relevan dan cepat diakses.
-      </p>
-    </div>
 
-  </div>
-</section>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <?php $__empty_1 = true; $__currentLoopData = $berita; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+          <div class="p-5 bg-blue-50 border-l-4 border-blue-400 rounded shadow-sm">
+            <a href="<?php echo e($item['link']); ?>" target="_blank" class="text-blue-800 font-semibold text-lg hover:underline">
+              [<?php echo e($item['sumber']); ?>] <?php echo e($item['judul']); ?>
+
+            </a>
+            <p class="text-sm text-gray-600 mt-1"><?php echo e($item['tanggal']); ?></p>
+          </div>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+          <p class="text-gray-500">Tidak ada berita tersedia.</p>
+        <?php endif; ?>
+      </div>
+    </div>
+  </section>
 
 
   <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::scripts(); ?>
