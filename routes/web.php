@@ -4,8 +4,10 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Volt\Volt;
 use App\Http\Controllers\WelcomeController;
-use App\Livewire\Pages\Auth\VerifyEmail;
-use App\Livewire\Pages\Auth\SetupAccount;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
+use App\Livewire\Pages\Auth\SetupPassword;
+use App\Livewire\Pages\Auth\SetupEmailVerify;
 
 // Admin
 use App\Livewire\Admin\Dashboard\Index as DashboardIndex;
@@ -23,27 +25,31 @@ use App\Livewire\User\Dashboard\Index as DashboardIndexUser;
 use App\Livewire\User\Buku\Index as BukuIndexUser;
 use App\Livewire\User\Peminjaman\Index as PeminjamanIndexUser;
 
+// Public welcome
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
-// Auth routes (login, register, etc)
+// Auth routes (login, register, forgot password, etc)
 require __DIR__.'/auth.php';
 
-// Setup account route untuk siswa/guru
-Route::middleware(['auth'])->get('/setup-account', SetupAccount::class)->name('setup.account');
+// ===== SETUP ACCOUNT FLOW UNTUK SISWA/GURU =====
+Route::middleware(['auth'])->group(function () {
 
-// Email verification handling
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use Illuminate\Http\Request;
+    // Step 1: Ganti password
+    Route::get('/setup-password', SetupPassword::class)->name('setup.password');
 
-Route::middleware('auth')->group(function () {
+    // Step 2: Verifikasi email
+    Route::get('/setup-verify-email', SetupEmailVerify::class)->name('setup.verify-email');
+
+    // Tangani klik link verifikasi dari email
     Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
         $request->fulfill();
-        return redirect()->route('setup.account');
+        return redirect()->route('user.dashboard');
     })->middleware(['signed'])->name('verification.verify');
 
+    // Kirim ulang email verifikasi
     Route::post('/email/verification-notification', function (Request $request) {
         $request->user()->sendEmailVerificationNotification();
-        return back()->with('message', 'Verification link sent!');
+        return back()->with('message', 'Link verifikasi telah dikirim!');
     })->middleware(['throttle:6,1'])->name('verification.send');
 });
 
@@ -76,7 +82,7 @@ Route::middleware(['auth', 'role:siswa,guru', 'check.default.password', 'ensure.
 
 Route::get('/test-email-brevo', function () {
     Mail::raw('Tes email via Brevo SMTP', function ($message) {
-        $message->to('roynashruddin@gmail.com') // ganti dengan email tujuanmu
+        $message->to('roynashruddin18@gmail.com') // ganti dengan email tujuanmu
                 ->subject('Tes dari Laravel + Brevo');
     });
 

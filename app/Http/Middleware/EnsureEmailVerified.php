@@ -7,14 +7,12 @@ use Illuminate\Http\Request;
 
 class EnsureEmailVerified
 {
-    public function handle(Request $request, Closure $next)
+    public function handle($request, Closure $next)
     {
-        $user = $request->user();
+        $user = auth()->user();
 
         if ($user && !$user->hasVerifiedEmail()) {
-            if (!$request->is('setup-account*')) {
-                return redirect()->route('setup.account');
-            }
+            return redirect()->route('setup.verify-email');
         }
 
         return $next($request);

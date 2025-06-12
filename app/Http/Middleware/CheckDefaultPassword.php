@@ -3,21 +3,18 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
 
 class CheckDefaultPassword
 {
-    public function handle(Request $request, Closure $next)
+    public function handle($request, Closure $next)
     {
-        $user = $request->user();
+        $user = auth()->user();
 
-        if ($user && $user->is_default_password) {
-            if (!$request->is('setup-account*')) {
-                return redirect()->route('setup.account');
-            }
-        } 
+        // Jika user punya anggota, dan plain_password-nya masih ada (belum diganti)
+        if ($user && $user->anggota && !empty($user->anggota->plain_password)) {
+            return redirect()->route('setup.password');
+        }
+
         return $next($request);
     }
 }
-
-

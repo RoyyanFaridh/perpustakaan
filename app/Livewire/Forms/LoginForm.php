@@ -40,16 +40,15 @@ class LoginForm extends Form
         RateLimiter::clear($this->throttleKey());
 
         if ($user->is_default_password) {
-            if ($user->hasRole('admin')) {
-                return redirect()->route('admin.profile');
-            }
-            return redirect()->route('user.profile');
+            return redirect()->route('setup.password');
         }
 
         if ($user->hasRole('admin')) {
             return redirect()->route('admin.dashboard');
         }
+
         return redirect()->route('user.dashboard');
+
     }
 
     protected function ensureIsNotRateLimited()
