@@ -6,6 +6,7 @@
       <img src="/images/logo_smp12yk.png" alt="Logo SMPN 12 Yogyakarta" class="h-10 w-auto mr-4" />
       <div class="hidden md:flex items-center space-x-8 text-sm text-black ml-6">
         <a href="#hero" :class="{ 'font-bold': active === '#hero' }" @click="active = '#hero'" class="transition">Beranda</a>
+        <a href="#statistik" :class="{ 'font-bold': active === '#statistik' }" @click="active = '#statistik'" class="transition">Tentang</a>
         <a href="#tentang" :class="{ 'font-bold': active === '#tentang' }" @click="active = '#tentang'" class="transition">Tentang</a>
         <a href="#kontak" :class="{ 'font-bold': active === '#kontak' }" @click="active = '#kontak'" class="transition">Kontak</a>
       </div>
@@ -43,6 +44,10 @@
     <a href="#hero" @click="active = '#hero'; open = false"
        :class="{ 'font-bold': active === '#hero' }" class="block transition hover:bg-gray-100 px-2 py-1 rounded">
       Beranda
+    </a>
+        <a href="#statistik" @click="active = '#statistik'; open = false"
+       :class="{ 'font-bold': active === '#statistik' }" class="block transition hover:bg-gray-100 px-2 py-1 rounded">
+      Statistik
     </a>
     <a href="#tentang" @click="active = '#tentang'; open = false"
        :class="{ 'font-bold': active === '#tentang' }" class="block transition hover:bg-gray-100 px-2 py-1 rounded">
