@@ -1,13 +1,14 @@
-<div x-data="{ open: false, active: '#hero' }" class="sticky top-0 z-50 w-full bg-white shadow-md">
+<div x-data="{ open: false, active: '#beranda' }" class="sticky top-0 z-50 w-full bg-white shadow-md">
   <!-- Header -->
   <div class="flex items-center justify-between px-4 py-3 md:px-6 md:py-2">
     <!-- Navigasi Kiri -->
     <div class="flex items-center">
       <img src="/images/logo_smp12yk.png" alt="Logo SMPN 12 Yogyakarta" class="h-10 w-auto mr-4" />
       <div class="hidden md:flex items-center space-x-8 text-sm text-black ml-6">
-        <a href="#hero" :class="{ 'font-bold': active === '#hero' }" @click="active = '#hero'" class="transition">Beranda</a>
-        <a href="#statistik" :class="{ 'font-bold': active === '#statistik' }" @click="active = '#statistik'" class="transition">Tentang</a>
-        <a href="#tentang" :class="{ 'font-bold': active === '#tentang' }" @click="active = '#tentang'" class="transition">Tentang</a>
+        <a href="#beranda" :class="{ 'font-bold': active === '#beranda' }" @click="active = '#beranda'" class="transition">Beranda</a>
+        <a href="#statistik" :class="{ 'font-bold': active === '#statistik' }" @click="active = '#statistik'" class="transition">Statistik</a>
+        <a href="#informasi" :class="{ 'font-bold': active === '#informasi' }" @click="active = '#informasi'" class="transition">Informasi</a>
+        <a href="#berita" :class="{ 'font-bold': active === '#berita' }" @click="active = '#berita'" class="transition">Berita</a>
         <a href="#kontak" :class="{ 'font-bold': active === '#kontak' }" @click="active = '#kontak'" class="transition">Kontak</a>
       </div>
     </div>
@@ -41,17 +42,21 @@
   <!-- Dropdown Mobile -->
   <div x-show="open" x-transition
        class="absolute right-4 top-16 w-64 bg-white rounded-lg shadow-lg z-40 border px-4 py-3 space-y-2 text-black md:hidden">
-    <a href="#hero" @click="active = '#hero'; open = false"
-       :class="{ 'font-bold': active === '#hero' }" class="block transition hover:bg-gray-100 px-2 py-1 rounded">
+    <a href="#beranda" @click="active = '#beranda'; open = false"
+       :class="{ 'font-bold': active === '#beranda' }" class="block transition hover:bg-gray-100 px-2 py-1 rounded">
       Beranda
     </a>
         <a href="#statistik" @click="active = '#statistik'; open = false"
        :class="{ 'font-bold': active === '#statistik' }" class="block transition hover:bg-gray-100 px-2 py-1 rounded">
       Statistik
     </a>
-    <a href="#tentang" @click="active = '#tentang'; open = false"
-       :class="{ 'font-bold': active === '#tentang' }" class="block transition hover:bg-gray-100 px-2 py-1 rounded">
+    <a href="#informasi" @click="active = '#informasi'; open = false"
+       :class="{ 'font-bold': active === '#informasi' }" class="block transition hover:bg-gray-100 px-2 py-1 rounded">
       Tentang
+    </a>
+    <a href="#berita" @click="active = '#berita'; open = false"
+       :class="{ 'font-bold': active === '#berita' }" class="block transition hover:bg-gray-100 px-2 py-1 rounded">
+      Berita
     </a>
     <a href="#kontak" @click="active = '#kontak'; open = false"
        :class="{ 'font-bold': active === '#kontak' }" class="block transition hover:bg-gray-100 px-2 py-1 rounded">

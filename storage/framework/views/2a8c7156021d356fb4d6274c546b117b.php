@@ -7,7 +7,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-  @livewireStyles
+  <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::styles(); ?>
+
   <style>[x-cloak] { display: none !important; }</style>
 </head>
 
@@ -34,7 +35,7 @@
           </svg>
         </button>
 
-        <a href="{{ route('login') }}" class="rounded px-4 py-2 bg-blue-500 text-white hover:bg-blue-700 text-sm transition">
+        <a href="<?php echo e(route('login')); ?>" class="rounded px-4 py-2 bg-blue-500 text-white hover:bg-blue-700 text-sm transition">
           Login
         </a>
       </div>
@@ -70,16 +71,28 @@
   <section class="relative z-10 px-16 py-2 bg-gray-200 min-h-[250px]">
     <div class="absolute bottom-0 left-0 w-full h-14 bg-gradient-to-b from-transparent to-white pointer-events-none"></div>
     <div class="flex flex-wrap gap-4">
-      @foreach ($cardData as $card)
-        <x-card
-          :title="$card['title']"
-          :value="$card['value']"
-          :periode="$card['periode'] ?? null"
-          :delta="$card['delta'] ?? null"
-          :icon="$card['icon'] ?? null"
-          :bgColor="$card['bgColor'] ?? '#f43f5e'"
-        />
-      @endforeach
+      <?php $__currentLoopData = $cardData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $card): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <?php if (isset($component)) { $__componentOriginal53747ceb358d30c0105769f8471417f6 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal53747ceb358d30c0105769f8471417f6 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.card','data' => ['title' => $card['title'],'value' => $card['value'],'periode' => $card['periode'] ?? null,'delta' => $card['delta'] ?? null,'icon' => $card['icon'] ?? null,'bgColor' => $card['bgColor'] ?? '#f43f5e']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['title' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['title']),'value' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['value']),'periode' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['periode'] ?? null),'delta' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['delta'] ?? null),'icon' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['icon'] ?? null),'bgColor' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['bgColor'] ?? '#f43f5e')]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal53747ceb358d30c0105769f8471417f6)): ?>
+<?php $attributes = $__attributesOriginal53747ceb358d30c0105769f8471417f6; ?>
+<?php unset($__attributesOriginal53747ceb358d30c0105769f8471417f6); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal53747ceb358d30c0105769f8471417f6)): ?>
+<?php $component = $__componentOriginal53747ceb358d30c0105769f8471417f6; ?>
+<?php unset($__componentOriginal53747ceb358d30c0105769f8471417f6); ?>
+<?php endif; ?>
+      <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     </div>
   </section>
 
@@ -125,16 +138,17 @@
         <span class="block w-16 h-1 bg-blue-800 mt-2 rounded-full"></span>
       </h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        @forelse ($berita as $item)
+        <?php $__empty_1 = true; $__currentLoopData = $berita; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
           <div class="p-5 bg-blue-50 border-l-4 border-blue-400 rounded shadow-sm">
-            <a href="{{ $item['link'] }}" target="_blank" class="text-blue-800 font-semibold text-lg hover:underline">
-              [{{ $item['sumber'] }}] {{ $item['judul'] }}
+            <a href="<?php echo e($item['link']); ?>" target="_blank" class="text-blue-800 font-semibold text-lg hover:underline">
+              [<?php echo e($item['sumber']); ?>] <?php echo e($item['judul']); ?>
+
             </a>
-            <p class="text-sm text-gray-600 mt-1">{{ $item['tanggal'] }}</p>
+            <p class="text-sm text-gray-600 mt-1"><?php echo e($item['tanggal']); ?></p>
           </div>
-        @empty
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
           <p class="text-gray-500">Tidak ada berita tersedia.</p>
-        @endforelse
+        <?php endif; ?>
       </div>
     </div>
   </section>
@@ -144,11 +158,11 @@
     const statistikChart = new Chart(ctx, {
       type: 'line',
       data: {
-        labels: @json($bulanLabels),
+        labels: <?php echo json_encode($bulanLabels, 15, 512) ?>,
         datasets: [
           {
-            label: '{{ $tahunSebelumnya }}',
-            data: @json($jumlahPengunjungTahunLalu),
+            label: '<?php echo e($tahunSebelumnya); ?>',
+            data: <?php echo json_encode($jumlahPengunjungTahunLalu, 15, 512) ?>,
             borderColor: '#60A5FA',
             backgroundColor: 'rgba(96, 165, 250, 0.1)',
             borderWidth: 2,
@@ -156,8 +170,8 @@
             tension: 0.4
           },
           {
-            label: '{{ $tahunSekarang }}',
-            data: @json($jumlahPengunjungTahunIni),
+            label: '<?php echo e($tahunSekarang); ?>',
+            data: <?php echo json_encode($jumlahPengunjungTahunIni, 15, 512) ?>,
             borderColor: '#EF4444',
             backgroundColor: 'rgba(239, 68, 68, 0.1)',
             borderWidth: 2,
@@ -168,7 +182,7 @@
       },
       options: {
         responsive: true,
-        maintainAspectRatio: false, // 🔥 kunci agar tinggi container bekerja
+        maintainAspectRatio: false,
         plugins: {
           legend: {
             position: 'bottom',
@@ -193,7 +207,8 @@
     });
   </script>
 
-  @livewireScripts
+  <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::scripts(); ?>
+
 
 <footer id="kontak" class="bg-blue-800 text-white px-6 md:px-20 py-10 border-t border-blue-700 shadow-2xl">
   <div class="w-full flex flex-col md:flex-row justify-between px-0 md:px-0 ...">
@@ -235,8 +250,9 @@
 
   <!-- Copyright -->
   <div class="mt-10 border-t border-white pt-4 text-center text-sm text-white">
-    &copy; {{ date('Y') }} Perpustakaan Digital SMP Negeri 12 Yogyakarta. All rights reserved.
+    &copy; <?php echo e(date('Y')); ?> Perpustakaan Digital SMP Negeri 12 Yogyakarta. All rights reserved.
   </div>
 </footer>
 </body>
 </html>
+<?php /**PATH C:\Users\ASUS\perpustakaan\resources\views/pages/welcome.blade.php ENDPATH**/ ?>
