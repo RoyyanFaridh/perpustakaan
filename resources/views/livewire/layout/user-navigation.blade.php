@@ -31,9 +31,18 @@ new class extends Component
 
             <!-- Sidebar Menu -->
             <nav class="flex-grow space-y-2">
-                <x-nav-link :href="route('user.dashboard')" :active="request()->routeIs('user.dashboard')" class="transition-all">Dashboard</x-nav-link>
-                <x-nav-link :href="route('user.buku.index')" :active="request()->routeIs('buku.*')" class="transition-all">Buku</x-nav-link>
-                <x-nav-link :href="route('user.peminjaman.index')" :active="request()->routeIs('peminjaman.*')" class="transition-all">Peminjaman</x-nav-link>
+                <x-nav-link :href="route('user.dashboard')" :active="request()->routeIs('user.dashboard')" class="flex items-center transition-all">
+                    <x-icon.dashboard-icon class="w-5 h-5 mr-2" />
+                    <span class="ml-4">Dashboard</span>
+                </x-nav-link>
+                <x-nav-link :href="route('user.buku.index')" :active="request()->routeIs('buku.*')" class="flex items-center transition-all">
+                    <x-icon.book class="w-5 h-5 mr-2" />
+                    <span class="ml-4">Buku</span>
+                </x-nav-link>
+                <x-nav-link :href="route('user.peminjaman.index')" :active="request()->routeIs('peminjaman.*')" class="flex items-center transition-all">
+                    <x-icon.calendar class="w-5 h-5 mr-2" />
+                    <span class="ml-4">Peminjaman</span>
+                </x-nav-link>
             </nav>
 
             <!-- Profile & Logout -->
@@ -85,23 +94,33 @@ new class extends Component
         <div x-show="open" x-transition class="absolute right-4 top-20 w-64 bg-white rounded-lg shadow-lg z-50 border sm:hidden">
             <div class="px-4 py-3 space-y-2">
                 <a href="{{ route('user.dashboard') }}"
-                    class="block px-3 py-2 rounded hover:bg-gray-100 transition {{ request()->routeIs('user.dashboard') ? 'font-semibold bg-gray-200' : '' }}">
-                    Dashboard
+                    class="flex items-center px-3 py-2 rounded hover:bg-gray-100 transition {{ request()->routeIs('user.dashboard') ? 'font-semibold bg-gray-200' : '' }}">
+                    <x-icon.dashboard-icon class="w-5 h-5 mr-2" />
+                    <span class="ml-4">Dashboard</span>
                 </a>
                 <a href="{{ route('user.buku.index') }}"
-                    class="block px-3 py-2 rounded hover:bg-gray-100 transition {{ request()->routeIs('buku.*') ? 'font-semibold bg-gray-200' : '' }}">
-                    Buku
+                    class="flex items-center px-3 py-2 rounded hover:bg-gray-100 transition {{ request()->routeIs('buku.*') ? 'font-semibold bg-gray-200' : '' }}">
+                    <x-icon.book class="w-5 h-5 mr-2" />
+                    <span class="ml-4">Buku</span>
                 </a>
                 <a href="{{ route('user.peminjaman.index') }}"
-                    class="block px-3 py-2 rounded hover:bg-gray-100 transition {{ request()->routeIs('peminjaman.*') ? 'font-semibold bg-gray-200' : '' }}">
-                    Peminjaman
+                    class="flex items-center px-3 py-2 rounded hover:bg-gray-100 transition {{ request()->routeIs('peminjaman.*') ? 'font-semibold bg-gray-200' : '' }}">
+                    <x-icon.calendar class="w-5 h-5 mr-2" />
+                    <span class="ml-4">Peminjaman</span>
                 </a>
 
                 <div class="border-t pt-3">
+                    <div class="flex items-center px-3 pb-2">
+                        <svg class="w-5 h-5 mr-2 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                                d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.657 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        <span class="ml-4 text-gray-700 text-base font-medium">{{ auth()->user()->name }}</span>
+                    </div>
                     <a href="{{ route('user.profile') }}"
-                        class="block px-3 py-2 rounded hover:bg-gray-100">Profile</a>
+                        class="block px-3 py-2 rounded hover:bg-gray-100 transition">Profile</a>
                     <button wire:click="logout"
-                        class="w-full text-start px-3 py-2 rounded hover:bg-gray-100 text-red-500 hover:text-red-700">
+                        class="w-full text-start px-3 py-2 rounded hover:bg-gray-100 text-red-500 hover:text-red-700 transition">
                         Log Out
                     </button>
                 </div>

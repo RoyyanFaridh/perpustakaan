@@ -225,7 +225,7 @@
       },
       options: {
         responsive: true,
-        maintainAspectRatio: false, // 🔥 kunci agar tinggi container bekerja
+        maintainAspectRatio: false, 
         plugins: {
           legend: {
             position: 'bottom',
