@@ -24,6 +24,16 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Livewire\User\Dashboard\Index as DashboardIndexUser;
 use App\Livewire\User\Buku\Index as BukuIndexUser;
 use App\Livewire\User\Peminjaman\Index as PeminjamanIndexUser;
+use App\Livewire\Admin\Peminjaman\Index;
+
+Route::get('/test-email', function () {
+    $peminjaman = App\Models\Peminjaman::with(['anggota.user'])->latest()->first();
+    Mail::to($peminjaman->anggota->user->email)->send(new App\Mail\PengingatKembaliMail($peminjaman));
+    return 'Email test terkirim';
+});
+
+
+Route::get('/admin/peminjaman', Index::class);
 
 // Public welcome
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');

@@ -26,15 +26,25 @@ class Index extends Component
     {
         $query = Buku::query();
 
-        if ($this->search) {
-            $query->where('judul', 'like', '%' . $this->search . '%');
+        if (!empty($this->search)) {
+            $query->where(function ($q) {
+                $q->where('judul', 'like', '%' . $this->search . '%')
+                ->orWhere('penulis', 'like', '%' . $this->search . '%')
+                ->orWhere('penerbit', 'like', '%' . $this->search . '%')
+                ->orWhere('kategori', 'like', '%' . $this->search . '%')
+                ->orWhere('isbn', 'like', '%' . $this->search . '%');
+            });
         }
-        if ($this->sortKategori) {
+
+        if (!empty($this->sortKategori)) {
             $query->where('kategori', $this->sortKategori);
         }
+
         $this->buku = $query->get();
+
         return view('livewire.admin.buku.index');
     }
+
 
     public function store()
     {

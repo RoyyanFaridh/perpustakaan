@@ -86,7 +86,6 @@
                     <th class="px-4 py-3 font-semibold">Tanggal Pinjam</th>
                     <th class="px-4 py-3 font-semibold">Tanggal Kembali</th>
                     <th class="px-4 py-3 font-semibold">Status</th>
-                    <th class="px-4 py-3 text-center font-semibold">Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -107,21 +106,7 @@
                                     {{ $item->status }}
                                 </span>
                             </td>
-                            <td class="px-4 py-2 text-center space-x-2">
-                                @if (strtolower($item->status) === 'booking')
-                                    <button wire:click="setujui({{ $item->id }})"
-                                        class="px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded text-xs">
-                                        Setujui
-                                    </button>
-                                @elseif (strtolower($item->status) === 'dipinjam')
-                                    <button wire:click="kembalikan({{ $item->id }})"
-                                        class="px-2 py-1 bg-green-500 hover:bg-green-600 text-white rounded text-xs">
-                                        Dikembalikan
-                                    </button>
-                                @else
-                                    <span class="text-green-600 text-xs">Sudah dikembalikan</span>
-                                @endif
-                            </td>
+                            
 
 
                         </tr>
