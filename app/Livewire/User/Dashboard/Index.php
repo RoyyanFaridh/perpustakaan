@@ -54,7 +54,7 @@ class Index extends Component
             [
                 'title' => 'Total Koleksi Buku',
                 'bgColor' => '#ED5565',
-                'value' => number_format(Buku::count(), 0, ',', '.'),
+                'value' => number_format($totalBukuSaatIni, 0, ',', '.'),
                 'periode' => $bulanIni,
                 'delta' => $deltaBuku,
                 'icon' => view('components.icon.books')->render(),
@@ -62,7 +62,7 @@ class Index extends Component
             [
                 'title' => 'Total Anggota',
                 'bgColor' => '#1C84C6',
-                'value' => number_format(Anggota::count(), 0, ',', '.'),
+                'value' => number_format($totalAnggotaSaatIni, 0, ',', '.'),
                 'periode' => $bulanIni,
                 'delta' => $deltaAnggota,
                 'icon' => view('components.icon.users')->render(),
@@ -88,6 +88,7 @@ class Index extends Component
 
     public function render()
     {
+        $userId = auth()->id();
         $tahunSekarang = now()->year;
         $tahunSebelumnya = $tahunSekarang - 1;
         $bulanLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
@@ -96,19 +97,16 @@ class Index extends Component
         $jumlahPengunjungTahunLalu = [];
 
         for ($i = 1; $i <= 12; $i++) {
-            $jumlahPengunjungTahunIni[] = Pengunjung::whereYear('tanggal', $tahunSekarang)
+            $jumlahPengunjungTahunIni[] = Pengunjung::where('user_id', $userId)
+                ->whereYear('tanggal', $tahunSekarang)
                 ->whereMonth('tanggal', $i)
                 ->count();
 
-            $jumlahPengunjungTahunLalu[] = Pengunjung::whereYear('tanggal', $tahunSebelumnya)
+            $jumlahPengunjungTahunLalu[] = Pengunjung::where('user_id', $userId)
+                ->whereYear('tanggal', $tahunSebelumnya)
                 ->whereMonth('tanggal', $i)
                 ->count();
         }
-
-        $totalKoleksiBuku = Buku::count();
-        $totalAnggota = User::whereIn('role', ['siswa', 'guru'])->count();
-        $totalPeminjaman = Peminjaman::count();
-        $totalKeterlambatan = Peminjaman::whereColumn('tanggal_kembali', '>', 'batas_pengembalian')->count();
 
         $cardData = $this->getCardData();
 
@@ -118,10 +116,6 @@ class Index extends Component
             'jumlahPengunjungTahunLalu',
             'tahunSekarang',
             'tahunSebelumnya',
-            'totalKoleksiBuku',
-            'totalAnggota',
-            'totalPeminjaman',
-            'totalKeterlambatan',
             'cardData'
         ))->layout('layouts.user');
     }
