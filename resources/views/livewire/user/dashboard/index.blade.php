@@ -4,16 +4,19 @@
     <!-- Card Summary -->
     <div class="flex flex-wrap gap-4 mb-4">
         @foreach($cardData as $card)
-            <x-card
-                :title="$card['title']"
-                :bgColor="$card['bgColor']"
-                :value="$card['value']"
-                :periode="$card['periode']"
-                :delta="$card['delta']"
-                :icon="$card['icon']"
-            />
+            <div class="w-full md:w-1/3">
+                <x-card
+                    :title="$card['title']"
+                    :bgColor="$card['bgColor']"
+                    :value="$card['value']"
+                    :periode="$card['periode']"
+                    :delta="$card['delta']"
+                    :icon="$card['icon']"
+                />
+            </div>
         @endforeach
     </div>
+
 
         <div class="bg-white p-4 rounded shadow">
             <h3 class="font-semibold text-gray-800 text-base mb-3">Statistik Pengunjung</h3>

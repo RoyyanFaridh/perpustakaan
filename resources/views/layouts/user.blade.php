@@ -1,49 +1,49 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net" />
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    </head>
-    <body class="font-sans antialiased bg-gray-50">
-        <div class="min-h-screen flex">
-            <!-- Sidebar -->
-            <aside class="w-64 bg-white border-r hidden sm:block">
-                <livewire:layout.user-navigation />
-            </aside>
+    <!-- Scripts -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="//unpkg.com/alpinejs" defer></script>
+</head>
+<body class="font-sans antialiased bg-gray-50">
+    <div class="min-h-screen flex flex-col sm:flex-row">
+        <!-- Sidebar Desktop -->
+        <aside class="hidden sm:block w-64 bg-white border-r">
+            <livewire:layout.user-navigation desktop />
+        </aside>
 
+        <!-- Main Content Area -->
+        <div class="flex-1 flex flex-col min-h-screen bg-white m-2 border border-gray-100 rounded-md">
             <!-- Mobile Navbar -->
-            <div class="sm:hidden w-full">
-                <livewire:layout.user-navigation />
+            <div class="sm:hidden border-b p-4">
+                <livewire:layout.user-navigation mobile />
             </div>
 
-            <!-- Main Content -->
-            <div class="flex-auto bg-white m-2 border border-gray-100 rounded-md ">
-                <!-- Page Heading -->
-                @if (isset($header))
-                    <header>
-                        <div class="mx-auto p-4">
-                            {{ $header }}
-                        </div>
-                    </header>
-                @endif
+            <!-- Page Heading -->
+            @if (isset($header))
+                <header class="p-4 border-b">
+                    {{ $header }}
+                </header>
+            @endif
 
-                <!-- Page Content -->
-                <main class="">
-                    {{ $slot }}
-                </main>
-            </div>
+            <!-- Page Content -->
+            <main class="flex-grow p-4 overflow-auto">
+                {{ $slot }}
+            </main>
         </div>
+    </div>
+
     @stack('scripts')
-    </body>
+</body>
 </html>

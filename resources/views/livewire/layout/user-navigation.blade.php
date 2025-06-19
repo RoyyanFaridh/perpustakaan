@@ -1,22 +1,3 @@
-<?php
-
-use App\Livewire\Actions\Logout;
-use Livewire\Volt\Component;
-
-new class extends Component
-{
-    /**
-     * Log the current user out of the application.
-     */
-    public function logout(Logout $logout): void
-    {
-        $logout();
-
-        $this->redirect('/', navigate: true);
-    }
-};
-?>
-
 <nav x-data="{ open: false, anggotaOpen: false }" class="bg-white border-b border-gray-100">
     <div class="max-w-7xl mx-auto flex items-center justify-between px-4 py-3 sm:py-4">
 
@@ -29,17 +10,18 @@ new class extends Component
                 </a>
             </div>
 
-            <!-- Sidebar Menu -->
             <nav class="flex-grow space-y-2">
                 <x-nav-link :href="route('user.dashboard')" :active="request()->routeIs('user.dashboard')" class="flex items-center transition-all">
                     <x-icon.dashboard-icon class="w-5 h-5 mr-2" />
                     <span class="ml-4">Dashboard</span>
                 </x-nav-link>
-                <x-nav-link :href="route('user.buku.index')" :active="request()->routeIs('buku.*')" class="flex items-center transition-all">
+
+                <x-nav-link :href="route('user.buku.index')" :active="request()->routeIs('user.buku.*')" class="flex items-center">
                     <x-icon.book class="w-5 h-5 mr-2" />
                     <span class="ml-4">Buku</span>
                 </x-nav-link>
-                <x-nav-link :href="route('user.peminjaman.index')" :active="request()->routeIs('peminjaman.*')" class="flex items-center transition-all">
+
+                <x-nav-link :href="route('user.peminjaman.index')" :active="request()->routeIs('user.peminjaman.*')" class="flex items-center">
                     <x-icon.calendar class="w-5 h-5 mr-2" />
                     <span class="ml-4">Peminjaman</span>
                 </x-nav-link>
@@ -49,23 +31,24 @@ new class extends Component
             <div class="pt-4 border-t">
                 <x-dropdown align="left" width="48" position="top">
                     <x-slot name="trigger">
-                        <div class="flex items-center text-sm text-gray-700 cursor-pointer">
-                            <svg class="h-6 w-6 mr-2 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
-                                    d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.657 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
-                            <span x-text="@js(auth()->user()->name)"></span>
-                            <svg class="h-4 w-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
+                        <div class="flex items-center text-base cursor-pointer">
+                            <x-icon.user class="w-5 h-5 mr-2" />
+                            <span class="ml-4" x-text="@js(auth()->user()->name)"></span>
+                            <svg class="w-4 h-4 ml-4 transform transition-transform duration-200" :class="{ 'rotate-180': anggotaOpen }"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path d="M19 9l-7 7-7-7" />
                             </svg>
                         </div>
                     </x-slot>
                     <x-slot name="content">
                         <x-dropdown-link :href="route('user.profile')" wire:navigate>Profile</x-dropdown-link>
-                        <button wire:click="logout" class="w-full text-start">
-                            <x-dropdown-link class="text-red-500 hover:text-red-700">Log Out</x-dropdown-link>
-                        </button>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit"
+                                class="block w-full text-right px-4 py-2 text-sm text-red-500 hover:text-red-700 hover:bg-gray-100 transition">
+                                Log Out
+                            </button>
+                        </form>
                     </x-slot>
                 </x-dropdown>
             </div>
@@ -94,35 +77,26 @@ new class extends Component
         <div x-show="open" x-transition class="absolute right-4 top-20 w-64 bg-white rounded-lg shadow-lg z-50 border sm:hidden">
             <div class="px-4 py-3 space-y-2">
                 <a href="{{ route('user.dashboard') }}"
-                    class="flex items-center px-3 py-2 rounded hover:bg-gray-100 transition {{ request()->routeIs('user.dashboard') ? 'font-semibold bg-gray-200' : '' }}">
-                    <x-icon.dashboard-icon class="w-5 h-5 mr-2" />
-                    <span class="ml-4">Dashboard</span>
+                    class="block px-3 py-2 rounded hover:bg-gray-100 transition {{ request()->routeIs('user.dashboard') ? 'font-semibold bg-gray-200' : '' }}">
+                    Dashboard
                 </a>
                 <a href="{{ route('user.buku.index') }}"
-                    class="flex items-center px-3 py-2 rounded hover:bg-gray-100 transition {{ request()->routeIs('buku.*') ? 'font-semibold bg-gray-200' : '' }}">
-                    <x-icon.book class="w-5 h-5 mr-2" />
-                    <span class="ml-4">Buku</span>
+                    class="block px-3 py-2 rounded hover:bg-gray-100 {{ request()->routeIs('user.buku.*') ? 'font-bold bg-gray-200' : '' }}">
+                    Buku
                 </a>
                 <a href="{{ route('user.peminjaman.index') }}"
-                    class="flex items-center px-3 py-2 rounded hover:bg-gray-100 transition {{ request()->routeIs('peminjaman.*') ? 'font-semibold bg-gray-200' : '' }}">
-                    <x-icon.calendar class="w-5 h-5 mr-2" />
-                    <span class="ml-4">Peminjaman</span>
+                    class="block px-3 py-2 rounded hover:bg-gray-100 {{ request()->routeIs('user.peminjaman.*') ? 'font-bold bg-gray-200' : '' }}">
+                    Peminjaman
                 </a>
-
                 <div class="border-t pt-3">
-                    <div class="flex items-center px-3 pb-2">
-                        <svg class="w-5 h-5 mr-2 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
-                                d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.657 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                        <span class="ml-4 text-gray-700 text-base font-medium">{{ auth()->user()->name }}</span>
-                    </div>
                     <a href="{{ route('user.profile') }}"
-                        class="block px-3 py-2 rounded hover:bg-gray-100 transition">Profile</a>
-                    <button wire:click="logout"
-                        class="w-full text-start px-3 py-2 rounded hover:bg-gray-100 text-red-500 hover:text-red-700 transition">
-                        Log Out
-                    </button>
+                        class="block px-3 py-2 rounded hover:bg-gray-100">Profile</a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <x-dropdown-link as="button" class="text-red-500 hover:text-red-700 w-full text-start">
+                            Log Out
+                        </x-dropdown-link>
+                    </form>
                 </div>
             </div>
         </div>
