@@ -1,132 +1,234 @@
 <?php
 
-namespace App\Livewire\Admin\Dashboard;
+namespace App\Livewire\Admin\Peminjaman;
 
-use App\Models\User;
+use Log;
+use Carbon\Carbon;
 use App\Models\Buku;
 use App\Models\Anggota;
-use App\Models\Peminjaman;
-use App\Models\Pengunjung;
-use Illuminate\Support\Carbon;
 use Livewire\Component;
+use App\Models\Peminjaman;
+use App\Mail\PengingatKembaliMail;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PengingatPengembalianBuku;
 
 class Index extends Component
 {
-    protected function getCardData()
+    public $peminjamanId = null;
+    public $search = '';
+    public $filterStatus = '';
+    public $showModal = false;
+    public $isEdit = false;
+
+
+    protected $rules = [
+        'anggota_id' => 'required|exists:anggota,id',
+        'buku_id' => 'required|exists:buku,id',
+        'tanggal_pinjam' => 'required|date',
+        'tanggal_kembali' => 'required|date|after_or_equal:tanggal_pinjam',
+        'status' => 'required|in:booking,dipinjam,dikembalikan',
+    ];
+
+    public function openModal()
     {
-        $now = Carbon::now();
-        $bulanIni = $now->format('F Y'); 
-        
-        $akhirBulanLalu = $now->copy()->startOfMonth()->subDay();
-        $totalBukuSebelumnya = Buku::where('created_at', '<=', $akhirBulanLalu)->count();
-        $totalBukuSaatIni = Buku::count();
-        $deltaBuku = $totalBukuSaatIni - $totalBukuSebelumnya;
-
-        $totalAnggotaSebelumnya = Anggota::where('created_at', '<=', $akhirBulanLalu)->count();
-        $totalAnggotaSaatIni = Anggota::count();
-        $deltaAnggota = $totalAnggotaSaatIni - $totalAnggotaSebelumnya;
-
-        $bulanIniNum = $now->format('m');
-        $tahunIni = $now->year;
-        $bulanLalu = $now->copy()->subMonth();
-        $bulanLaluNum = $bulanLalu->format('m');
-        $tahunLalu = $bulanLalu->year;
-
-        $peminjamanBulanIni = Peminjaman::whereYear('created_at', $tahunIni)
-            ->whereMonth('created_at', $bulanIniNum)
-            ->count();
-        $peminjamanBulanLalu = Peminjaman::whereYear('created_at', $tahunLalu)
-            ->whereMonth('created_at', $bulanLaluNum)
-            ->count();
-        $deltaPeminjaman = $peminjamanBulanIni - $peminjamanBulanLalu;
-
-        $keterlambatanBulanIni = Peminjaman::where('status', 'terlambat')
-            ->whereYear('created_at', $tahunIni)
-            ->whereMonth('created_at', $bulanIniNum)
-            ->count();
-        $keterlambatanBulanLalu = Peminjaman::where('status', 'terlambat')
-            ->whereYear('created_at', $tahunLalu)
-            ->whereMonth('created_at', $bulanLaluNum)
-            ->count();
-        $deltaKeterlambatan = $keterlambatanBulanIni - $keterlambatanBulanLalu;
-
-        return [
-            [
-                'title' => 'Total Koleksi Buku',
-                'bgColor' => '#ED5565',
-                'value' => number_format(Buku::count(), 0, ',', '.'),
-                'periode' => $bulanIni,
-                'delta' => $deltaBuku,
-                'icon' => view('components.icon.books')->render(),
-                'url' => route('admin.buku.index')
-            ],
-            [
-                'title' => 'Total Anggota',
-                'bgColor' => '#1C84C6',
-                'value' => number_format(Anggota::count(), 0, ',', '.'),
-                'periode' => $bulanIni,
-                'delta' => $deltaAnggota,
-                'icon' => view('components.icon.users')->render(),
-                'url' => route('admin.anggota.index')
-            ],
-            [
-                'title' => 'Total Peminjaman',
-                'bgColor' => '#23C6C8',
-                'value' => number_format($peminjamanBulanIni, 0, ',', '.'),
-                'periode' => $bulanIni,
-                'delta' => $deltaPeminjaman,
-                'icon' => view('components.icon.calendar-clock')->render(),
-                'url' => route('admin.peminjaman.index')
-            ],
-            [
-                'title' => 'Total Keterlambatan',
-                'bgColor' => '#1AB394',
-                'value' => number_format($keterlambatanBulanIni, 0, ',', '.'),
-                'periode' => $bulanIni,
-                'delta' => $deltaKeterlambatan,
-                'icon' => view('components.icon.calendar-x-2')->render(),
-                'url' => route('admin.peminjaman.index')
-            ],
-        ];
+        $this->resetForm();
+        $this->showModal = true;
+        $this->isEdit = false;
     }
+
+    public function closeModal()
+    {
+        $this->showModal = false;
+        $this->resetForm();
+    }
+
+    public function resetForm()
+    {
+        $this->reset([
+            'anggota_id', 'buku_id', 'tanggal_pinjam', 'tanggal_kembali', 'status', 'peminjamanId'
+        ]);
+        $this->resetValidation();
+    }
+
+    public function store()
+    {
+        $this->validate();
+
+        Peminjaman::create([
+            'anggota_id' => $this->anggota_id,
+            'buku_id' => $this->buku_id,
+            'tanggal_pinjam' => $this->tanggal_pinjam,
+            'tanggal_kembali' => $this->tanggal_kembali,
+            'status' => $this->status,
+        ]);
+
+        session()->flash('message', 'Data peminjaman berhasil ditambahkan.');
+        $this->closeModal();
+    }
+
+    public function update()
+    {
+        $this->validate();
+
+        $peminjaman = Peminjaman::findOrFail($this->peminjamanId);
+
+        $peminjaman->update([
+            'anggota_id' => $this->anggota_id,
+            'buku_id' => $this->buku_id,
+            'tanggal_pinjam' => $this->tanggal_pinjam,
+            'tanggal_kembali' => $this->tanggal_kembali,
+            'status' => $this->status,
+        ]);
+
+        session()->flash('message', 'Data peminjaman berhasil diperbarui.');
+        $this->closeModal();
+    }
+
+    public function setujui($id)
+    {
+        $peminjaman = Peminjaman::findOrFail($id);
+
+        if ($peminjaman->buku->jumlah_stok <= 0) {
+            session()->flash('error', 'Stok buku habis. Tidak bisa disetujui.');
+            return;
+        }
+
+        if ($peminjaman->status === 'booking') {
+            $anggota = $peminjaman->anggota;
+            $lamaPinjam = !empty($anggota->nip) ? 14 : (!empty($anggota->nis) ? 7 : null);
+
+            if (!$lamaPinjam) {
+                session()->flash('error', 'Anggota tidak memiliki NIS atau NIP.');
+                return;
+            }
+
+            $peminjaman->update([
+                'status' => 'dipinjam',
+                'tanggal_pinjam' => now(),
+                'tanggal_kembali' => now()->addDays($lamaPinjam)
+            ]);
+
+            $peminjaman->buku->decrement('jumlah_stok');
+
+            session()->flash('message', 'Peminjaman telah disetujui.');
+        }
+    }
+
+    public function kembalikan($id)
+    {
+        $peminjaman = Peminjaman::find($id);
+
+        if (!$peminjaman || strtolower($peminjaman->status) !== 'dipinjam') {
+            session()->flash('error', 'Data peminjaman tidak valid.');
+            return;
+        }
+
+        $peminjaman->update([
+            'status' => 'dikembalikan',
+            'tanggal_kembali' => now()
+        ]);
+
+        $peminjaman->buku->increment('jumlah_stok');
+
+        session()->flash('message', 'Buku berhasil dikembalikan.');
+    }
+    
+    public function kirimPengingat()
+    {
+        $peminjamanList = Peminjaman::with(['anggota.user', 'buku'])
+            ->where('status', 'dipinjam')
+            ->get();
+
+        $emailBerhasil = 0;
+
+        foreach ($peminjamanList as $peminjaman) {
+            $tanggalKembali = Carbon::parse($peminjaman->tanggal_kembali);
+            $selisihHari = now()->diffInDays($tanggalKembali, false);
+
+            // Kirim hanya jika tenggat kurang dari atau sama dengan 3 hari dari sekarang
+            if ($selisihHari <= 3 && $selisihHari >= 0) {
+                $user = $peminjaman->anggota->user;
+
+                if ($user && $user->email) {
+                    try {
+                        Mail::to($user->email)->send(new PengingatKembaliMail($peminjaman));
+                        $emailBerhasil++;
+                    } catch (\Exception $e) {
+                        Log::error("Gagal kirim email ke {$user->email}: " . $e->getMessage());
+                    }
+                }
+            }
+        }
+
+        if ($emailBerhasil > 0) {
+            session()->flash('message', "$emailBerhasil pengingat berhasil dikirim ke peminjam dengan tenggat kurang dari 3 hari.");
+        } else {
+            session()->flash('message', 'Tidak ada email yang dikirim karena tidak ada peminjam dengan tenggat < 3 hari.');
+        }
+    }
+
+    public function kirimSemuaPengingat()
+    {
+        $now = now();
+
+        // Ambil semua peminjaman dengan status 'dipinjam' dan sisa waktu <= 3 hari
+        $peminjamanTerdekat = \App\Models\Peminjaman::with('anggota', 'buku')
+            ->where('status', 'dipinjam')
+            ->get()
+            ->filter(function ($item) use ($now) {
+                return $now->diffInDays($item->tanggal_kembali, false) <= 3;
+            });
+
+        foreach ($peminjamanTerdekat as $item) {
+            $this->kirimPengingat($item->id);
+        }
+
+        session()->flash('message', 'Pengingat berhasil dikirim ke semua peminjam yang kurang dari 3 hari.');
+    }
+
+
+    public function build()
+    {
+        return $this->subject('Pengingat Pengembalian Buku')
+                    ->view('emails.pengingat');
+    }
+
+    public function delete($id)
+    {
+        $peminjaman = Peminjaman::findOrFail($id);
+        $peminjaman->delete();
+    }
+
+    public function updatedFilterStatus()
+    {
+        // Tidak perlu isi apa pun, cukup untuk trigger re-render
+    }
+
 
     public function render()
     {
-        $tahunSekarang = now()->year;
-        $tahunSebelumnya = $tahunSekarang - 1;
-        $bulanLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+        $query = Peminjaman::with(['anggota', 'buku'])->latest();
+        
 
-        $jumlahPengunjungTahunIni = [];
-        $jumlahPengunjungTahunLalu = [];
-
-        for ($i = 1; $i <= 12; $i++) {
-            $jumlahPengunjungTahunIni[] = Pengunjung::whereYear('tanggal', $tahunSekarang)
-                ->whereMonth('tanggal', $i)
-                ->count();
-
-            $jumlahPengunjungTahunLalu[] = Pengunjung::whereYear('tanggal', $tahunSebelumnya)
-                ->whereMonth('tanggal', $i)
-                ->count();
+        if (!empty($this->filterStatus)) {
+            $query->whereRaw('LOWER(status) = ?', [strtolower($this->filterStatus)]);
         }
 
-        $totalKoleksiBuku = Buku::count();
-        $totalAnggota = User::whereIn('role', ['siswa', 'guru'])->count();
-        $totalPeminjaman = Peminjaman::count();
-        $totalKeterlambatan = Peminjaman::whereColumn('tanggal_kembali', '>', 'batas_pengembalian')->count();
+        if (!empty($this->search)) {
+            $query->whereHas('anggota', function ($q) {
+                $q->where('nama', 'like', '%' . $this->search . '%');
+            });
+        }
 
-        $cardData = $this->getCardData();
-
-        return view('livewire.admin.dashboard.index', compact(
-            'bulanLabels',
-            'jumlahPengunjungTahunIni',
-            'jumlahPengunjungTahunLalu',
-            'tahunSekarang',
-            'tahunSebelumnya',
-            'totalKoleksiBuku',
-            'totalAnggota',
-            'totalPeminjaman',
-            'totalKeterlambatan',
-            'cardData'
-        ))->layout('layouts.app');
+        return view('livewire.admin.peminjaman.index', [
+            'listPeminjaman' => $query->get(),
+            'anggotaList' => Anggota::all(),
+            'bukuList' => Buku::all(),
+        ])->layout('layouts.app');
     }
+
+
+
+
+
 }
