@@ -85,6 +85,33 @@
     </div>
     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
+    <div class="flex flex-col sm:flex-row sm:items-end gap-4 mb-6">
+        <!-- Input Pencarian -->
+        <div class="flex-1">
+            <label class="block mb-1 text-sm font-medium text-gray-700">Cari Nama Anggota</label>
+            <input 
+                type="text" 
+                wire:model.live.debounce.300ms="search" 
+                placeholder="Cari Nama Anggota..." 
+                class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </div>
+
+        <!-- Filter Status -->
+        <div class="w-full sm:w-1/3">
+            <label class="block mb-1 text-sm font-medium text-gray-700">Filter Status</label>
+            <select wire:model.live="filterStatus"
+                    class="block w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <option value="">Semua Status</option>
+                <option value="booking">Booking</option>
+                <option value="dipinjam">Dipinjam</option>
+                <option value="dikembalikan">Dikembalikan</option>
+            </select>
+        </div>
+    
+
+
+</div>
+
     <div class="overflow-x-auto">
         <table class="min-w-full text-sm text-left text-gray-700 border border-gray-200 rounded-lg overflow-hidden">
             <thead class="bg-gray-50">

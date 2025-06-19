@@ -11,7 +11,7 @@
     <div class="mb-4 flex justify-between items-center">
         <input 
             type="text" 
-            wire:model.debounce.300ms="search" 
+            wire:model.live.debounce.300ms="search" 
             placeholder="Cari judul buku..." 
             class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
     </div>

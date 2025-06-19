@@ -17,6 +17,9 @@ class Index extends Component
     public $peminjaman, $anggota_id, $buku_id, $tanggal_pinjam, $tanggal_kembali, $status;
     public $isEdit = false, $showModal = false;
     public $peminjamanId = null;
+    public $search = '';
+    public $filterStatus = '';
+
 
     protected $rules = [
         'anggota_id' => 'required|exists:anggota,id',
@@ -182,16 +185,36 @@ class Index extends Component
         $peminjaman->delete();
     }
 
+    public function updatedFilterStatus()
+    {
+        // Tidak perlu isi apa pun, cukup untuk trigger re-render
+    }
+
+
     public function render()
     {
+        $query = Peminjaman::with(['anggota', 'buku'])->latest();
         
+
+        if (!empty($this->filterStatus)) {
+            $query->whereRaw('LOWER(status) = ?', [strtolower($this->filterStatus)]);
+        }
+
+        if (!empty($this->search)) {
+            $query->whereHas('anggota', function ($q) {
+                $q->where('nama', 'like', '%' . $this->search . '%');
+            });
+        }
+
         return view('livewire.admin.peminjaman.index', [
-            'listPeminjaman' => Peminjaman::with(['anggota', 'buku'])
-                ->latest()
-                ->get(),
-            'anggotaList' => Anggota::all(), // kalau untuk dropdown
+            'listPeminjaman' => $query->get(),
+            'anggotaList' => Anggota::all(),
             'bukuList' => Buku::all(),
         ])->layout('layouts.app');
     }
+
+
+
+
 
 }
