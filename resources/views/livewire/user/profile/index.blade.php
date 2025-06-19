@@ -6,9 +6,19 @@
         <h3 class="text-lg font-semibold text-gray-800 mb-4">Informasi Keanggotaan</h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6 text-sm text-gray-700">
             <div><span class="font-medium">Nama:</span> {{ auth()->user()->name }}</div>
-            <div><span class="font-medium">No. Anggota:</span> {{ auth()->user()->anggota->nis ?? auth()->user()->anggota->nip ?? '-' }}</div>
+            <div><span class="font-medium">NIM/NIP:</span> {{ auth()->user()->anggota->nis ?? auth()->user()->anggota->nip ?? '-' }}</div>
+            <div><span class="font-medium">Email:</span> {{ auth()->user()->email ?? '-' }}</div>
+            <div><span class="font-medium">Kelas:</span> {{ auth()->user()->anggota->kelas ?? '-' }}</div>
+            <div>
+                <span class="font-medium">Jenis Kelamin:</span>
+                @php
+                    $jk = auth()->user()->anggota->jenis_kelamin ?? null;
+                @endphp
+                {{ $jk === 'L' ? 'Laki-laki' : ($jk === 'P' ? 'Perempuan' : '-') }}
+            </div>
         </div>
     </div>
+
 
     {{-- Notifikasi Email Belum Diisi --}}
     @if (session('force_fill_email'))
@@ -25,7 +35,7 @@
             <p class="text-sm text-gray-600 mb-4">
                 Perbarui nama dan email Anda agar informasi akun tetap akurat.
             </p>
-            <livewire:admin.profile.update-profile-information-form />
+            <livewire:user.profile.update-profile-information-form />
         </div>
 
         {{-- Keamanan: Ubah Password --}}
@@ -34,16 +44,7 @@
             <p class="text-sm text-gray-600 mb-4">
                 Gunakan password yang kuat dan rutin diperbarui untuk menjaga keamanan akun.
             </p>
-            <livewire:admin.profile.update-password-form />
+            <livewire:user.profile.update-password-form />
         </div>
-    </div>
-
-    {{-- Hapus Akun --}}
-    <div class="bg-white p-6 rounded-lg shadow">
-        <h3 class="text-lg font-semibold text-gray-800 mb-1">Hapus Akun</h3>
-        <p class="text-sm text-gray-600 mb-4">
-            Menghapus akun akan menghapus seluruh data Anda secara permanen.
-        </p>
-        <livewire:admin.profile.delete-user-form />
     </div>
 </div>

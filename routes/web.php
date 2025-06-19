@@ -27,6 +27,7 @@ use App\Livewire\User\Dashboard\Index as DashboardIndexUser;
 use App\Livewire\User\Buku\Index as BukuIndexUser;
 use App\Livewire\User\Peminjaman\Index as PeminjamanIndexUser;
 use App\Livewire\Admin\Peminjaman\Index;
+use App\Livewire\User\Profile\Index as ProfileIndexUser;
 
 Route::get('/test-email', function () {
     $peminjaman = App\Models\Peminjaman::with(['anggota.user'])->latest()->first();
@@ -76,7 +77,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->group(fu
     Route::get('/buku', BukuIndexAdmin::class)->name('admin.buku.index');
     Route::get('/peminjaman', PeminjamanIndex::class)->name('admin.peminjaman.index');
     Route::get('/broadcast', BroadcastIndex::class)->name('admin.broadcast.index');
-    Route::get('/profile', ProfileIndex::class)->middleware(['auth'])->name('admin.profile');
+    Route::get('/profile', ProfileIndex::class)->name('admin.profile');
 });
 
 // User routes
@@ -85,9 +86,8 @@ Route::middleware(['auth', 'role:siswa,guru', 'check.default.password', 'ensure.
         Route::get('/dashboard', DashboardIndexUser::class)->name('user.dashboard');
         Route::get('/buku', BukuIndexUser::class)->name('user.buku.index');
         Route::get('/peminjaman', PeminjamanIndexUser::class)->name('user.peminjaman.index');
-
-        Volt::route('user/profile', 'user.profile')->name('user.profile');
-    });
+        Route::get('/profile', ProfileIndexUser::class)->name('user.profile');
+});
 
 
 

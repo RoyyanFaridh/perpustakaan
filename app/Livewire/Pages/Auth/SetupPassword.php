@@ -30,11 +30,6 @@ class SetupPassword extends Component
             ]);
         }
 
-        // Logout agar middleware tidak salah baca session lama
-        auth()->logout();
-        session()->invalidate();
-        session()->regenerateToken();
-
         return redirect()->route('setup.verify-email')->with('success', 'Password berhasil diubah. Silakan untuk verifikasi email.');
     }
 

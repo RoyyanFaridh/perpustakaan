@@ -15,14 +15,11 @@ use App\Mail\PengingatPengembalianBuku;
 class Index extends Component
 {
     public $peminjamanId = null;
-<<<<<<< HEAD
     public $search = '';
     public $filterStatus = '';
+    public $showModal = false;
+    public $isEdit = false;
 
-=======
-    public $anggota_id, $buku_id, $tanggal_pinjam, $tanggal_kembali, $status;
-    public $isEdit = false, $showModal = false;
->>>>>>> 2150255d9cbd44f846af36c1d46a8128c3bca83d
 
     protected $rules = [
         'anggota_id' => 'required|exists:anggota,id',
@@ -135,6 +132,7 @@ class Index extends Component
 
         session()->flash('message', 'Buku berhasil dikembalikan.');
     }
+    
     public function kirimPengingat()
     {
         $peminjamanList = Peminjaman::with(['anggota.user', 'buku'])
@@ -177,7 +175,6 @@ class Index extends Component
         $peminjaman->delete();
     }
 
-<<<<<<< HEAD
     public function updatedFilterStatus()
     {
         // Tidak perlu isi apa pun, cukup untuk trigger re-render
@@ -201,41 +198,13 @@ class Index extends Component
 
         return view('livewire.admin.peminjaman.index', [
             'listPeminjaman' => $query->get(),
-=======
-    public function kirimBroadcast($id)
-    {
-        $peminjaman = Peminjaman::with(['anggota', 'buku'])->findOrFail($id);
-        $selisihHari = Carbon::parse($peminjaman->tanggal_kembali)->diffInDays(now(), false);
-
-        if (strtolower($peminjaman->status) === 'dipinjam' && $selisihHari < 0) {
-            if ($peminjaman->anggota->email) {
-                Mail::to($peminjaman->anggota->email)->queue(
-                new PengingatPengembalianBuku($peminjaman, abs($selisihHari))
-            );
-                session()->flash('message', 'Broadcast berhasil dikirim ke ' . $peminjaman->anggota->nama);
-            } else {
-                session()->flash('error', 'Anggota tidak memiliki email.');
-            }
-        } else {
-            session()->flash('error', 'Status bukan "dipinjam" atau belum melewati tanggal kembali.');
-        }
-    }
-
-    public function render()
-    {
-        return view('livewire.admin.peminjaman.index', [
-            'listPeminjaman' => Peminjaman::with(['anggota', 'buku'])->latest()->get(),
->>>>>>> 2150255d9cbd44f846af36c1d46a8128c3bca83d
             'anggotaList' => Anggota::all(),
             'bukuList' => Buku::all(),
         ])->layout('layouts.app');
     }
-<<<<<<< HEAD
 
 
 
 
 
-=======
->>>>>>> 2150255d9cbd44f846af36c1d46a8128c3bca83d
 }
