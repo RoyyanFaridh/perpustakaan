@@ -19,18 +19,25 @@ class SetupPassword extends Component
         ]);
 
         $user = auth()->user();
+        $user->is_default_password = false;
         $user->password = Hash::make($this->new_password);
         $user->save();
 
         // Kosongkan kolom plain_password di tabel anggota
         if ($user->anggota) {
-            $user->anggota->plain_password = null;
-            $user->anggota->save();
+            $user->anggota->update([
+                'plain_password' => null,
+            ]);
         }
 
-        $this->message = 'Password berhasil diubah. Silakan lanjutkan.';
-        return redirect()->route('setup.verify-email'); // lanjut ke verifikasi email
+        // Logout agar middleware tidak salah baca session lama
+        auth()->logout();
+        session()->invalidate();
+        session()->regenerateToken();
+
+        return redirect()->route('setup.verify-email')->with('success', 'Password berhasil diubah. Silakan untuk verifikasi email.');
     }
+
 
     public function render()
     {

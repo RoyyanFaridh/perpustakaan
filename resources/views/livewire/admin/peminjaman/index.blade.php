@@ -143,22 +143,48 @@
                                     {{ $item->status }}
                                 </span>
                             </td>
-                            <td class="px-4 py-2 text-center space-x-2">
+                            <td class="px-4 py-2 text-center space-y-1">
                                 @if (strtolower($item->status) === 'booking')
                                     <button wire:click="setujui({{ $item->id }})"
                                         class="px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded text-xs">
                                         Setujui
                                     </button>
-                                @elseif (strtolower($item->status) === 'dipinjam')
-                                    <button wire:click="kembalikan({{ $item->id }})"
-                                        class="px-2 py-1 bg-green-500 hover:bg-green-600 text-white rounded text-xs">
-                                        Dikembalikan
-                                    </button>
-                                @else
-                                    <span class="text-green-600 text-xs">Sudah dikembalikan</span>
-                                @endif
-                            </td>
+                            @elseif (strtolower($item->status) === 'dipinjam')
+                                <button wire:click="kembalikan({{ $item->id }})"
+                                    class="px-2 py-1 bg-green-500 hover:bg-green-600 text-white rounded text-xs">
+                                    Dikembalikan
+                                </button>
 
+                                @php
+                                    $now = now();
+                                    $tanggalKembali = \Carbon\Carbon::parse($item->tanggal_kembali);
+                                    $diffInSeconds = $tanggalKembali->diffInSeconds($now, false);
+
+                                    $days = floor(abs($diffInSeconds) / 86400);
+                                    $hours = floor((abs($diffInSeconds) % 86400) / 3600);
+
+                                    $diffInDays = $tanggalKembali->diffInDays($now, false);
+                                @endphp
+
+                                @if ($diffInDays <= 3)
+                                    <div>
+                                        <button wire:click="kirimBroadcast({{ $item->id }})"
+                                            class="px-2 py-1 bg-red-500 hover:bg-red-600 text-white rounded text-xs">
+                                            Broadcast
+                                            @if ($diffInDays < 0)
+                                                ({{ abs($days) }} hari {{ $hours }} jam lagi)
+                                            @elseif ($diffInDays === 0)
+                                                (Hari ini)
+                                            @else
+                                                (Terlambat {{ $days }} hari {{ $hours }} jam)
+                                            @endif
+                                        </button>
+                                    </div>
+                                @endif
+                            @else
+                                <span class="text-green-600 text-xs">Sudah dikembalikan</span>
+                            @endif
+                        </td>
 
                         </tr>
                     @endforeach

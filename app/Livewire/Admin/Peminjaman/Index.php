@@ -9,17 +9,20 @@ use App\Models\Anggota;
 use Livewire\Component;
 use App\Models\Peminjaman;
 use App\Mail\PengingatKembaliMail;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\PengingatPengembalianBuku;
 
 class Index extends Component
 {
-    public $peminjaman, $anggota_id, $buku_id, $tanggal_pinjam, $tanggal_kembali, $status;
-    public $isEdit = false, $showModal = false;
     public $peminjamanId = null;
+<<<<<<< HEAD
     public $search = '';
     public $filterStatus = '';
 
+=======
+    public $anggota_id, $buku_id, $tanggal_pinjam, $tanggal_kembali, $status;
+    public $isEdit = false, $showModal = false;
+>>>>>>> 2150255d9cbd44f846af36c1d46a8128c3bca83d
 
     protected $rules = [
         'anggota_id' => 'required|exists:anggota,id',
@@ -28,8 +31,6 @@ class Index extends Component
         'tanggal_kembali' => 'required|date|after_or_equal:tanggal_pinjam',
         'status' => 'required|in:booking,dipinjam,dikembalikan',
     ];
-
-
 
     public function openModal()
     {
@@ -86,7 +87,6 @@ class Index extends Component
         $this->closeModal();
     }
 
-
     public function setujui($id)
     {
         $peminjaman = Peminjaman::findOrFail($id);
@@ -98,28 +98,24 @@ class Index extends Component
 
         if ($peminjaman->status === 'booking') {
             $anggota = $peminjaman->anggota;
+            $lamaPinjam = !empty($anggota->nip) ? 14 : (!empty($anggota->nis) ? 7 : null);
 
-            // Tentukan lama peminjaman berdasarkan nip/nis
-            if (!empty($anggota->nip)) {
-                $lamaPinjam = 14;
-            } elseif (!empty($anggota->nis)) {
-                $lamaPinjam = 7;
-            } else {
+            if (!$lamaPinjam) {
                 session()->flash('error', 'Anggota tidak memiliki NIS atau NIP.');
                 return;
             }
 
-            $peminjaman->status = 'dipinjam';
-            $peminjaman->tanggal_pinjam = now();
-            $peminjaman->tanggal_kembali = now()->addDays($lamaPinjam);
+            $peminjaman->update([
+                'status' => 'dipinjam',
+                'tanggal_pinjam' => now(),
+                'tanggal_kembali' => now()->addDays($lamaPinjam)
+            ]);
 
             $peminjaman->buku->decrement('jumlah_stok');
-            $peminjaman->save();
 
             session()->flash('message', 'Peminjaman telah disetujui.');
         }
     }
-
 
     public function kembalikan($id)
     {
@@ -130,19 +126,15 @@ class Index extends Component
             return;
         }
 
-        // Update status dan tanggal kembali
-        $peminjaman->status = 'Dikembalikan';
-        $peminjaman->tanggal_kembali = now(); // <-- inilah tanggal saat tombol diklik
-        $peminjaman->save();
+        $peminjaman->update([
+            'status' => 'dikembalikan',
+            'tanggal_kembali' => now()
+        ]);
 
-        // Tambah stok buku
-        $buku = $peminjaman->buku;
-        $buku->jumlah_stok += 1;
-        $buku->save();
+        $peminjaman->buku->increment('jumlah_stok');
 
         session()->flash('message', 'Buku berhasil dikembalikan.');
     }
-
     public function kirimPengingat()
     {
         $peminjamanList = Peminjaman::with(['anggota.user', 'buku'])
@@ -185,6 +177,7 @@ class Index extends Component
         $peminjaman->delete();
     }
 
+<<<<<<< HEAD
     public function updatedFilterStatus()
     {
         // Tidak perlu isi apa pun, cukup untuk trigger re-render
@@ -208,13 +201,41 @@ class Index extends Component
 
         return view('livewire.admin.peminjaman.index', [
             'listPeminjaman' => $query->get(),
+=======
+    public function kirimBroadcast($id)
+    {
+        $peminjaman = Peminjaman::with(['anggota', 'buku'])->findOrFail($id);
+        $selisihHari = Carbon::parse($peminjaman->tanggal_kembali)->diffInDays(now(), false);
+
+        if (strtolower($peminjaman->status) === 'dipinjam' && $selisihHari < 0) {
+            if ($peminjaman->anggota->email) {
+                Mail::to($peminjaman->anggota->email)->queue(
+                new PengingatPengembalianBuku($peminjaman, abs($selisihHari))
+            );
+                session()->flash('message', 'Broadcast berhasil dikirim ke ' . $peminjaman->anggota->nama);
+            } else {
+                session()->flash('error', 'Anggota tidak memiliki email.');
+            }
+        } else {
+            session()->flash('error', 'Status bukan "dipinjam" atau belum melewati tanggal kembali.');
+        }
+    }
+
+    public function render()
+    {
+        return view('livewire.admin.peminjaman.index', [
+            'listPeminjaman' => Peminjaman::with(['anggota', 'buku'])->latest()->get(),
+>>>>>>> 2150255d9cbd44f846af36c1d46a8128c3bca83d
             'anggotaList' => Anggota::all(),
             'bukuList' => Buku::all(),
         ])->layout('layouts.app');
     }
+<<<<<<< HEAD
 
 
 
 
 
+=======
+>>>>>>> 2150255d9cbd44f846af36c1d46a8128c3bca83d
 }
