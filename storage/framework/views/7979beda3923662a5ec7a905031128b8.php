@@ -51,21 +51,21 @@
         </div>
 
         
-        @if($showModal)
+        <!--[if BLOCK]><![endif]--><?php if($showModal): ?>
         <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm">
             <div class="bg-white rounded-xl shadow-lg w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
-                <h2 class="text-xl font-semibold mb-4">{{ $isEdit ? 'Edit Siswa' : 'Tambah Siswa' }}</h2>
+                <h2 class="text-xl font-semibold mb-4"><?php echo e($isEdit ? 'Edit Siswa' : 'Tambah Siswa'); ?></h2>
 
-                @if ($errors->any())
+                <!--[if BLOCK]><![endif]--><?php if($errors->any()): ?>
                     <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 text-sm">
                         <strong class="font-medium">Terdapat kesalahan input:</strong>
                         <ul class="list-disc list-inside mt-2 space-y-1">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
+                            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <li><?php echo e($error); ?></li>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                         </ul>
                     </div>
-                @endif
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                 <div class="space-y-4 text-sm text-gray-600">
                     <!-- Nama -->
@@ -150,21 +150,21 @@
                         Batal
                     </button>
                 
-                    @if($isEdit)
+                    <!--[if BLOCK]><![endif]--><?php if($isEdit): ?>
                         <button wire:click="update"
                             class="bg-yellow-400 hover:bg-yellow-500 text-white py-2 px-4 rounded-md shadow-sm transition duration-150 ease-in-out transform hover:scale-105">
                             Update Siswa
                         </button>
-                    @else
+                    <?php else: ?>
                         <button wire:click.prevent="store"
                             type="submit" class="bg-blue-500 border border-blue-600 hover:bg-blue-600 text-white py-2 px-4 rounded-md shadow-sm transition duration-150 ease-in-out transform hover:scale-105">
                             Simpan Siswa
                         </button>
-                    @endif
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                 </div>            
             </div>
         </div>
-        @endif
+        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
          <!-- Tabel Daftar Siswa -->
         <table class="min-w-full text-sm text-left text-gray-700 border border-gray-200 rounded-lg overflow-hidden">
@@ -172,52 +172,52 @@
             <tr class="text-center">
                 <th class="px-4 py-3 font-semibold">No</th>
 
-                {{-- Kolom Nama --}}
+                
                 <th class="px-4 py-3 font-semibold cursor-pointer select-none" wire:click="sortBy('nama')">
                     <div class="flex items-center justify-center gap-1 text-sm">
                         Nama
                         <svg class="w-3 h-3 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
-                            @if ($sortField === 'nama' && $sortDirection === 'asc')
-                                <path d="M5 12l5-5 5 5H5z" /> {{-- Panah naik --}}
-                            @elseif ($sortField === 'nama' && $sortDirection === 'desc')
-                                <path d="M5 8l5 5 5-5H5z" /> {{-- Panah turun --}}
-                            @else
-                                <path d="M5 8l5 5 5-5H5z" /> {{-- Default: panah turun --}}
-                            @endif
+                            <!--[if BLOCK]><![endif]--><?php if($sortField === 'nama' && $sortDirection === 'asc'): ?>
+                                <path d="M5 12l5-5 5 5H5z" /> 
+                            <?php elseif($sortField === 'nama' && $sortDirection === 'desc'): ?>
+                                <path d="M5 8l5 5 5-5H5z" /> 
+                            <?php else: ?>
+                                <path d="M5 8l5 5 5-5H5z" /> 
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </svg>
                     </div>
                 </th>
 
-                {{-- Kolom Status --}}
+                
                 <th class="px-4 py-3 font-semibold cursor-pointer select-none" wire:click="sortBy('status')">
                     <div class="flex items-center justify-center gap-1 text-sm">
                         Status
                         <svg class="w-3 h-3 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
-                            @if ($sortField === 'status' && $sortDirection === 'asc')
+                            <!--[if BLOCK]><![endif]--><?php if($sortField === 'status' && $sortDirection === 'asc'): ?>
                                 <path d="M5 12l5-5 5 5H5z" />
-                            @elseif ($sortField === 'status' && $sortDirection === 'desc')
+                            <?php elseif($sortField === 'status' && $sortDirection === 'desc'): ?>
                                 <path d="M5 8l5 5 5-5H5z" />
-                            @else
+                            <?php else: ?>
                                 <path d="M5 8l5 5 5-5H5z" />
-                            @endif
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </svg>
                     </div>
                 </th>
 
                 <th class="px-4 py-3 font-semibold">NIS</th>
 
-                {{-- Kolom Kelas --}}
+                
                 <th class="px-4 py-3 font-semibold cursor-pointer select-none" wire:click="sortBy('kelas')">
                     <div class="flex items-center justify-center gap-1 text-sm">
                         Kelas
                         <svg class="w-3 h-3 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
-                            @if ($sortField === 'kelas' && $sortDirection === 'asc')
+                            <!--[if BLOCK]><![endif]--><?php if($sortField === 'kelas' && $sortDirection === 'asc'): ?>
                                 <path d="M5 12l5-5 5 5H5z" />
-                            @elseif ($sortField === 'kelas' && $sortDirection === 'desc')
+                            <?php elseif($sortField === 'kelas' && $sortDirection === 'desc'): ?>
                                 <path d="M5 8l5 5 5-5H5z" />
-                            @else
+                            <?php else: ?>
                                 <path d="M5 8l5 5 5-5H5z" />
-                            @endif
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </svg>
                     </div>
                 </th>
@@ -231,48 +231,49 @@
             </thead>
 
             <tbody class="bg-white divide-y divide-gray-100">
-            @foreach($anggota as $index => $item)
+            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $anggota; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <tr class="hover:bg-gray-50 text-center">
-                    <td class="px-4 py-2">{{ $index + 1 }}</td>
-                    <td class="px-4 py-2 text-left">{{ $item->nama }}</td>
+                    <td class="px-4 py-2"><?php echo e($index + 1); ?></td>
+                    <td class="px-4 py-2 text-left"><?php echo e($item->nama); ?></td>
                     <td class="px-4 py-2 whitespace-nowrap">
                         <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold border
-                            {{ $item->status == 'active'
+                            <?php echo e($item->status == 'active'
                                 ? 'text-green-700 bg-green-200 border-green-500'
-                                : 'text-red-700 bg-red-200 border-red-500' }}">
-                            {{ $item->status == 'active' ? 'Aktif' : 'Tidak Aktif' }}
+                                : 'text-red-700 bg-red-200 border-red-500'); ?>">
+                            <?php echo e($item->status == 'active' ? 'Aktif' : 'Tidak Aktif'); ?>
+
                         </span>
                     </td>
-                    <td class="px-4 py-2">{{ $item->nis_nip }}</td>
-                    <td class="px-4 py-2">{{ $item->kelas }}</td>
+                    <td class="px-4 py-2"><?php echo e($item->nis_nip); ?></td>
+                    <td class="px-4 py-2"><?php echo e($item->kelas); ?></td>
                     <td class="px-4 py-2">
-                        @if($item->jenis_kelamin == 'L')
+                        <!--[if BLOCK]><![endif]--><?php if($item->jenis_kelamin == 'L'): ?>
                             <span class="inline-block px-3 py-1 text-blue-700 bg-blue-200 border border-blue-500 rounded-full text-xs font-semibold">
                                 Laki-laki
                             </span>
-                        @else
+                        <?php else: ?>
                             <span class="inline-block px-3 py-1 text-pink-700 bg-pink-200 border border-pink-500 rounded-full text-xs font-semibold">
                                 Perempuan
                             </span>
-                        @endif
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                     </td>
-                    <td class="px-4 py-2 text-left">{{ \Illuminate\Support\Str::limit($item->alamat, 100) }}</td>
-                    <td class="px-4 py-2">{{ $item->no_telp }}</td>
-                    <td>{{ $item->email ?: ($item->user->email ?? '-') }}</td>
+                    <td class="px-4 py-2 text-left"><?php echo e(\Illuminate\Support\Str::limit($item->alamat, 100)); ?></td>
+                    <td class="px-4 py-2"><?php echo e($item->no_telp); ?></td>
+                    <td><?php echo e($item->email ?: ($item->user->email ?? '-')); ?></td>
                     <td class="px-4 py-2 text-center">
                         <div class="flex flex-col items-center space-y-2 md:flex-row md:justify-center md:space-y-0 md:space-x-2">
-                            <button wire:click="edit({{ $item->id }})"
+                            <button wire:click="edit(<?php echo e($item->id); ?>)"
                                     class="px-3 py-1 bg-yellow-400 hover:bg-yellow-500 text-white rounded-md shadow text-xs">
                                 Edit
                             </button>
-                            <button wire:click="delete({{ $item->id }})"
+                            <button wire:click="delete(<?php echo e($item->id); ?>)"
                                     class="px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded-md shadow text-xs">
                                 Hapus
                             </button>
                         </div>
                     </td>
                 </tr>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
             </tbody>
         </table>
 
@@ -298,4 +299,4 @@
             }
         });
     });
-</script>
+</script><?php /**PATH C:\Users\ACER\perpustakaan\resources\views/livewire/admin/anggota/siswa.blade.php ENDPATH**/ ?>

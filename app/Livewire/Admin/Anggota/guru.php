@@ -13,25 +13,40 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class Guru extends Component
 {
-    public $anggota, $search = '', $showModal = false, $isEdit = false;
+    public $search = '';
+    public $showModal = false;
+    public $isEdit = false;
     public $nama, $status, $role = 'guru', $nip, $jenis_kelamin, $alamat, $no_telp, $email, $selectedId;
-
-    protected $rules = [
-        'nama' => 'required',
-        'status' => 'required',
-        'nip' => 'required|numeric',
-        'jenis_kelamin' => 'required',
-        'alamat' => 'required',
-        // 'no_telp' => 'required',
-        // 'email' => 'required|email',
-    ];
+    public $filterStatus = 'semua';
+    public $sortField = 'nama';
+    public $sortDirection = 'asc';
+    public $old_nip; 
 
     public function render()
+
     {
-        $this->anggota = Anggota::where('role', 'guru')
-            ->where('nama', 'like', '%'.$this->search.'%')->get();
-        return view('livewire.admin.anggota.guru')->layout('layouts.app');
+        $anggota = Anggota::where('role', 'guru')
+            ->when($this->filterStatus != 'semua', fn($q) => $q->where('status', $this->filterStatus))
+            ->when($this->search, fn($q) => $q->where('nama', 'like', '%' . $this->search . '%'))
+            ->orderBy($this->sortField, $this->sortDirection)
+            ->get();
+
+        return view('livewire.admin.anggota.guru', [
+            'anggota' => $anggota, // dikirim ke Blade
+        ]);
     }
+
+
+
+     protected $rules = [
+            'nama' => 'required',
+            'status' => 'required',
+            'nip' => 'required|numeric',
+            'jenis_kelamin' => 'required',
+            'alamat' => 'required',
+            // 'no_telp' => 'required',
+            // 'email' => 'required|email',
+        ];
 
     public function openModal() { $this->resetInput(); $this->showModal = true; $this->isEdit = false; }
     public function closeModal() { $this->showModal = false; }
@@ -63,6 +78,7 @@ class Guru extends Component
                 'password' => Hash::make($plainPassword),
                 'is_default_password' => true,
                 'no_telp' => $this->no_telp,
+                'status' => $this->status,
             ])->assignRole($this->role);
         });
 
@@ -70,7 +86,15 @@ class Guru extends Component
         $this->dispatch('anggotaUpdated');
     }
 
-
+    public function sortBy($field)
+    {
+        if ($this->sortField === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortDirection = 'asc';
+            $this->sortField = $field;
+        }
+    }
     public function update()
     {
         $this->validate();
@@ -91,8 +115,38 @@ class Guru extends Component
             ]);
         }
 
+        // cari berdasarkan NIP lama
+        $user = User::where('nis_nip', $this->old_nip)->first(); 
+        if ($user) {
+            $user->update([
+                'name' => $this->nama,
+                'email' => $this->email,
+                'no_telp' => $this->no_telp,
+                'status' => $this->status,
+                'nis_nip' => $this->nip, // update ke NIP baru jika berubah
+            ]);
+        }
+
         $this->closeModal();
         $this->dispatch('anggota-updated');
+    }
+
+
+    public function edit($id)
+    {
+        $data = Anggota::findOrFail($id);
+        $this->selectedId = $id;
+        $this->nama = $data->nama;
+        $this->status = $data->status;
+        $this->role = $data->role;
+        $this->nip = $data->nis_nip;
+        $this->old_nip = $data->nis_nip; // simpan NIP lama
+        $this->jenis_kelamin = $data->jenis_kelamin;
+        $this->alamat = $data->alamat;
+        $this->no_telp = $data->no_telp;
+        $this->email = $data->email;
+        $this->isEdit = true;
+        $this->showModal = true;
     }
 
 
@@ -117,14 +171,40 @@ class Guru extends Component
 
     private function resetInput()
     {
-        $this->nama = $this->status = $this->nip = $this->jenis_kelamin = $this->alamat = $this->no_telp = $this->email = '';
+        $this->nama = '';
+        $this->status = 'active'; // default value
+        $this->nip = '';
+        $this->jenis_kelamin = '';
+        $this->alamat = '';
+        $this->no_telp = '';
+        $this->email = '';
         $this->selectedId = null;
+        $this->role = 'guru'; // atau 'siswa' di file siswa.php
+    }
 
-        $this->role = 'guru';
+    public function updatedStatus($value)
+    {
+        if (!$this->isEdit) return;
+
+        $nipOrNis = $this->role === 'guru' ? $this->old_nip : $this->old_nis;
+
+        $user = User::where('nis_nip', $nipOrNis)->first();
+        if ($user) {
+            $user->status = $value;
+            $user->save();
+        }
     }
 
     public function exportGuru()
     {
-        return Excel::download(new Export('guru'), 'data-guru.xlsx');
+        return \Maatwebsite\Excel\Facades\Excel::download(
+            new Export(
+                'guru',
+                $this->filterStatus,
+                null, // tidak ada kelas
+                $this->search
+            ),
+            'data-guru-terfilter.xlsx'
+        );
     }
 }

@@ -1,25 +1,39 @@
 <div class="space-y-6">
     <div class="bg-white p-6 rounded-2xl shadow-md overflow-x-auto">
+
+        <!-- Header -->
         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4 sm:gap-0">
             <h2 class="text-lg sm:text-xl font-semibold text-gray-800">Daftar Guru</h2>
             <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                <a href="{{ route('export.guru') }}" target="_blank"
+                <button wire:click="exportGuru"
                 class="bg-green-500 hover:bg-green-600 text-white text-sm font-medium py-2 px-3 sm:px-4 rounded-lg text-center">
                     Export Excel
-                </a>
+                </button>
                 <button wire:click="openModal"
                         class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-2 px-3 sm:px-4 rounded-lg text-center">
                     + Tambah Guru
                 </button>
             </div>
         </div>
-        
-        <div class="mb-4">
-            <input 
-                type="text" 
-                wire:model.debounce.300ms="search" 
-                placeholder="Cari guru..." 
-                class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+
+        <!-- Filter dan Pencarian -->
+        <div class="flex flex-col sm:flex-row gap-4 mb-6">
+            <div class="relative w-full sm:w-1/3">
+                <label class="block mb-1 text-sm font-medium text-gray-700">Filter Status</label>
+                <select wire:model.live="filterStatus"
+                        class="block w-full appearance-none bg-white border border-gray-300 rounded-lg px-4 py-2 pr-10 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    <option value="semua">Semua Status</option>
+                    <option value="active">Aktif</option>
+                    <option value="inactive">Tidak Aktif</option>
+                </select>
+            </div>
+
+            <div class="w-full sm:w-2/3">
+                <label class="block mb-1 text-sm font-medium text-gray-700">Cari Guru</label>
+                <input type="text" wire:model.live.debounce.300ms="search"
+                placeholder="Cari nama guru..."
+                class="w-full px-4 py-2 pr-10 text-sm bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            </div>
         </div>
         
         @if($showModal)
@@ -130,18 +144,50 @@
         <!-- Tabel Daftar Guru -->
         <table class="min-w-full text-sm text-left text-gray-700 border border-gray-200 rounded-lg overflow-hidden">
             <thead class="bg-gray-50">
-                <tr>
-                    <th class="px-4 py-3 font-semibold">No</th>
-                    <th class="px-4 py-3 font-semibold">Nama</th>
-                    <th class="px-4 py-3 font-semibold">Status</th>
-                    <th class="px-4 py-3 font-semibold">NIP</th>
-                    <th class="px-4 py-3 font-semibold">Jenis Kelamin</th>
-                    <th class="px-4 py-3 font-semibold">Alamat</th>
-                    <th class="px-4 py-3 font-semibold">Nomor Telepon</th>
-                    <th class="px-4 py-3 font-semibold">Email</th>
-                    <th class="px-4 py-3 text-center font-semibold">Aksi</th>
-                </tr>
+            <tr class="text-center">
+                <th class="px-4 py-3 font-semibold">No</th>
+
+                <!-- Kolom Nama dengan panah -->
+                <th class="px-4 py-3 font-semibold cursor-pointer select-none" wire:click="sortBy('nama')">
+                    <div class="flex items-center justify-center gap-1 text-sm">
+                        Nama
+                        <svg class="w-3 h-3 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                            @if ($sortField === 'nama' && $sortDirection === 'asc')
+                                <path d="M5 12l5-5 5 5H5z" /> {{-- Panah naik --}}
+                            @elseif ($sortField === 'nama' && $sortDirection === 'desc')
+                                <path d="M5 8l5 5 5-5H5z" /> {{-- Panah turun --}}
+                            @else
+                                <path d="M5 8l5 5 5-5H5z" /> {{-- Default: panah turun --}}
+                            @endif
+                        </svg>
+                    </div>
+                </th>
+
+                <!-- Kolom Status dengan panah -->
+                <th class="px-4 py-3 font-semibold cursor-pointer select-none" wire:click="sortBy('status')">
+                    <div class="flex items-center justify-center gap-1 text-sm">
+                        Status
+                        <svg class="w-3 h-3 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                            @if ($sortField === 'status' && $sortDirection === 'asc')
+                                <path d="M5 12l5-5 5 5H5z" />
+                            @elseif ($sortField === 'status' && $sortDirection === 'desc')
+                                <path d="M5 8l5 5 5-5H5z" />
+                            @else
+                                <path d="M5 8l5 5 5-5H5z" />
+                            @endif
+                        </svg>
+                    </div>
+                </th>
+
+                <th class="px-4 py-3 font-semibold">NIP</th>
+                <th class="px-4 py-3 font-semibold">Jenis Kelamin</th>
+                <th class="px-4 py-3 font-semibold">Alamat</th>
+                <th class="px-4 py-3 font-semibold">Nomor Telepon</th>
+                <th class="px-4 py-3 font-semibold">Email</th>
+                <th class="px-4 py-3 text-center font-semibold">Aksi</th>
+            </tr>
             </thead>
+
             <tbody class="bg-white divide-y divide-gray-100">
                 @foreach($anggota as $index => $item)
                     <tr class="hover:bg-gray-50">
@@ -169,7 +215,7 @@
                         </td>
                         <td class="px-4 py-2">{{ \Illuminate\Support\Str::limit($item->alamat, 100) }}</td>
                         <td class="px-4 py-2">{{ $item->no_telp }}</td>
-                        <td>{{ $item->email ?: ($item->user->email ?? '-') }}</td>
+                        <td class="px-4 py-2">{{ $item->email ?? '-' }}</td>
                         <td class="px-4 py-2 text-center">
                             <div class="flex flex-col items-center space-y-2 md:flex-row md:justify-center md:space-y-0 md:space-x-2">
                                 <button wire:click="edit({{ $item->id }})" class="px-3 py-1 bg-yellow-400 hover:bg-yellow-500 text-white rounded-md shadow text-xs">
@@ -182,8 +228,16 @@
                         </td>
                     </tr>
                 @endforeach
+
+                @if($anggota->isEmpty())
+                    <tr>
+                        <td colspan="9" class="text-center py-4 text-red-500">Tidak ada data guru ditemukan.</td>
+                    </tr>
+                @endif
             </tbody>
         </table>
+
+
     </div>
 </div>
 

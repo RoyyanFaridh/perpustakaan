@@ -12,6 +12,7 @@ use Livewire\Attributes\Validate;
 use Illuminate\Support\Str;
 use Illuminate\Auth\Events\Lockout;
 
+
 class LoginForm extends Form
 {
     #[Validate('required|string')]
@@ -63,7 +64,7 @@ class LoginForm extends Form
      */
     protected function ensureIsNotRateLimited()
     {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+        if (!RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
             return;
         }
 
@@ -84,6 +85,6 @@ class LoginForm extends Form
      */
     protected function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->nis_nip).'|'.request()->ip());
+        return Str::transliterate(Str::lower($this->nis_nip) . '|' . request()->ip());
     }
 }

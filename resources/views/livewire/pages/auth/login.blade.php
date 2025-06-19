@@ -18,43 +18,31 @@ new #[Layout('layouts.guest')] class extends Component
         $this->validate();
 
         try {
-            $this->form->authenticate();
-            
-            // Debug session
-            logger()->info('Session Before Regenerate', [
-                'session_id' => session()->getId(),
-                'data' => session()->all()
-            ]);
+            $result = $this->form->authenticate();
 
             Session::regenerate();
 
-            // Debug setelah regenerate
-            logger()->info('Session After Regenerate', [
-                'session_id' => session()->getId(),
-                'user_id' => auth()->id()
-            ]);
-
-            // Hard redirect untuk testing
-            if(app()->environment('local')) {
-                $route = auth()->user()->hasRole('admin') 
-                    ? route('admin.dashboard')
-                    : route('user.dashboard');
-                    
-                $this->js("window.location.href = '{$route}'");
+            // Redirect ke ubah password
+            if ($result['should_change_password']) {
+                $this->js("window.location.href = '" . route('setup.password') . "'");
                 return;
             }
 
-            $this->redirectIntended(
-                default: auth()->user()->hasRole('admin') 
-                    ? route('admin.dashboard') 
-                    : route('user.dashboard'),
-                navigate: true
-            );
-
+            // Redirect sesuai role
+            $this->js("window.location.href = '" . (
+                $result['role'] === 'admin'
+                    ? route('admin.dashboard')
+                    : route('user.dashboard')
+            ) . "'");
+            
         } catch (ValidationException $e) {
-            $this->addError('form.email', $e->getMessage());
+            $message = $e->validator->errors()->first();
+            $this->dispatch('login-failed', message: $message);
+            $this->addError('form.nis_nip', $message);
         }
     }
+
+
 }; ?>
 
 <!-- Wrapper tengah halaman -->
@@ -160,4 +148,18 @@ new #[Layout('layouts.guest')] class extends Component
     </div>
 
   </div>
+  <!-- SweetAlert2 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    Livewire.on('login-failed', event => {
+        Swal.fire({
+            title: 'Login Gagal',
+            text: event.message,
+            icon: 'error',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK'
+        });
+    });
+</script>
 </div>
