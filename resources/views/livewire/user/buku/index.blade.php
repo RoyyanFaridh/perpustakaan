@@ -30,7 +30,17 @@
                     {{-- Cover Buku --}}
                     @if ($item->cover)
                         <div class="w-[140px] h-[200px] flex-shrink-0 overflow-hidden rounded-md">
-                            <img src="{{ asset('storage/' . $item->cover) }}" alt="Cover Buku" class="w-full h-full object-cover">
+                            @if ($item->cover && file_exists(public_path('storage/' . $item->cover)))
+                                <img 
+                                    src="{{ asset('storage/' . $item->cover) }}" 
+                                    alt="Cover Buku {{ $item->judul }}" 
+                                    class="w-full h-full object-cover rounded-md" 
+                                    loading="lazy">
+                            @else
+                                <div class="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400 text-sm rounded-md">
+                                    Tidak ada cover
+                                </div>
+                            @endif
                         </div>
                     @else
                         <div class="w-[140px] h-[200px] bg-gray-100 rounded-md flex items-center justify-center text-gray-400 text-sm">
