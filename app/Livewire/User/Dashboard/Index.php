@@ -17,8 +17,8 @@ class Index extends Component
         $bulanIni = $now->format('F Y'); 
 
         $akhirBulanLalu = $now->copy()->startOfMonth()->subDay();
-        $totalBukuSebelumnya = Buku::where('created_at', '<=', $akhirBulanLalu)->count();
         $totalBukuSaatIni = Buku::count();
+        $totalBukuSebelumnya = Buku::where('created_at', '<=', $akhirBulanLalu)->count();
         $deltaBuku = $totalBukuSaatIni - $totalBukuSebelumnya;
 
         $bulanIniNum = $now->format('m');
@@ -86,6 +86,8 @@ class Index extends Component
 
         $jumlahPengunjungTahunIni = [];
         $jumlahPengunjungTahunLalu = [];
+        $peminjamanTahunIni = [];
+        $peminjamanTahunLalu = [];
 
         for ($i = 1; $i <= 12; $i++) {
             $jumlahPengunjungTahunIni[] = Pengunjung::where('user_id', $userId)
@@ -97,6 +99,16 @@ class Index extends Component
                 ->whereYear('tanggal', $tahunSebelumnya)
                 ->whereMonth('tanggal', $i)
                 ->count();
+
+            $peminjamanTahunIni[] = Peminjaman::where('user_id', $userId)
+                ->whereYear('created_at', $tahunSekarang)
+                ->whereMonth('created_at', $i)
+                ->count();
+
+            $peminjamanTahunLalu[] = Peminjaman::where('user_id', $userId)
+                ->whereYear('created_at', $tahunSebelumnya)
+                ->whereMonth('created_at', $i)
+                ->count();
         }
 
         $cardData = $this->getCardData();
@@ -105,9 +117,12 @@ class Index extends Component
             'bulanLabels',
             'jumlahPengunjungTahunIni',
             'jumlahPengunjungTahunLalu',
+            'peminjamanTahunIni',
+            'peminjamanTahunLalu',
             'tahunSekarang',
             'tahunSebelumnya',
             'cardData'
         ))->layout('layouts.user');
     }
 }
+

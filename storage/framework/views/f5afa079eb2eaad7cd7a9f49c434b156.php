@@ -13,8 +13,7 @@
 
         <!-- Scripts -->
         <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     </head>
     <body class="font-sans antialiased bg-gray-50">
         <div class="min-h-screen flex">
@@ -77,6 +76,7 @@ if (isset($__slots)) unset($__slots);
                 </main>
             </div>
         </div>
+    <?php echo $__env->yieldPushContent('scripts'); ?>
     </body>
 </html>
 <?php /**PATH C:\Users\ASUS\perpustakaan\resources\views/layouts/user.blade.php ENDPATH**/ ?>
