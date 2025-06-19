@@ -19,6 +19,8 @@ use App\Livewire\Admin\Peminjaman\Index as PeminjamanIndex;
 use App\Livewire\Admin\Anggota\Export;
 use App\Livewire\Admin\Broadcast\Index as BroadcastIndex;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Livewire\Admin\Profile\DeleteUserForm;
+use App\Livewire\Admin\Profile\Index as ProfileIndex;
 
 // User
 use App\Livewire\User\Dashboard\Index as DashboardIndexUser;
@@ -74,8 +76,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->group(fu
     Route::get('/buku', BukuIndexAdmin::class)->name('admin.buku.index');
     Route::get('/peminjaman', PeminjamanIndex::class)->name('admin.peminjaman.index');
     Route::get('/broadcast', BroadcastIndex::class)->name('admin.broadcast.index');
-    
-    Volt::route('admin/profile', 'admin.profile')->name('admin.profile');
+    Route::get('/profile', ProfileIndex::class)->middleware(['auth'])->name('admin.profile');
 });
 
 // User routes
@@ -98,4 +99,9 @@ Route::get('/test-email-brevo', function () {
 
     return 'Email sedang dikirim...';
 });
+
+use Illuminate\Support\Facades\Auth;
+
+Route::post('/logout', function () {Auth::logout(); request()->session()->invalidate(); request()->session()->regenerateToken(); return redirect('/');
+})->name('logout');
 

@@ -15,9 +15,16 @@
             <input wire:model.defer="email" id="email" type="email"
                 class="w-full border border-gray-200 shadow-sm rounded-md p-2 focus:ring focus:ring-blue-100 focus:outline-none"
                 required autocomplete="email">
-            @error('email') <div class="text-red-600 text-xs mt-1">{{ $message }}</div> @enderror
+            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <div class="text-red-600 text-xs mt-1"><?php echo e($message); ?></div> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
-            @if (auth()->user() instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! auth()->user()->hasVerifiedEmail())
+            <!--[if BLOCK]><![endif]--><?php if(auth()->user() instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! auth()->user()->hasVerifiedEmail()): ?>
                 <div class="mt-2 text-xs text-gray-700">
                     Email Anda belum diverifikasi.
                     <button wire:click.prevent="sendVerification"
@@ -25,13 +32,13 @@
                         Klik di sini untuk kirim ulang email verifikasi.
                     </button>
 
-                    @if (session('status') === 'verification-link-sent')
+                    <!--[if BLOCK]><![endif]--><?php if(session('status') === 'verification-link-sent'): ?>
                         <p class="mt-2 text-green-600 font-medium">
                             Link verifikasi baru telah dikirim ke email Anda.
                         </p>
-                    @endif
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                 </div>
-            @endif
+            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
         </div>
 
         <div class="flex justify-end mt-4">
@@ -41,4 +48,4 @@
             </button>
         </div>
     </form>
-</div>
+</div><?php /**PATH C:\Users\ASUS\perpustakaan\resources\views\livewire/admin/profile/update-profile-information-form.blade.php ENDPATH**/ ?>

@@ -11,7 +11,7 @@
     </p>
 
     <form wire:submit.prevent="updatePassword" class="space-y-4 text-sm text-gray-700">
-        {{-- Current Password --}}
+        
         <div x-data="{ show: false }">
             <label for="current_password" class="block text-black text-xs mb-1">Password Saat Ini</label>
             <div class="relative">
@@ -34,10 +34,17 @@
                     </svg>
                 </button>
             </div>
-            @error('current_password') <div class="text-red-600 text-xs mt-1">{{ $message }}</div> @enderror
+            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['current_password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <div class="text-red-600 text-xs mt-1"><?php echo e($message); ?></div> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
         </div>
 
-        {{-- New Password --}}
+        
         <div x-data="{ show: false }">
             <label for="password" class="block text-black text-xs mb-1">Password Baru</label>
             <div class="relative">
@@ -60,10 +67,17 @@
                     </svg>
                 </button>
             </div>
-            @error('password') <div class="text-red-600 text-xs mt-1">{{ $message }}</div> @enderror
+            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <div class="text-red-600 text-xs mt-1"><?php echo e($message); ?></div> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
         </div>
 
-        {{-- Confirm Password --}}
+        
         <div x-data="{ show: false }">
             <label for="password_confirmation" class="block text-black text-xs mb-1">Konfirmasi Password</label>
             <div class="relative">
@@ -86,7 +100,14 @@
                     </svg>
                 </button>
             </div>
-            @error('password_confirmation') <div class="text-red-600 text-xs mt-1">{{ $message }}</div> @enderror
+            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['password_confirmation'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <div class="text-red-600 text-xs mt-1"><?php echo e($message); ?></div> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
         </div>
 
         <div class="flex justify-end mt-4">
@@ -97,3 +118,4 @@
         </div>
     </form>
 </div>
+<?php /**PATH C:\Users\ASUS\perpustakaan\resources\views/livewire/admin/profile/update-password-form.blade.php ENDPATH**/ ?>

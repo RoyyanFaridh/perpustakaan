@@ -1,21 +1,3 @@
-<?php
-
-use App\Livewire\Actions\Logout;
-use Livewire\Volt\Component;
-
-new class extends Component
-{
-    /**
-     * Log the current user out of the application.
-     */
-    public function logout(Logout $logout): void
-    {
-        $logout();
-
-        $this->redirect('/', navigate: true);
-    }
-}; ?>
-
 <nav x-data="{ open: false, anggotaOpen: false }" class="bg-white border-b border-gray-100">
     <div class="max-w-7xl mx-auto flex items-center justify-between px-4 py-3 sm:py-4">
 
@@ -86,9 +68,13 @@ new class extends Component
                     </x-slot>
                     <x-slot name="content">
                         <x-dropdown-link :href="route('admin.profile')" wire:navigate>Profile</x-dropdown-link>
-                        <button wire:click="logout" class="w-full text-start">
-                            <x-dropdown-link class="text-red-500 hover:text-red-700">Log Out</x-dropdown-link>
-                        </button>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit"
+                                class="block w-full text-right px-4 py-2 text-sm text-red-500 hover:text-red-700 hover:bg-gray-100 transition">
+                                Log Out
+                            </button>
+                        </form>
                     </x-slot>
                 </x-dropdown>
             </div>
@@ -156,10 +142,12 @@ new class extends Component
                 <div class="border-t pt-3">
                     <a href="{{ route('admin.profile') }}"
                         class="block px-3 py-2 rounded hover:bg-gray-100">Profile</a>
-                    <button wire:click="logout"
-                        class="w-full text-start px-3 py-2 rounded hover:bg-gray-100 text-red-500 hover:text-red-700">
-                        Log Out
-                    </button>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <x-dropdown-link as="button" class="text-red-500 hover:text-red-700 w-full text-start">
+                            Log Out
+                        </x-dropdown-link>
+                    </form>
                 </div>
             </div>
         </div>
