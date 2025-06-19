@@ -35,6 +35,12 @@ Route::get('/test-email', function () {
     return 'Email test terkirim';
 });
 
+// di routes/web.php
+Route::get('/cek-waktu', function () {
+    return now()->toDateTimeString();
+});
+
+
 
 Route::get('/admin/peminjaman', Index::class);
 

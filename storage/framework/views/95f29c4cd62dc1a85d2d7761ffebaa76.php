@@ -30,4 +30,8 @@
         </div>
     </div>
 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+<<<<<<< HEAD:storage/framework/views/95f29c4cd62dc1a85d2d7761ffebaa76.php
 <?php /**PATH C:\Users\ACER\perpustakaan\vendor\laravel\framework\src\Illuminate\Foundation\Providers/../resources/exceptions/renderer/components/editor.blade.php ENDPATH**/ ?>
+=======
+<?php /**PATH C:\Users\MSI Computer\Herd\perpustakaan\vendor\laravel\framework\src\Illuminate\Foundation\Providers/../resources/exceptions/renderer/components/editor.blade.php ENDPATH**/ ?>
+>>>>>>> d8220cd (peminjaman baru):storage/framework/views/fca7f5113e54c38a87f8593291c97a88.php

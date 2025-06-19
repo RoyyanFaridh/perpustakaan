@@ -7,7 +7,8 @@
     'bgColor' => '#f43f5e',  // default warna HEX, contoh merah rose-500
 ])
 
-<div class="bg-white border border-gray-100 shadow-xs rounded-2xl p-4 w-full md:w-[calc(25%-1rem)]">
+<div class="bg-white border border-gray-100 shadow-xs rounded-2xl p-4 w-full h-full">
+
     <!-- Header: Icon kiri + Judul + Menu titik 3 -->
     <div class="flex justify-between items-center">
         <!-- Icon + Title -->

@@ -1,18 +1,25 @@
 <div class="py-4 px-4 lg:px-6 w-full">
     <h2 class="text-xl font-semibold text-gray-800 mb-4"> Dashboard</h2>
     <!-- Wrapper untuk Card -->
-    <div class="flex flex-wrap gap-4 mb-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
         @foreach($cardData as $card)
-            <x-card
-                :title="$card['title']"
-                :bgColor="$card['bgColor']"
-                :value="$card['value']"
-                :periode="$card['periode']"
-                :delta="$card['delta']"
-                :icon="$card['icon']"
-            />
+            <a href="{{ $card['url'] ?? '#' }}">
+                <x-card
+                    :title="$card['title']"
+                    :bgColor="$card['bgColor']"
+                    :value="$card['value']"
+                    :periode="$card['periode']"
+                    :delta="$card['delta']"
+                    :icon="$card['icon']"
+                />
+            </a>
         @endforeach
     </div>
+
+
+
+
+
 
     <div class="font-bold text-3xl text-gray-900 mb-4 ml-2">
         {{ __("Statistik Pengunjung") }}

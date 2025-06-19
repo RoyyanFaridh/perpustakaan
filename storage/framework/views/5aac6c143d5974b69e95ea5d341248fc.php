@@ -1,18 +1,20 @@
-<div class="bg-white p-6 rounded-2xl shadow-md overflow-x-auto">
+<div class="bg-white p-6 rounded-2xl shadow-md space-y-6">
+    <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
+    <div class="mb-4 p-3 bg-green-100 text-green-800 text-sm rounded">
+        <?php echo e(session('message')); ?>
+
+    </div>
+<?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-xl font-semibold text-gray-800">Daftar Peminjaman</h2>
 
-        <!-- <div class="space-x-2">
-                <button wire:click="kirimPengingat"
-                    class="bg-purple-500 hover:bg-purple-600 text-white text-sm font-medium py-2 px-4 rounded-lg transition duration-150 ease-in-out">
-                    Kirim Pengingat
-                </button>
-        </div> -->
+        
         <!-- <button wire:click="openModal" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-2 px-4 rounded-lg">
             + Tambah Peminjaman
-        </button> -->
+        </button>
 
-    </div>
+    <!-- </div> -->
 
     <!--[if BLOCK]><![endif]--><?php if($showModal): ?>
     <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm">
@@ -66,7 +68,7 @@
                 </div>
             </div>
 
-            <div class="flex justify-end space-x-2 mt-6">
+            <!-- <div class="flex justify-end space-x-2 mt-6">
                 <button wire:click="closeModal" class="bg-gray-100 border border-gray-300 hover:bg-gray-300 text-gray-700 py-2 px-4 rounded-md shadow-sm transition duration-150 ease-in-out transform hover:scale-105">
                     Batal
                 </button>
@@ -80,15 +82,16 @@
                         Simpan
                     </button>
                 <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-            </div>
+            </div> -->
         </div>
     </div>
     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-    <div class="flex flex-col sm:flex-row sm:items-end gap-4 mb-6">
+     <!-- Filter Pencarian dan Status -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-start gap-4">
         <!-- Input Pencarian -->
-        <div class="flex-1">
-            <label class="block mb-1 text-sm font-medium text-gray-700">Cari Nama Anggota</label>
+        <div class="w-full sm:w-1/2">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Cari Nama Anggota</label>
             <input 
                 type="text" 
                 wire:model.live.debounce.300ms="search" 
@@ -98,19 +101,28 @@
 
         <!-- Filter Status -->
         <div class="w-full sm:w-1/3">
-            <label class="block mb-1 text-sm font-medium text-gray-700">Filter Status</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Filter Status</label>
             <select wire:model.live="filterStatus"
-                    class="block w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    class="block w-full bg-white border border-gray-300 rounded-md px-4 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="">Semua Status</option>
                 <option value="booking">Booking</option>
                 <option value="dipinjam">Dipinjam</option>
                 <option value="dikembalikan">Dikembalikan</option>
             </select>
         </div>
+    </div>
     
 
 
 </div>
+
+    <!-- Tombol Kirim Semua Pengingat -->
+    <div class="flex justify-end">
+        <button wire:click="kirimSemuaPengingat"
+                class="mb-4 bg-red-500 hover:bg-red-600 text-white text-sm px-4 py-2 rounded shadow-sm transition">
+            Kirim Semua Pengingat (< 3 Hari)
+        </button>
+    </div>
 
     <div class="overflow-x-auto">
         <table class="min-w-full text-sm text-left text-gray-700 border border-gray-200 rounded-lg overflow-hidden">
@@ -145,47 +157,35 @@
                                 </span>
                             </td>
                             <td class="px-4 py-2 text-center space-y-1">
+                                <?php
+                                    $now = now();
+                                    $tanggalKembali = \Carbon\Carbon::parse($item->tanggal_kembali);
+                                    $diffInDays = $now->diffInDays($tanggalKembali, false);
+                                    $diffInSeconds = $now->diffInSeconds($tanggalKembali, false);
+                                    $days = floor(abs($diffInSeconds) / 86400);
+                                    $hours = floor((abs($diffInSeconds) % 86400) / 3600);
+                                ?>
+
                                 <!--[if BLOCK]><![endif]--><?php if(strtolower($item->status) === 'booking'): ?>
                                     <button wire:click="setujui(<?php echo e($item->id); ?>)"
                                         class="px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded text-xs">
                                         Setujui
                                     </button>
-                            <?php elseif(strtolower($item->status) === 'dipinjam'): ?>
-                                <button wire:click="kembalikan(<?php echo e($item->id); ?>)"
-                                    class="px-2 py-1 bg-green-500 hover:bg-green-600 text-white rounded text-xs">
-                                    Dikembalikan
-                                </button>
 
-                                <?php
-                                    $now = now();
-                                    $tanggalKembali = \Carbon\Carbon::parse($item->tanggal_kembali);
-                                    $diffInSeconds = $tanggalKembali->diffInSeconds($now, false);
+                                <?php elseif(strtolower($item->status) === 'dipinjam'): ?>
+                                    <button wire:click="kembalikan(<?php echo e($item->id); ?>)"
+                                        class="px-2 py-1 bg-green-500 hover:bg-green-600 text-white rounded text-xs">
+                                        Dikembalikan
+                                    </button>
 
-                                    $days = floor(abs($diffInSeconds) / 86400);
-                                    $hours = floor((abs($diffInSeconds) % 86400) / 3600);
 
-                                    $diffInDays = $tanggalKembali->diffInDays($now, false);
-                                ?>
-
-                                <!--[if BLOCK]><![endif]--><?php if($diffInDays <= 3): ?>
-                                    <div>
-                                        <button wire:click="kirimBroadcast(<?php echo e($item->id); ?>)"
-                                            class="px-2 py-1 bg-red-500 hover:bg-red-600 text-white rounded text-xs">
-                                            Broadcast
-                                            <!--[if BLOCK]><![endif]--><?php if($diffInDays < 0): ?>
-                                                (<?php echo e(abs($days)); ?> hari <?php echo e($hours); ?> jam lagi)
-                                            <?php elseif($diffInDays === 0): ?>
-                                                (Hari ini)
-                                            <?php else: ?>
-                                                (Terlambat <?php echo e($days); ?> hari <?php echo e($hours); ?> jam)
-                                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                                        </button>
-                                    </div>
+                                <?php else: ?>
+                                    <span class="text-green-600 text-xs">Sudah dikembalikan</span>
                                 <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                            <?php else: ?>
-                                <span class="text-green-600 text-xs">Sudah dikembalikan</span>
-                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                        </td>
+                            </td>
+
+
+                            
 
                         </tr>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->

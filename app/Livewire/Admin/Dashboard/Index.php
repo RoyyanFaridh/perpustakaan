@@ -58,6 +58,7 @@ class Index extends Component
                 'periode' => $bulanIni,
                 'delta' => $deltaBuku,
                 'icon' => view('components.icon.books')->render(),
+                'url' => route('admin.buku.index')
             ],
             [
                 'title' => 'Total Anggota',
@@ -66,6 +67,7 @@ class Index extends Component
                 'periode' => $bulanIni,
                 'delta' => $deltaAnggota,
                 'icon' => view('components.icon.users')->render(),
+                'url' => route('admin.anggota.index')
             ],
             [
                 'title' => 'Total Peminjaman',
@@ -74,6 +76,7 @@ class Index extends Component
                 'periode' => $bulanIni,
                 'delta' => $deltaPeminjaman,
                 'icon' => view('components.icon.calendar-clock')->render(),
+                'url' => route('admin.peminjaman.index')
             ],
             [
                 'title' => 'Total Keterlambatan',
@@ -82,6 +85,7 @@ class Index extends Component
                 'periode' => $bulanIni,
                 'delta' => $deltaKeterlambatan,
                 'icon' => view('components.icon.calendar-x-2')->render(),
+                'url' => route('admin.peminjaman.index')
             ],
         ];
     }
