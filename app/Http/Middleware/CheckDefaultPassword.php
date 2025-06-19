@@ -8,13 +8,18 @@ class CheckDefaultPassword
 {
     public function handle($request, Closure $next)
     {
-        $user = auth()->user();
+        $user = auth()->user()->loadMissing('anggota');
 
-        // Jika user punya anggota, dan plain_password-nya masih ada (belum diganti)
-        if ($user && $user->anggota && !empty($user->anggota->plain_password)) {
+        if (!$user->anggota) {
+            \Log::warning('User tanpa anggota: '.$user->id);
+            return redirect()->route('setup.password');
+        }
+
+        if ($user->anggota->plain_password !== null && $user->anggota->plain_password !== '') {
             return redirect()->route('setup.password');
         }
 
         return $next($request);
+
     }
 }

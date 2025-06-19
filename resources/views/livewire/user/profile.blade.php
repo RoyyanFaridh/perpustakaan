@@ -1,4 +1,4 @@
-<x-user-layout>
+<x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Profil Pengguna') }}
@@ -21,10 +21,14 @@
                 </div>
             @endif
 
-            {{-- Form Update Email dan Password (digabung dalam 1 komponen) --}}
+            {{-- Form Update Email dan Password --}}
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="max-w-xl">
-                    <livewire:user.profile />
+                    @if(auth()->user()->hasRole('admin'))
+                        <livewire:admin.profile />
+                    @else
+                        <livewire:user.profile />
+                    @endif
                 </div>
             </div>
 
@@ -42,4 +46,4 @@
 
         </div>
     </div>
-</x-user-layout>
+</x-app-layout>

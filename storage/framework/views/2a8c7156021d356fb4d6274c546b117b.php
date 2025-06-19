@@ -182,7 +182,7 @@
       },
       options: {
         responsive: true,
-        maintainAspectRatio: false,
+        maintainAspectRatio: false, // 🔥 kunci agar tinggi container bekerja
         plugins: {
           legend: {
             position: 'bottom',

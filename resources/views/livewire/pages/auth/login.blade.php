@@ -74,44 +74,52 @@ new #[Layout('layouts.guest')] class extends Component
 
       <!-- Form -->
       <form wire:submit.prevent="login" class="space-y-6 text-sm py-4">
-        <!-- NIS/NIP -->
-        <div>
-          <x-input-label for="nis_nip" :value="('NIS / NIP')" />
-          <x-text-input wire:model="form.nis_nip" id="nis_nip"
-            class="block mt-1 w-full text-sm"
-            type="text" name="nis_nip" required autofocus autocomplete="username" />
-          <x-input-error :messages="$errors->get('form.nis_nip')" class="mt-1 text-xs" />
-        </div>
+          <!-- NIS/NIP -->
+          <div>
+              <x-input-label for="nis_nip" :value="('NIS / NIP')" />
+              <x-text-input wire:model="form.nis_nip" id="nis_nip"
+                  class="block mt-1 w-full text-sm"
+                  type="text" name="nis_nip" required autofocus autocomplete="username" />
+              <x-input-error :messages="$errors->get('form.nis_nip')" class="mt-1 text-xs" />
+          </div>
 
-        <!-- Password -->
-        <div>
-          <x-input-label for="password" :value="('Password')" />
-          <x-text-input wire:model="form.password" id="password"
-            class="block mt-1 w-full text-sm"
-            type="password" name="password" required autocomplete="current-password" />
-          <x-input-error :messages="$errors->get('form.password')" class="mt-1 text-xs" />
-        </div>
+          <!-- Password -->
+          <div>
+              <x-input-label for="password" :value="('Password')" />
+              <x-text-input wire:model="form.password" id="password"
+                  class="block mt-1 w-full text-sm"
+                  type="password" name="password" required autocomplete="current-password" />
+              <x-input-error :messages="$errors->get('form.password')" class="mt-1 text-xs" />
+          </div>
 
-        <!-- Remember + Forgot -->
-        <div class="flex items-center justify-between text-xs mt-2 text-gray-600">
-          <label class="inline-flex items-center">
-            <input wire:model="form.remember" type="checkbox"
-              class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" />
-            <span class="ml-2">Remember me</span>
-          </label>
-
-          @if (Route::has('password.request'))
-          <a href="{{ route('password.request') }}"
-            class="text-indigo-500 hover:text-indigo-700 underline transition"
-            wire:navigate>Forgot password?</a>
+          <!-- ❗ Error umum (di luar field) -->
+          @if ($errors->has('form.email'))
+              <div class="text-red-600 text-xs mb-2">
+                  {{ $errors->first('form.email') }}
+              </div>
           @endif
-        </div>
 
-        <!-- Button -->
-        <div class="pt-2">
-          <x-primary-button class="w-full text-sm transition-all">Log in</x-primary-button>
-        </div>
+          <!-- Remember + Forgot -->
+          <div class="flex items-center justify-between text-xs mt-2 text-gray-600">
+              <label class="inline-flex items-center">
+                  <input wire:model="form.remember" type="checkbox"
+                      class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" />
+                  <span class="ml-2">Remember me</span>
+              </label>
+
+              @if (Route::has('password.request'))
+              <a href="{{ route('password.request') }}"
+                  class="text-indigo-500 hover:text-indigo-700 underline transition"
+                  wire:navigate>Forgot password?</a>
+              @endif
+          </div>
+
+          <!-- Button -->
+          <div class="pt-2">
+              <x-primary-button class="w-full text-sm transition-all">Log in</x-primary-button>
+          </div>
       </form>
+
     </div>
 
     <!-- Kanan: Gambar dengan gradien -->
