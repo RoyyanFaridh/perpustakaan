@@ -2,9 +2,7 @@
 
 namespace App\Livewire\User\Dashboard;
 
-use App\Models\User;
 use App\Models\Buku;
-use App\Models\Anggota;
 use App\Models\Peminjaman;
 use App\Models\Pengunjung;
 use Illuminate\Support\Carbon;
@@ -14,17 +12,14 @@ class Index extends Component
 {
     protected function getCardData()
     {
+        $userId = auth()->id();
         $now = Carbon::now();
         $bulanIni = $now->format('F Y'); 
-        
+
         $akhirBulanLalu = $now->copy()->startOfMonth()->subDay();
         $totalBukuSebelumnya = Buku::where('created_at', '<=', $akhirBulanLalu)->count();
         $totalBukuSaatIni = Buku::count();
         $deltaBuku = $totalBukuSaatIni - $totalBukuSebelumnya;
-
-        $totalAnggotaSebelumnya = Anggota::where('created_at', '<=', $akhirBulanLalu)->count();
-        $totalAnggotaSaatIni = Anggota::count();
-        $deltaAnggota = $totalAnggotaSaatIni - $totalAnggotaSebelumnya;
 
         $bulanIniNum = $now->format('m');
         $tahunIni = $now->year;
@@ -32,19 +27,23 @@ class Index extends Component
         $bulanLaluNum = $bulanLalu->format('m');
         $tahunLalu = $bulanLalu->year;
 
-        $peminjamanBulanIni = Peminjaman::whereYear('created_at', $tahunIni)
+        $peminjamanBulanIni = Peminjaman::where('user_id', $userId)
+            ->whereYear('created_at', $tahunIni)
             ->whereMonth('created_at', $bulanIniNum)
             ->count();
-        $peminjamanBulanLalu = Peminjaman::whereYear('created_at', $tahunLalu)
+        $peminjamanBulanLalu = Peminjaman::where('user_id', $userId)
+            ->whereYear('created_at', $tahunLalu)
             ->whereMonth('created_at', $bulanLaluNum)
             ->count();
         $deltaPeminjaman = $peminjamanBulanIni - $peminjamanBulanLalu;
 
-        $keterlambatanBulanIni = Peminjaman::where('status', 'terlambat')
+        $keterlambatanBulanIni = Peminjaman::where('user_id', $userId)
+            ->where('status', 'terlambat')
             ->whereYear('created_at', $tahunIni)
             ->whereMonth('created_at', $bulanIniNum)
             ->count();
-        $keterlambatanBulanLalu = Peminjaman::where('status', 'terlambat')
+        $keterlambatanBulanLalu = Peminjaman::where('user_id', $userId)
+            ->where('status', 'terlambat')
             ->whereYear('created_at', $tahunLalu)
             ->whereMonth('created_at', $bulanLaluNum)
             ->count();
@@ -60,15 +59,7 @@ class Index extends Component
                 'icon' => view('components.icon.books')->render(),
             ],
             [
-                'title' => 'Total Anggota',
-                'bgColor' => '#1C84C6',
-                'value' => number_format($totalAnggotaSaatIni, 0, ',', '.'),
-                'periode' => $bulanIni,
-                'delta' => $deltaAnggota,
-                'icon' => view('components.icon.users')->render(),
-            ],
-            [
-                'title' => 'Total Peminjaman',
+                'title' => 'Peminjaman Saya',
                 'bgColor' => '#23C6C8',
                 'value' => number_format($peminjamanBulanIni, 0, ',', '.'),
                 'periode' => $bulanIni,
@@ -76,7 +67,7 @@ class Index extends Component
                 'icon' => view('components.icon.calendar-clock')->render(),
             ],
             [
-                'title' => 'Total Keterlambatan',
+                'title' => 'Terlambat Dikembalikan',
                 'bgColor' => '#1AB394',
                 'value' => number_format($keterlambatanBulanIni, 0, ',', '.'),
                 'periode' => $bulanIni,
