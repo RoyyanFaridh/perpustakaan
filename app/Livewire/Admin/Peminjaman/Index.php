@@ -142,25 +142,49 @@ class Index extends Component
         $emailBerhasil = 0;
 
         foreach ($peminjamanList as $peminjaman) {
-            $user = $peminjaman->anggota->user;
+            $tanggalKembali = Carbon::parse($peminjaman->tanggal_kembali);
+            $selisihHari = now()->diffInDays($tanggalKembali, false);
 
-            if ($user && $user->email) {
-                try {
-                    Mail::to($user->email)->send(new PengingatKembaliMail($peminjaman));
-                    $emailBerhasil++;
-                } catch (\Exception $e) {
-                    Log::error("Gagal kirim email ke {$user->email}: " . $e->getMessage());
+            // Kirim hanya jika tenggat kurang dari atau sama dengan 3 hari dari sekarang
+            if ($selisihHari <= 3 && $selisihHari >= 0) {
+                $user = $peminjaman->anggota->user;
+
+                if ($user && $user->email) {
+                    try {
+                        Mail::to($user->email)->send(new PengingatKembaliMail($peminjaman));
+                        $emailBerhasil++;
+                    } catch (\Exception $e) {
+                        Log::error("Gagal kirim email ke {$user->email}: " . $e->getMessage());
+                    }
                 }
             }
         }
 
         if ($emailBerhasil > 0) {
-            session()->flash('message', "$emailBerhasil pengingat berhasil dikirim ke semua peminjam.");
+            session()->flash('message', "$emailBerhasil pengingat berhasil dikirim ke peminjam dengan tenggat kurang dari 3 hari.");
         } else {
-            session()->flash('message', 'Tidak ada email yang berhasil dikirim.');
+            session()->flash('message', 'Tidak ada email yang dikirim karena tidak ada peminjam dengan tenggat < 3 hari.');
         }
     }
 
+    public function kirimSemuaPengingat()
+    {
+        $now = now();
+
+        // Ambil semua peminjaman dengan status 'dipinjam' dan sisa waktu <= 3 hari
+        $peminjamanTerdekat = \App\Models\Peminjaman::with('anggota', 'buku')
+            ->where('status', 'dipinjam')
+            ->get()
+            ->filter(function ($item) use ($now) {
+                return $now->diffInDays($item->tanggal_kembali, false) <= 3;
+            });
+
+        foreach ($peminjamanTerdekat as $item) {
+            $this->kirimPengingat($item->id);
+        }
+
+        session()->flash('message', 'Pengingat berhasil dikirim ke semua peminjam yang kurang dari 3 hari.');
+    }
 
 
     public function build()

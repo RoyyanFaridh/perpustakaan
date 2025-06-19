@@ -29,11 +29,19 @@ use App\Livewire\User\Peminjaman\Index as PeminjamanIndexUser;
 use App\Livewire\Admin\Peminjaman\Index;
 use App\Livewire\User\Profile\Index as ProfileIndexUser;
 
+
+
 Route::get('/test-email', function () {
     $peminjaman = App\Models\Peminjaman::with(['anggota.user'])->latest()->first();
     Mail::to($peminjaman->anggota->user->email)->send(new App\Mail\PengingatKembaliMail($peminjaman));
     return 'Email test terkirim';
 });
+
+// di routes/web.php
+Route::get('/cek-waktu', function () {
+    return now()->toDateTimeString();
+});
+
 
 
 Route::get('/admin/peminjaman', Index::class);

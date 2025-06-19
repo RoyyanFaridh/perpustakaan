@@ -3,79 +3,77 @@
 namespace App\Livewire\Admin\Anggota;
 
 use App\Models\Anggota;
-use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class Export implements FromCollection, WithHeadings
 {
     protected $role;
+    protected $filterStatus;
+    protected $kelas;
+    protected $search;
 
-    public function __construct($role)
+    public function __construct($role, $filterStatus = 'semua', $kelas = null, $search = '')
     {
         $this->role = $role;
+        $this->filterStatus = $filterStatus;
+        $this->kelas = $kelas;
+        $this->search = $search;
     }
 
     public function collection()
     {
-        $anggota = Anggota::where('role', $this->role)->get();
+        $query = Anggota::query()
+            ->where('role', $this->role)
+            ->when($this->filterStatus !== 'semua', fn($q) => $q->where('status', $this->filterStatus))
+            ->when($this->search, fn($q) => $q->where('nama', 'like', '%' . $this->search . '%'));
+
+        // Jika siswa, tambahkan filter kelas
+        if ($this->role === 'siswa' && $this->kelas && $this->kelas !== 'semua') {
+            $query->where('kelas', $this->kelas);
+        }
+
+        $anggota = $query->get();
 
         return $anggota->map(function ($item) {
-            // Kosongkan password jika status tidak aktif
             $password = $item->status === 'inactive' ? '' : $item->plain_password;
 
+            $base = [
+                'nama' => $item->nama,
+                'status' => $item->status,
+                'nis_nip' => $item->nis_nip,
+                'jenis_kelamin' => $item->jenis_kelamin,
+                'alamat' => $item->alamat,
+                'no_telp' => $item->no_telp,
+                'email' => $item->email,
+                'plain_password' => $password,
+            ];
+
             if ($this->role === 'siswa') {
-                return [
-                    'nama' => $item->nama,
-                    'status' => $item->status,
-                    'nis_nip' => $item->nis_nip,
-                    'kelas' => $item->kelas,
-                    'jenis_kelamin' => $item->jenis_kelamin,
-                    'alamat' => $item->alamat,
-                    'no_telp' => $item->no_telp,
-                    'email' => $item->email,
-                    'plain_password' => $password,
-                ];
-            } else { // guru
-                return [
-                    'nama' => $item->nama,
-                    'status' => $item->status,
-                    'nis_nip' => $item->nis_nip,
-                    'jenis_kelamin' => $item->jenis_kelamin,
-                    'alamat' => $item->alamat,
-                    'no_telp' => $item->no_telp,
-                    'email' => $item->email,
-                    'plain_password' => $password,
-                ];
+                $base = array_merge(['kelas' => $item->kelas], $base); // tambahkan di awal
             }
+
+            return $base;
         });
     }
 
     public function headings(): array
     {
+        $base = [
+            'Nama',
+            'Status',
+            $this->role === 'siswa' ? 'NIS' : 'NIP',
+            'Jenis Kelamin',
+            'Alamat',
+            'No Telepon',
+            'Email',
+            'Password Default',
+        ];
+
         if ($this->role === 'siswa') {
-            return [
-                'Nama',
-                'Status',
-                'NIS',
-                'Kelas',
-                'Jenis Kelamin',
-                'Alamat',
-                'No Telepon',
-                'Email',
-                'Password Default',
-            ];
-        } else {
-            return [
-                'Nama',
-                'Status',
-                'NIP',
-                'Jenis Kelamin',
-                'Alamat',
-                'No Telepon',
-                'Email',
-                'Password Default',
-            ];
+            array_splice($base, 1, 0, ['Kelas']); // Tambahkan 'Kelas' setelah 'Nama'
         }
+
+        return $base;
     }
 }

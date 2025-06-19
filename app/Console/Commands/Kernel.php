@@ -14,8 +14,9 @@ class Kernel extends ConsoleKernel
 
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('pengingat:kembali')->dailyAt('07:00');
-    }
+        $schedule->command('pengingat:kembali')->everyMinute(); // testing
+
+        }
 
     protected function commands()
     {

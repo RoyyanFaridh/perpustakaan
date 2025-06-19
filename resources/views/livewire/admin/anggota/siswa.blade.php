@@ -1,12 +1,14 @@
 <div class="space-y-6">
     <div class="bg-white p-6 rounded-2xl shadow-md overflow-x-auto">
+
+        <!-- Header -->
         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4 sm:gap-0">
             <h2 class="text-lg sm:text-xl font-semibold text-gray-800">Daftar Siswa</h2>
             <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                <a href="{{ route('export.siswa') }}" target="_blank"
-                class="bg-green-500 hover:bg-green-600 text-white text-sm font-medium py-2 px-3 sm:px-4 rounded-lg text-center">
+                <button wire:click="exportSiswa"
+                    class="bg-green-500 hover:bg-green-600 text-white text-sm font-medium py-2 px-3 sm:px-4 rounded-lg text-center">
                     Export Excel
-                </a>
+                </button>
                 <button wire:click="openModal"
                         class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-2 px-3 sm:px-4 rounded-lg text-center">
                     + Tambah Siswa
@@ -14,13 +16,40 @@
             </div>
         </div>
 
-        <div class="mb-4">
-            <input 
-                type="text" 
-                wire:model.debounce.300ms="search" 
-                placeholder="Cari siswa..." 
-                class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        <!-- Filter dan Pencarian -->
+        <div class="flex flex-col sm:flex-row gap-4 mb-6">
+            <!-- Filter Kelas -->
+            <div class="relative w-full sm:w-1/3">
+                <label class="block mb-1 text-sm font-medium text-gray-700">Filter Kelas</label>
+                <select wire:model.live="kelas"
+                        class="block w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    <option value="semua">Semua Kelas</option>
+                    <option value="7">Kelas 7</option>
+                    <option value="8">Kelas 8</option>
+                    <option value="9">Kelas 9</option>
+                </select>
+            </div>
+
+            <!-- Filter Status -->
+            <div class="relative w-full sm:w-1/3">
+                <label class="block mb-1 text-sm font-medium text-gray-700">Filter Status</label>
+                <select wire:model.live="filterStatus"
+                        class="block w-full appearance-none bg-white border border-gray-300 rounded-lg px-4 py-2 pr-10 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    <option value="semua">Semua Status</option>
+                    <option value="active">Aktif</option>
+                    <option value="inactive">Tidak Aktif</option>
+                </select>
+            </div>
+
+            <!-- Pencarian -->
+            <div class="w-full sm:w-1/3">
+                <label class="block mb-1 text-sm font-medium text-gray-700">Cari Siswa</label>
+                <input type="text" wire:model.live.debounce.300ms="search"
+                       placeholder="Cari nama siswa..."
+                       class="w-full px-4 py-2 pr-10 text-sm bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            </div>
         </div>
+
         
         @if($showModal)
         <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm">
@@ -137,65 +166,116 @@
         </div>
         @endif
 
-        <!-- Tabel Daftar Siswa -->
+         <!-- Tabel Daftar Siswa -->
         <table class="min-w-full text-sm text-left text-gray-700 border border-gray-200 rounded-lg overflow-hidden">
             <thead class="bg-gray-50">
-                <tr class="text-center">
-                    <th class="px-4 py-3 font-semibold">No</th>
-                    <th class="px-4 py-3 font-semibold">Nama</th>
-                    <th class="px-4 py-3 font-semibold">Status</th>
-                    <th class="px-4 py-3 font-semibold">NIS</th>
-                    <th class="px-4 py-3 font-semibold">Kelas</th>
-                    <th class="px-4 py-3 font-semibold">Jenis Kelamin</th>
-                    <th class="px-4 py-3 font-semibold">Alamat</th>
-                    <th class="px-4 py-3 font-semibold">Nomor Telepon</th>
-                    <th class="px-4 py-3 font-semibold">Email</th>
-                    <th class="px-4 py-3 font-semibold">Aksi</th>
-                </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-100">
-                @foreach($anggota as $index => $item)
-                    <tr class="hover:bg-gray-50 text-center">
-                        <td class="px-4 py-2">{{ $index + 1 }}</td>
-                        <td class="px-4 py-2 text-left">{{ $item->nama }}</td>
-                        <td class="px-4 py-2 whitespace-nowrap">
-                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold border
-                                {{ $item->status == 'active' 
-                                    ? 'text-green-700 bg-green-200 border-green-500' 
-                                    : 'text-red-700 bg-red-200 border-red-500' }}">
-                                {{ $item->status == 'active' ? 'Aktif' : 'Tidak Aktif' }}
-                            </span>
-                        </td>
-                        <td class="px-4 py-2">{{ $item->nis_nip }}</td>
-                        <td class="px-4 py-2">{{ $item->kelas }}</td>
-                        <td class="px-4 py-2">
-                            @if($item->jenis_kelamin == 'L')
-                                <span class="inline-block px-3 py-1 text-blue-700 bg-blue-200 border border-blue-500 rounded-full text-xs font-semibold">
-                                    Laki-laki
-                                </span>
+            <tr class="text-center">
+                <th class="px-4 py-3 font-semibold">No</th>
+
+                {{-- Kolom Nama --}}
+                <th class="px-4 py-3 font-semibold cursor-pointer select-none" wire:click="sortBy('nama')">
+                    <div class="flex items-center justify-center gap-1 text-sm">
+                        Nama
+                        <svg class="w-3 h-3 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                            @if ($sortField === 'nama' && $sortDirection === 'asc')
+                                <path d="M5 12l5-5 5 5H5z" /> {{-- Panah naik --}}
+                            @elseif ($sortField === 'nama' && $sortDirection === 'desc')
+                                <path d="M5 8l5 5 5-5H5z" /> {{-- Panah turun --}}
                             @else
-                                <span class="inline-block px-3 py-1 text-pink-700 bg-pink-200 border border-pink-500 rounded-full text-xs font-semibold">
-                                    Perempuan
-                                </span>
+                                <path d="M5 8l5 5 5-5H5z" /> {{-- Default: panah turun --}}
                             @endif
-                        </td>
-                        <td class="px-4 py-2 text-left">{{ \Illuminate\Support\Str::limit($item->alamat, 100) }}</td>
-                        <td class="px-4 py-2">{{ $item->no_telp }}</td>
-                        <td>{{ $item->email ?: ($item->user->email ?? '-') }}</td>
-                        <td class="px-4 py-2 text-center">
-                            <div class="flex flex-col items-center space-y-2 md:flex-row md:justify-center md:space-y-0 md:space-x-2">
-                                <button wire:click="edit({{ $item->id }})" class="px-3 py-1 bg-yellow-400 hover:bg-yellow-500 text-white rounded-md shadow text-xs">
-                                    Edit
-                                </button>
-                                <button wire:click="delete({{ $item->id }})" class="px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded-md shadow text-xs">
-                                    Hapus
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                @endforeach
+                        </svg>
+                    </div>
+                </th>
+
+                {{-- Kolom Status --}}
+                <th class="px-4 py-3 font-semibold cursor-pointer select-none" wire:click="sortBy('status')">
+                    <div class="flex items-center justify-center gap-1 text-sm">
+                        Status
+                        <svg class="w-3 h-3 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                            @if ($sortField === 'status' && $sortDirection === 'asc')
+                                <path d="M5 12l5-5 5 5H5z" />
+                            @elseif ($sortField === 'status' && $sortDirection === 'desc')
+                                <path d="M5 8l5 5 5-5H5z" />
+                            @else
+                                <path d="M5 8l5 5 5-5H5z" />
+                            @endif
+                        </svg>
+                    </div>
+                </th>
+
+                <th class="px-4 py-3 font-semibold">NIS</th>
+
+                {{-- Kolom Kelas --}}
+                <th class="px-4 py-3 font-semibold cursor-pointer select-none" wire:click="sortBy('kelas')">
+                    <div class="flex items-center justify-center gap-1 text-sm">
+                        Kelas
+                        <svg class="w-3 h-3 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                            @if ($sortField === 'kelas' && $sortDirection === 'asc')
+                                <path d="M5 12l5-5 5 5H5z" />
+                            @elseif ($sortField === 'kelas' && $sortDirection === 'desc')
+                                <path d="M5 8l5 5 5-5H5z" />
+                            @else
+                                <path d="M5 8l5 5 5-5H5z" />
+                            @endif
+                        </svg>
+                    </div>
+                </th>
+
+                <th class="px-4 py-3 font-semibold">Jenis Kelamin</th>
+                <th class="px-4 py-3 font-semibold">Alamat</th>
+                <th class="px-4 py-3 font-semibold">Nomor Telepon</th>
+                <th class="px-4 py-3 font-semibold">Email</th>
+                <th class="px-4 py-3 font-semibold">Aksi</th>
+            </tr>
+            </thead>
+
+            <tbody class="bg-white divide-y divide-gray-100">
+            @foreach($anggota as $index => $item)
+                <tr class="hover:bg-gray-50 text-center">
+                    <td class="px-4 py-2">{{ $index + 1 }}</td>
+                    <td class="px-4 py-2 text-left">{{ $item->nama }}</td>
+                    <td class="px-4 py-2 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold border
+                            {{ $item->status == 'active'
+                                ? 'text-green-700 bg-green-200 border-green-500'
+                                : 'text-red-700 bg-red-200 border-red-500' }}">
+                            {{ $item->status == 'active' ? 'Aktif' : 'Tidak Aktif' }}
+                        </span>
+                    </td>
+                    <td class="px-4 py-2">{{ $item->nis_nip }}</td>
+                    <td class="px-4 py-2">{{ $item->kelas }}</td>
+                    <td class="px-4 py-2">
+                        @if($item->jenis_kelamin == 'L')
+                            <span class="inline-block px-3 py-1 text-blue-700 bg-blue-200 border border-blue-500 rounded-full text-xs font-semibold">
+                                Laki-laki
+                            </span>
+                        @else
+                            <span class="inline-block px-3 py-1 text-pink-700 bg-pink-200 border border-pink-500 rounded-full text-xs font-semibold">
+                                Perempuan
+                            </span>
+                        @endif
+                    </td>
+                    <td class="px-4 py-2 text-left">{{ \Illuminate\Support\Str::limit($item->alamat, 100) }}</td>
+                    <td class="px-4 py-2">{{ $item->no_telp }}</td>
+                    <td>{{ $item->email ?: ($item->user->email ?? '-') }}</td>
+                    <td class="px-4 py-2 text-center">
+                        <div class="flex flex-col items-center space-y-2 md:flex-row md:justify-center md:space-y-0 md:space-x-2">
+                            <button wire:click="edit({{ $item->id }})"
+                                    class="px-3 py-1 bg-yellow-400 hover:bg-yellow-500 text-white rounded-md shadow text-xs">
+                                Edit
+                            </button>
+                            <button wire:click="delete({{ $item->id }})"
+                                    class="px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded-md shadow text-xs">
+                                Hapus
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            @endforeach
             </tbody>
         </table>
+
     </div>
 </div>
 
