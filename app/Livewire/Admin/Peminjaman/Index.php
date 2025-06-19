@@ -15,8 +15,14 @@ use App\Mail\PengingatPengembalianBuku;
 class Index extends Component
 {
     public $peminjamanId = null;
+<<<<<<< HEAD
+    public $search = '';
+    public $filterStatus = '';
+
+=======
     public $anggota_id, $buku_id, $tanggal_pinjam, $tanggal_kembali, $status;
     public $isEdit = false, $showModal = false;
+>>>>>>> 2150255d9cbd44f846af36c1d46a8128c3bca83d
 
     protected $rules = [
         'anggota_id' => 'required|exists:anggota,id',
@@ -171,6 +177,31 @@ class Index extends Component
         $peminjaman->delete();
     }
 
+<<<<<<< HEAD
+    public function updatedFilterStatus()
+    {
+        // Tidak perlu isi apa pun, cukup untuk trigger re-render
+    }
+
+
+    public function render()
+    {
+        $query = Peminjaman::with(['anggota', 'buku'])->latest();
+        
+
+        if (!empty($this->filterStatus)) {
+            $query->whereRaw('LOWER(status) = ?', [strtolower($this->filterStatus)]);
+        }
+
+        if (!empty($this->search)) {
+            $query->whereHas('anggota', function ($q) {
+                $q->where('nama', 'like', '%' . $this->search . '%');
+            });
+        }
+
+        return view('livewire.admin.peminjaman.index', [
+            'listPeminjaman' => $query->get(),
+=======
     public function kirimBroadcast($id)
     {
         $peminjaman = Peminjaman::with(['anggota', 'buku'])->findOrFail($id);
@@ -194,8 +225,17 @@ class Index extends Component
     {
         return view('livewire.admin.peminjaman.index', [
             'listPeminjaman' => Peminjaman::with(['anggota', 'buku'])->latest()->get(),
+>>>>>>> 2150255d9cbd44f846af36c1d46a8128c3bca83d
             'anggotaList' => Anggota::all(),
             'bukuList' => Buku::all(),
         ])->layout('layouts.app');
     }
+<<<<<<< HEAD
+
+
+
+
+
+=======
+>>>>>>> 2150255d9cbd44f846af36c1d46a8128c3bca83d
 }
