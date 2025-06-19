@@ -30,14 +30,14 @@ class Index extends Component
         // Kirim email ke semua user yang punya email
         $users = User::whereNotNull('email')->where('email', '!=', '')->get();
         foreach ($users as $user) {
-            Mail::to($user->email)->queue(new BroadcastMail($this->judul, $this->isi));
-            // Mail::to($user->email)->send(new BroadcastMail($this->judul, $this->isi));
+            // Mail::to($user->email)->queue(new BroadcastMail($this->judul, $this->isi));
+            Mail::to($user->email)->send(new BroadcastMail($this->judul, $this->isi));
         }
 
         // Reset form
         $this->reset();
 
-        // Flash message sukses
+        // Flash message suksesA
         session()->flash('message', 'Broadcast berhasil dikirim ke semua pengguna.');
     }
 

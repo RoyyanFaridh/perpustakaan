@@ -2,12 +2,13 @@
 
 namespace App\Livewire\Admin\Anggota;
 
-use Livewire\Component;
-use App\Models\Anggota as AnggotaModel;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use App\Models\Anggota;
+use Livewire\Component;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use App\Models\Anggota as AnggotaModel;
 
 class Index extends Component
 {
@@ -173,10 +174,21 @@ class Index extends Component
 
     public function delete($id)
     {
-        $anggota = AnggotaModel::findOrFail($id);
-        $anggota->delete();
+        $anggota = Anggota::findOrFail($id);
 
-        session()->flash('message', 'Anggota berhasil dihapus!');
+        DB::transaction(function () use ($anggota) {
+            
+            // Hapus user yang terhubung dengan nis_nip
+            $user = User::where('nis_nip', $anggota->nis_nip)->first();
+            if ($user) {
+                $user->delete();
+            }
+
+            // Hapus anggota
+            $anggota->delete();
+        });
+
+        session()->flash('message', 'Anggota dan akun user berhasil dihapus!');
     }
 
     public function resetForm()

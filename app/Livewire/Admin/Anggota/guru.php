@@ -98,7 +98,21 @@ class Guru extends Component
 
     public function delete($id)
     {
-        Anggota::find($id)->delete();
+        $anggota = Anggota::findOrFail($id);
+
+        DB::transaction(function () use ($anggota) {
+            
+            // Hapus user yang terhubung dengan nis_nip
+            $user = User::where('nis_nip', $anggota->nis_nip)->first();
+            if ($user) {
+                $user->delete();
+            }
+
+            // Hapus anggota
+            $anggota->delete();
+        });
+
+        session()->flash('message', 'Anggota dan akun user berhasil dihapus!');
     }
 
     private function resetInput()

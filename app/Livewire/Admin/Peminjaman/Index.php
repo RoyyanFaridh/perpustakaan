@@ -2,12 +2,15 @@
 
 namespace App\Livewire\Admin\Peminjaman;
 
+use Log;
+use Carbon\Carbon;
+use App\Models\Buku;
+use App\Models\Anggota;
 use Livewire\Component;
 use App\Models\Peminjaman;
-use App\Models\Anggota;
-use App\Models\Buku;
+use App\Mail\PengingatKembaliMail;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 class Index extends Component
 {
@@ -137,7 +140,41 @@ class Index extends Component
         session()->flash('message', 'Buku berhasil dikembalikan.');
     }
 
+    public function kirimPengingat()
+    {
+        $peminjamanList = Peminjaman::with(['anggota.user', 'buku'])
+            ->where('status', 'dipinjam')
+            ->get();
 
+        $emailBerhasil = 0;
+
+        foreach ($peminjamanList as $peminjaman) {
+            $user = $peminjaman->anggota->user;
+
+            if ($user && $user->email) {
+                try {
+                    Mail::to($user->email)->send(new PengingatKembaliMail($peminjaman));
+                    $emailBerhasil++;
+                } catch (\Exception $e) {
+                    Log::error("Gagal kirim email ke {$user->email}: " . $e->getMessage());
+                }
+            }
+        }
+
+        if ($emailBerhasil > 0) {
+            session()->flash('message', "$emailBerhasil pengingat berhasil dikirim ke semua peminjam.");
+        } else {
+            session()->flash('message', 'Tidak ada email yang berhasil dikirim.');
+        }
+    }
+
+
+
+    public function build()
+    {
+        return $this->subject('Pengingat Pengembalian Buku')
+                    ->view('emails.pengingat');
+    }
 
     public function delete($id)
     {

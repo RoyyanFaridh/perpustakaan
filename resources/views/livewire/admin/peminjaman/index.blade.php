@@ -1,15 +1,24 @@
 <div class="bg-white p-6 rounded-2xl shadow-md overflow-x-auto">
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-xl font-semibold text-gray-800">Daftar Peminjaman</h2>
+
+        <!-- <div class="space-x-2">
+                <button wire:click="kirimPengingat"
+                    class="bg-purple-500 hover:bg-purple-600 text-white text-sm font-medium py-2 px-4 rounded-lg transition duration-150 ease-in-out">
+                    Kirim Pengingat
+                </button>
+        </div> -->
         <!-- <button wire:click="openModal" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-2 px-4 rounded-lg">
             + Tambah Peminjaman
         </button> -->
+
     </div>
 
     @if($showModal)
     <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm">
         <div class="bg-white rounded-xl shadow-lg w-full max-w-lg sm:max-w-md p-6">
             <h2 class="text-xl font-semibold mb-4">{{ $isEdit ? 'Edit Peminjaman' : 'Tambah Peminjaman' }}</h2>
+            
 
             <div class="space-y-4 text-sm text-gray-600">
                 <div>
