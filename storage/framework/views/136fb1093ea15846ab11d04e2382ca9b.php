@@ -1,10 +1,3 @@
-<?php
-
-use App\Livewire\Actions\Logout;
-use Livewire\Volt\Component;
-
-?>
-
 <nav x-data="{ open: false, anggotaOpen: false }" class="bg-white border-b border-gray-100">
     <div class="max-w-7xl mx-auto flex items-center justify-between px-4 py-3 sm:py-4">
 
@@ -343,27 +336,13 @@ use Livewire\Volt\Component;
 <?php $component = $__componentOriginal68cb1971a2b92c9735f83359058f7108; ?>
 <?php unset($__componentOriginal68cb1971a2b92c9735f83359058f7108); ?>
 <?php endif; ?>
-                        <button wire:click="logout" class="w-full text-start">
-                            <?php if (isset($component)) { $__componentOriginal68cb1971a2b92c9735f83359058f7108 = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal68cb1971a2b92c9735f83359058f7108 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.dropdown-link','data' => ['class' => 'text-red-500 hover:text-red-700']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('dropdown-link'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['class' => 'text-red-500 hover:text-red-700']); ?>Log Out <?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal68cb1971a2b92c9735f83359058f7108)): ?>
-<?php $attributes = $__attributesOriginal68cb1971a2b92c9735f83359058f7108; ?>
-<?php unset($__attributesOriginal68cb1971a2b92c9735f83359058f7108); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal68cb1971a2b92c9735f83359058f7108)): ?>
-<?php $component = $__componentOriginal68cb1971a2b92c9735f83359058f7108; ?>
-<?php unset($__componentOriginal68cb1971a2b92c9735f83359058f7108); ?>
-<?php endif; ?>
-                        </button>
+                        <form method="POST" action="<?php echo e(route('logout')); ?>">
+                            <?php echo csrf_field(); ?>
+                            <button type="submit"
+                                class="block w-full text-right px-4 py-2 text-sm text-red-500 hover:text-red-700 hover:bg-gray-100 transition">
+                                Log Out
+                            </button>
+                        </form>
                      <?php $__env->endSlot(); ?>
                  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
@@ -459,10 +438,30 @@ use Livewire\Volt\Component;
                 <div class="border-t pt-3">
                     <a href="<?php echo e(route('admin.profile')); ?>"
                         class="block px-3 py-2 rounded hover:bg-gray-100">Profile</a>
-                    <button wire:click="logout"
-                        class="w-full text-start px-3 py-2 rounded hover:bg-gray-100 text-red-500 hover:text-red-700">
-                        Log Out
-                    </button>
+                    <form method="POST" action="<?php echo e(route('logout')); ?>">
+                        <?php echo csrf_field(); ?>
+                        <?php if (isset($component)) { $__componentOriginal68cb1971a2b92c9735f83359058f7108 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal68cb1971a2b92c9735f83359058f7108 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.dropdown-link','data' => ['as' => 'button','class' => 'text-red-500 hover:text-red-700 w-full text-start']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('dropdown-link'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['as' => 'button','class' => 'text-red-500 hover:text-red-700 w-full text-start']); ?>
+                            Log Out
+                         <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal68cb1971a2b92c9735f83359058f7108)): ?>
+<?php $attributes = $__attributesOriginal68cb1971a2b92c9735f83359058f7108; ?>
+<?php unset($__attributesOriginal68cb1971a2b92c9735f83359058f7108); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal68cb1971a2b92c9735f83359058f7108)): ?>
+<?php $component = $__componentOriginal68cb1971a2b92c9735f83359058f7108; ?>
+<?php unset($__componentOriginal68cb1971a2b92c9735f83359058f7108); ?>
+<?php endif; ?>
+                    </form>
                 </div>
             </div>
         </div>

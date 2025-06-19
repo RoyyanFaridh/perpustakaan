@@ -14,6 +14,7 @@
         <!-- Scripts -->
         <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="//unpkg.com/alpinejs" defer></script>
     </head>
     <body class="font-sans antialiased bg-gray-50">
         <div class="min-h-screen flex flex-col sm:flex-row">
