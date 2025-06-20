@@ -72,6 +72,7 @@ Route::middleware(['auth'])->group(function () {
         $request->user()->sendEmailVerificationNotification();
         return back()->with('message', 'Link verifikasi telah dikirim!');
     })->middleware(['throttle:6,1'])->name('verification.send');
+    
 });
 
 // Admin routes

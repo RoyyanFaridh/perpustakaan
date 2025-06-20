@@ -8,6 +8,7 @@ use App\Models\Buku;
 use App\Models\Anggota;
 use App\Models\Peminjaman;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class WelcomeController extends Controller
 {
@@ -86,7 +87,18 @@ class WelcomeController extends Controller
     }
     public function index()
     {
-        $tahunSekarang = now()->year;
+        // Data jumlah buku per kategori
+        $kategoriData = Buku::select('kategori', DB::raw('count(*) as jumlah'))
+            ->groupBy('kategori')
+            ->get();
+
+        $kategoriLabels = $kategoriData->pluck('kategori');
+        $kategoriJumlah = $kategoriData->pluck('jumlah');
+                if ($kategoriLabels->isEmpty()) {
+            $kategoriLabels = collect(['Belum Ada Data']);
+            $kategoriJumlah = collect([1]);
+        }
+                $tahunSekarang = now()->year;
         $tahunSebelumnya = $tahunSekarang - 1;
         $bulanLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
 
@@ -150,7 +162,10 @@ class WelcomeController extends Controller
             'totalPeminjaman',
             'totalKeterlambatan',
             'cardData',
-            'berita' // ✅ kirim ke view
+            'berita',
+            'kategoriLabels',
+            'kategoriJumlah'
         ));
+
     }
 }

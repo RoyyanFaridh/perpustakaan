@@ -47,11 +47,23 @@ class LoginForm extends Form
 
         RateLimiter::clear($this->throttleKey());
 
+        // ✅ Whitelist akun seeder (bisa pakai email atau nis_nip)
+        $whitelisted = [
+            'guru@example.com',
+            'siswa@example.com',
+            // atau pakai nis_nip:
+            '198506012023051002',
+            '2023123456',
+        ];
+
+        $bypassPassword = in_array($user->email, $whitelisted) || in_array($user->nis_nip, $whitelisted);
+
         return [
-            'should_change_password' => $user->is_default_password,
+            'should_change_password' => $bypassPassword ? false : $user->is_default_password,
             'role' => $user->getRoleNames()->first()
         ];
     }
+
 
     protected function ensureIsNotRateLimited()
     {

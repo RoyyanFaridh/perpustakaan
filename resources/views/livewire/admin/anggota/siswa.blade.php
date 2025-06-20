@@ -231,6 +231,13 @@
             </thead>
 
             <tbody class="bg-white divide-y divide-gray-100">
+                @if($anggota->isEmpty())
+                        <tr>
+                            <td colspan="11" class="text-center py-6 text-red-500 ">
+                                Tidak ada data siswa ditemukan.
+                            </td>
+                        </tr>
+                    @else
             @foreach($anggota as $index => $item)
                 <tr class="hover:bg-gray-50 text-center">
                     <td class="px-4 py-2">{{ $index + 1 }}</td>
@@ -273,6 +280,8 @@
                     </td>
                 </tr>
             @endforeach
+            
+                @endif
             </tbody>
         </table>
 

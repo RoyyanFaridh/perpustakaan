@@ -11,55 +11,61 @@ class Index extends Component
 {
     use WithFileUploads;
 
-    public $buku;
     public $judul, $kategori, $penulis, $penerbit, $tahun_terbit, $isbn, $cover, $deskripsi, $jumlah_stok, $lokasi_rak;
     public $bukuId;
     public $isEdit = false;
     public $showModal = false;
+
     public $search = '';
-    public $showKategoriDropdown = false;
-    public $sortKategori = null;
-    public $kategoriSortIndex = 0;
-    public $kategoriList = ['Fiksi', 'Non-Fiksi', 'Biografi', 'Teknologi', 'Sejarah', 'Pendidikan', 'Komik', 'Sains', 'Agama', 'Sosial'];
+    public $filterKategori = 'semua';
+    public $sortField = 'judul';
+    public $sortDirection = 'asc';
+    public $kategoriList = [];
+
+    public function mount()
+    {
+        $this->kategoriList = Buku::select('kategori')->distinct()->pluck('kategori')->toArray();
+    }
 
     public function render()
     {
         $query = Buku::query();
 
-        if (!empty($this->search)) {
+        if ($this->filterKategori !== 'semua') {
+            $query->where('kategori', $this->filterKategori);
+        }
+
+        if ($this->search) {
             $query->where(function ($q) {
                 $q->where('judul', 'like', '%' . $this->search . '%')
-                ->orWhere('penulis', 'like', '%' . $this->search . '%')
-                ->orWhere('penerbit', 'like', '%' . $this->search . '%')
-                ->orWhere('kategori', 'like', '%' . $this->search . '%')
-                ->orWhere('isbn', 'like', '%' . $this->search . '%');
+                  ->orWhere('penulis', 'like', '%' . $this->search . '%')
+                  ->orWhere('penerbit', 'like', '%' . $this->search . '%')
+                  ->orWhere('isbn', 'like', '%' . $this->search . '%');
             });
         }
 
-        if (!empty($this->sortKategori)) {
-            $query->where('kategori', $this->sortKategori);
-        }
+        $query->orderBy($this->sortField, $this->sortDirection);
 
-        $this->buku = $query->get();
-
-        return view('livewire.admin.buku.index');
+        return view('livewire.admin.buku.index', [
+            'buku' => $query->get(),
+        ])->layout('layouts.app');
     }
 
+    public function openModal()
+    {
+        $this->resetForm();
+        $this->showModal = true;
+        $this->isEdit = false;
+    }
+
+    public function closeModal()
+    {
+        $this->resetForm();
+    }
 
     public function store()
     {
-        $this->validate([
-            'judul' => 'required|string|max:255',
-            'kategori' => 'required|string|max:100',
-            'penulis' => 'required|string|max:100',
-            'penerbit' => 'required|string|max:100',
-            'tahun_terbit' => 'required|integer',
-            'isbn' => 'required|string|max:20',
-            'deskripsi' => 'nullable|string|max:1000',
-            'jumlah_stok' => 'required|integer|min:0',
-            'lokasi_rak' => 'required|string|max:50',
-            'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+        $this->validateData();
 
         $coverPath = null;
         if ($this->cover) {
@@ -80,7 +86,7 @@ class Index extends Component
         ]);
 
         session()->flash('message', 'Buku berhasil ditambahkan!');
-        $this->resetForm();
+        $this->closeModal();
     }
 
     public function edit($id)
@@ -97,6 +103,7 @@ class Index extends Component
         $this->deskripsi = $buku->deskripsi;
         $this->jumlah_stok = $buku->jumlah_stok;
         $this->lokasi_rak = $buku->lokasi_rak;
+        $this->cover = null; // reset untuk upload baru
 
         $this->isEdit = true;
         $this->showModal = true;
@@ -104,18 +111,7 @@ class Index extends Component
 
     public function update()
     {
-        $this->validate([
-            'judul' => 'required|string|max:255',
-            'kategori' => 'required|string|max:100',
-            'penulis' => 'required|string|max:100',
-            'penerbit' => 'required|string|max:100',
-            'tahun_terbit' => 'required|integer',
-            'isbn' => 'required|string|max:20',
-            'deskripsi' => 'nullable|string|max:1000',
-            'jumlah_stok' => 'required|integer|min:0',
-            'lokasi_rak' => 'required|string|max:50',
-            'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+        $this->validateData();
 
         $buku = Buku::findOrFail($this->bukuId);
         $coverPath = $buku->cover;
@@ -141,23 +137,36 @@ class Index extends Component
         ]);
 
         session()->flash('message', 'Buku berhasil diperbarui!');
-        $this->resetForm();
+        $this->closeModal();
     }
 
     public function delete($id)
     {
         $buku = Buku::findOrFail($id);
-
         if ($buku->cover) {
             Storage::disk('public')->delete($buku->cover);
         }
-
         $buku->delete();
-
         session()->flash('message', 'Buku berhasil dihapus!');
     }
 
-    public function resetForm()
+    private function validateData()
+    {
+        $this->validate([
+            'judul' => 'required|string|max:255',
+            'kategori' => 'required|string|max:100',
+            'penulis' => 'required|string|max:100',
+            'penerbit' => 'required|string|max:100',
+            'tahun_terbit' => 'required|integer',
+            'isbn' => 'required|string|max:20',
+            'deskripsi' => 'nullable|string|max:1000',
+            'jumlah_stok' => 'required|integer|min:0',
+            'lokasi_rak' => 'required|string|max:50',
+            'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+    }
+
+    private function resetForm()
     {
         $this->judul = '';
         $this->kategori = '';
@@ -174,36 +183,13 @@ class Index extends Component
         $this->showModal = false;
     }
 
-    public function openModal()
+    public function sortBy($field)
     {
-        $this->resetForm();
-        $this->showModal = true;
+        if ($this->sortField === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortDirection = 'asc';
+            $this->sortField = $field;
+        }
     }
-
-    public function closeModal()
-    {
-        $this->showModal = false;
-    }
-    
-    public function mount()
-    {
-        $this->kategoriList = Buku::select('kategori')->distinct()->pluck('kategori')->toArray();
-    }
-
-    public function setKategoriFilter($kategori)
-    {
-        $this->sortKategori = $kategori ?: null; // kosongkan filter jika parameter kosong
-        $this->showKategoriDropdown = false; // tutup dropdown setelah pilih
-    }
-
-    public function toggleKategoriSort()
-    {
-        $this->showKategoriDropdown = !$this->showKategoriDropdown;
-    }
-
-    public function closeKategoriDropdown()
-    {
-        $this->showKategoriDropdown = false;
-    }
-
 }

@@ -4,28 +4,20 @@ namespace App\Livewire\User\Buku;
 
 use Livewire\Component;
 use App\Models\Buku;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Peminjaman;
 
 class Index extends Component
 {
     public $books = [];
     public $search = '';
+    public $kategori = 'semua';
+    public $kategoriList = [];
+    public $sortField = 'judul';
+    public $sortDirection = 'asc';
 
     public function mount()
     {
+        $this->kategoriList = Buku::select('kategori')->distinct()->pluck('kategori')->toArray();
         $this->loadBooks();
-    }
-
-    public function loadBooks()
-    {
-        $query = Buku::query();
-
-        if ($this->search) {
-            $query->where('judul', 'like', '%' . $this->search . '%');
-        }
-
-        $this->books = $query->get();
     }
 
     public function updatedSearch()
@@ -33,7 +25,7 @@ class Index extends Component
         $this->loadBooks();
     }
 
-    public function pinjam($bookId)
+    public function updatedKategori()
     {
         $user = Auth::user();
 
@@ -87,12 +79,49 @@ class Index extends Component
         } else {
             session()->flash('error', 'Stok buku tidak cukup.');
         }
+        $this->loadBooks();
     }
 
+    public function sortBy($field)
+    {
+        if ($this->sortField === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortField = $field;
+            $this->sortDirection = 'asc';
+        }
+
+        $this->loadBooks();
+    }
+
+    public function loadBooks()
+    {
+        $query = Buku::query();
+
+        if ($this->kategori !== 'semua') {
+            $query->where('kategori', $this->kategori);
+        }
+
+        if (!empty($this->search)) {
+            $query->where(function ($q) {
+                $q->where('judul', 'like', '%' . $this->search . '%')
+                  ->orWhere('penulis', 'like', '%' . $this->search . '%')
+                  ->orWhere('penerbit', 'like', '%' . $this->search . '%')
+                  ->orWhere('isbn', 'like', '%' . $this->search . '%');
+            });
+        }
+
+        $query->orderBy($this->sortField, $this->sortDirection);
+        $this->books = $query->get();
+    }
 
     public function render()
     {
         return view('livewire.user.buku.index')
+<<<<<<< HEAD
             ->layout('layouts.user'); 
+=======
+            ->layout('layouts.user');
+>>>>>>> 5e1953fdd9352d0e09388f41404839cd0d514fb9
     }
 }

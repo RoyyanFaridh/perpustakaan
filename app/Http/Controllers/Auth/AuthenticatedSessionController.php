@@ -23,22 +23,49 @@ class AuthenticatedSessionController extends Controller
      * Handle an incoming authentication request.
      */
     public function store(LoginRequest $request): RedirectResponse
-{
-    $request->authenticate();
+    {
+        $request->authenticate();
+        $request->session()->regenerate();
 
-    $request->session()->regenerate();
+        $user = Auth::user();
 
-    $role = Auth::user()->role;
-    
+        // Cek apakah akun ini dari seeder (berdasarkan email atau nis_nip)
+        $whitelistedSeederEmails = [
+            'admin_perpustakaan@smp12yk.sch.id',
+            'guru@example.com',
+            'siswa@example.com',
+        ];
 
-    if ($role === 'admin') {
-    return redirect()->route('admin.dashboard')->with('success', 'Login successful');
-    } elseif ($role === 'guru' || $role === 'siswa') {
-        return redirect()->route('user.dashboard')->with('success', 'Login successful');
-    } else {
+        if (in_array($user->email, $whitelistedSeederEmails)) {
+            // Redirect ke dashboard sesuai peran
+            if ($user->hasRole('admin')) {
+                return redirect()->route('admin.dashboard');
+            } else {
+                return redirect()->route('user.dashboard');
+            }
+        }
+
+        // User non-seeder → ikuti prosedur lengkap
+        if ($user->is_default_password) {
+            return redirect()->route('setup.password');
+        }
+
+        if (! $user->hasVerifiedEmail()) {
+            return redirect()->route('setup.verify-email');
+        }
+
+        // Setelah lolos validasi
+        if ($user->hasRole('admin')) {
+            return redirect()->route('admin.dashboard');
+        } elseif ($user->hasRole('guru') || $user->hasRole('siswa')) {
+            return redirect()->route('user.dashboard');
+        }
+
         abort(403, 'Unauthorized. You do not have the required role.');
     }
-}
+
+
+
     /**
      * Destroy an authenticated session.
      */
