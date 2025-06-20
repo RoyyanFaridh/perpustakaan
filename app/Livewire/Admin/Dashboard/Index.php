@@ -67,8 +67,7 @@ class Index extends Component
                 'value' => number_format(Anggota::count(), 0, ',', '.'),
                 'periode' => $bulanIni,
                 'delta' => $deltaAnggota,
-                'icon' => view('components.icon.users')->render(),
-                'url' => route('admin.anggota.index')
+                'icon' => view('components.icon.users')->render()
             ],
             [
                 'title' => 'Total Peminjaman',
@@ -85,8 +84,7 @@ class Index extends Component
                 'value' => number_format($keterlambatanBulanIni, 0, ',', '.'),
                 'periode' => $bulanIni,
                 'delta' => $deltaKeterlambatan,
-                'icon' => view('components.icon.calendar-x-2')->render(),
-                'url' => route('admin.peminjaman.index')
+                'icon' => view('components.icon.calendar-x-2')->render()
             ],
         ];
     }
@@ -123,7 +121,7 @@ class Index extends Component
 
         $kategoriLabels = $kategoriData->pluck('kategori');
         $kategoriJumlah = $kategoriData->pluck('jumlah');
-        
+
         return view('livewire.admin.dashboard.index', compact(
             'bulanLabels',
             'jumlahPengunjungTahunIni',

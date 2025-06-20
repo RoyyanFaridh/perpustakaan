@@ -1,5 +1,6 @@
 <div class="py-4 px-4 lg:px-6 w-full">
     <h2 class="text-xl font-semibold text-gray-800 mb-4"> Dashboard</h2>
+
     <!-- Wrapper untuk Card -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
         <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $cardData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $card): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -28,24 +29,26 @@
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
     </div>
 
+    <!-- Grafik Statistik -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-        
+        <!-- Statistik Pengunjung -->
         <div class="space-y-2">
             <h3 class="text-xl font-semibold text-gray-800">Statistik Pengunjung</h3>
             <div class="bg-white p-4 rounded shadow w-full h-[400px]">
-                <canvas id="statistikChart" class="w-full h-full"></canvas>
+                <canvas id="statistikChart" class="!w-full !h-full"></canvas>
             </div>
         </div>
 
-        
+        <!-- Statistik Kategori Buku -->
         <div class="space-y-2">
             <h3 class="text-xl font-semibold text-gray-800">Statistik Kategori Buku</h3>
             <div class="bg-white p-4 rounded shadow w-full h-[400px]">
-                <canvas id="kategoriChart" class="w-full h-full"></canvas>
+                <canvas id="kategoriChart" class="!w-full !h-full"></canvas>
             </div>
         </div>
     </div> 
 </div>
+
 
 <script>
     const ctx = document.getElementById('statistikChart').getContext('2d');
@@ -78,7 +81,7 @@
         },
         options: {
             responsive: true,
-            maintainAspectRatio: false, // Penting agar CSS height bekerja
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     position: 'bottom',
@@ -117,16 +120,9 @@
     const dataJumlah = <?php echo json_encode($kategoriJumlah->isEmpty() ? [1] : $kategoriJumlah, 15, 512) ?>;
 
     const baseColors = [
-      '96, 165, 250',    // biru muda
-      '245, 158, 11',    // oranye terang
-      '16, 185, 129',    // hijau toska
-      '239, 68, 68',     // merah terang
-      '139, 92, 246',    // ungu gelap
-      '244, 114, 182',   // pink cerah
-      '255, 99, 132',    // merah muda
-      '54, 162, 235',    // biru klasik
-      '255, 206, 86',    // kuning cerah
-      '75, 192, 192'     // hijau laut
+        '96, 165, 250', '245, 158, 11', '16, 185, 129', '239, 68, 68',
+        '139, 92, 246', '244, 114, 182', '255, 99, 132', '54, 162, 235',
+        '255, 206, 86', '75, 192, 192'
     ];
 
     const backgroundColors = dataJumlah.map((_, i) => `rgba(${baseColors[i % baseColors.length]}, 0.4)`);
@@ -145,7 +141,10 @@
         },
         options: {
             responsive: true,
-            maintainAspectRatio: false, // <== tambahkan ini
+            maintainAspectRatio: false,
+            layout: {
+                padding: 0
+            },
             plugins: {
                 legend: {
                     position: 'bottom',
@@ -157,4 +156,5 @@
             }
         }
     });
-</script><?php /**PATH D:\Perkuliahan Duniawi\New folder\New folder\perpustakaan\resources\views/livewire/admin/dashboard/index.blade.php ENDPATH**/ ?>
+</script>
+<?php /**PATH D:\Perkuliahan Duniawi\New folder\New folder\perpustakaan\resources\views/livewire/admin/dashboard/index.blade.php ENDPATH**/ ?>
