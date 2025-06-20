@@ -43,9 +43,6 @@ Route::get('/cek-waktu', function () {
 });
 
 
-
-Route::get('/admin/peminjaman', Index::class);
-
 // Public welcome
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
@@ -113,4 +110,3 @@ use Illuminate\Support\Facades\Auth;
 
 Route::post('/logout', function () {Auth::logout(); request()->session()->invalidate(); request()->session()->regenerateToken(); return redirect('/');
 })->name('logout');
-
