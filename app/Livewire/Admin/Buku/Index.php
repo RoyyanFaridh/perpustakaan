@@ -33,6 +33,12 @@ class Index extends Component
         $this->tahunList = Buku::select('tahun_terbit')->distinct()->orderBy('tahun_terbit', 'desc')->pluck('tahun_terbit')->toArray();
     }
 
+    private function loadKategoriList()
+    {
+        $this->kategoriList = Buku::select('kategori')->distinct()->pluck('kategori')->toArray();
+    }
+
+
     public function render()
     {
         $query = Buku::query();
@@ -98,6 +104,8 @@ class Index extends Component
             'lokasi_rak' => $this->lokasi_rak,
             'cover' => $coverPath,
         ]);
+
+        $this->loadKategoriList();
 
         session()->flash('message', 'Buku berhasil ditambahkan!');
         $this->closeModal();
