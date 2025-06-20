@@ -101,6 +101,16 @@
                                 <p><span class="font-sm">Rak:</span> <?php echo e($item->lokasi_rak); ?></p>
                             </div>
                         </div>
+                        
+                        
+                        <div class="mt-4">
+                            <button wire:click="pinjam(<?php echo e($item->id); ?>)"
+                                    class="w-full text-center bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition-colors duration-200 disabled:opacity-50"
+                                    <?php if($item->jumlah_stok == 0): ?> disabled <?php endif; ?>>
+                                <?php echo e($item->jumlah_stok > 0 ? 'Pinjam Buku' : 'Stok Habis'); ?>
+
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
