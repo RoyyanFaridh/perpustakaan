@@ -2,7 +2,7 @@
     <h2 class="text-xl font-semibold text-gray-800 mb-4">Dashboard</h2>
 
     <!-- Card Summary -->
-    <div class="flex flex-wrap gap-4 mb-4">
+    <div class="flex flex-wrap md:flex-nowrap gap-4 mb-4">
         @foreach($cardData as $card)
             <div class="w-full md:w-1/3">
                 <x-card
@@ -18,55 +18,29 @@
     </div>
 
 
-        <div class="bg-white p-4 rounded shadow">
-            <h3 class="font-semibold text-gray-800 text-base mb-3">Statistik Pengunjung</h3>
-            <div class="relative" style="height: 14rem;">
-                <canvas id="chartKunjungan" class="absolute inset-0 w-full h-full"></canvas>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+        {{-- Kolom 1: Statistik Pengunjung --}}
+        <div class="space-y-2">
+            <h3 class="text-xl font-semibold text-gray-800">Statistik Pengunjung</h3>
+            <div class="bg-white p-4 rounded shadow w-full h-[400px]">
+                <canvas id="statistikChart" class="w-full h-full"></canvas>
             </div>
         </div>
 
+        {{-- Kolom 2: Statistik Kategori Buku --}}
+        <div class="space-y-2">
+            <h3 class="text-xl font-semibold text-gray-800">Statistik Kategori Buku</h3>
+            <div class="bg-white p-4 rounded shadow w-full h-[400px]">
+                <canvas id="kategoriChart" class="w-full h-full"></canvas>
+            </div>
+        </div>
+    </div> 
 </div>
 
 {{-- Script --}}
 <script>
-    const chartBaseOptions = (title) => ({
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                position: 'bottom',
-                labels: {
-                    color: '#374151',
-                    font: { weight: 'bold' }
-                }
-            },
-            tooltip: {
-                mode: 'index',
-                intersect: false
-            },
-            title: {
-                display: false
-            }
-        },
-        interaction: {
-            mode: 'nearest',
-            intersect: false
-        },
-        scales: {
-            y: {
-                beginAtZero: true,
-                ticks: { color: '#6B7280' },
-                grid: { color: '#E5E7EB' }
-            },
-            x: {
-                ticks: { color: '#6B7280' },
-                grid: { display: false }
-            }
-        }
-    });
-
-    // Chart Kunjungan
-    new Chart(document.getElementById('chartKunjungan').getContext('2d'), {
+    const ctx = document.getElementById('statistikChart').getContext('2d');
+    const statistikChart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: @json($bulanLabels),
@@ -78,7 +52,7 @@
                     backgroundColor: 'rgba(96, 165, 250, 0.2)',
                     borderWidth: 2,
                     fill: true,
-                    pointRadius: 3,
+                    pointRadius: 4,
                     tension: 0.4
                 },
                 {
@@ -88,11 +62,90 @@
                     backgroundColor: 'rgba(251, 113, 133, 0.2)',
                     borderWidth: 2,
                     fill: true,
-                    pointRadius: 3,
+                    pointRadius: 4,
                     tension: 0.4
                 }
             ]
         },
-        options: chartBaseOptions('Statistik Kunjungan')
+        options: {
+            responsive: true,
+            maintainAspectRatio: false, // Penting agar CSS height bekerja
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: '#374151',
+                        font: { weight: 'bold' }
+                    }
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false
+                }
+            },
+            interaction: {
+                mode: 'nearest',
+                intersect: false
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: '#6B7280' },
+                    grid: { color: '#E5E7EB' }
+                },
+                x: {
+                    ticks: { color: '#6B7280' },
+                    grid: { display: false }
+                }
+            }
+        }
+    });
+</script>
+<script>
+    const kategoriCtx = document.getElementById('kategoriChart').getContext('2d');
+
+    const labels = @json($kategoriLabels->isEmpty() ? ['Belum Ada Data'] : $kategoriLabels);
+    const dataJumlah = @json($kategoriJumlah->isEmpty() ? [1] : $kategoriJumlah);
+
+    const baseColors = [
+      '96, 165, 250',    // biru muda
+      '245, 158, 11',    // oranye terang
+      '16, 185, 129',    // hijau toska
+      '239, 68, 68',     // merah terang
+      '139, 92, 246',    // ungu gelap
+      '244, 114, 182',   // pink cerah
+      '255, 99, 132',    // merah muda
+      '54, 162, 235',    // biru klasik
+      '255, 206, 86',    // kuning cerah
+      '75, 192, 192'     // hijau laut
+    ];
+
+    const backgroundColors = dataJumlah.map((_, i) => `rgba(${baseColors[i % baseColors.length]}, 0.4)`);
+    const borderColors = dataJumlah.map((_, i) => `rgba(${baseColors[i % baseColors.length]}, 1)`);
+
+    new Chart(kategoriCtx, {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: dataJumlah,
+                backgroundColor: backgroundColors,
+                borderColor: borderColors,
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false, // <== tambahkan ini
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: '#374151',
+                        font: { weight: 'bold' }
+                    }
+                }
+            }
+        }
     });
 </script>

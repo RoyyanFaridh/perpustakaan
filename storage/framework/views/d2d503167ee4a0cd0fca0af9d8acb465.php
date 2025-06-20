@@ -1,9 +1,10 @@
 <div class="py-4 px-4 lg:px-6 w-full">
-    <h2 class="text-xl font-semibold text-gray-800 mb-4"> Dashboard</h2>
-    <!-- Wrapper untuk Card -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+    <h2 class="text-xl font-semibold text-gray-800 mb-4">Dashboard</h2>
+
+    <!-- Card Summary -->
+    <div class="flex flex-wrap md:flex-nowrap gap-4 mb-4">
         <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $cardData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $card): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <a href="<?php echo e($card['url'] ?? '#'); ?>">
+            <div class="w-full md:w-1/3">
                 <?php if (isset($component)) { $__componentOriginal53747ceb358d30c0105769f8471417f6 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal53747ceb358d30c0105769f8471417f6 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.card','data' => ['title' => $card['title'],'bgColor' => $card['bgColor'],'value' => $card['value'],'periode' => $card['periode'],'delta' => $card['delta'],'icon' => $card['icon']]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -24,9 +25,10 @@
 <?php $component = $__componentOriginal53747ceb358d30c0105769f8471417f6; ?>
 <?php unset($__componentOriginal53747ceb358d30c0105769f8471417f6); ?>
 <?php endif; ?>
-            </a>
+            </div>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
     </div>
+
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
         
@@ -46,6 +48,7 @@
         </div>
     </div> 
 </div>
+
 
 <script>
     const ctx = document.getElementById('statistikChart').getContext('2d');
@@ -157,4 +160,4 @@
             }
         }
     });
-</script><?php /**PATH D:\Perkuliahan Duniawi\New folder\New folder\perpustakaan\resources\views/livewire/admin/dashboard/index.blade.php ENDPATH**/ ?>
+</script><?php /**PATH D:\Perkuliahan Duniawi\New folder\New folder\perpustakaan\resources\views/livewire/user/dashboard/index.blade.php ENDPATH**/ ?>

@@ -7,6 +7,8 @@ use App\Models\Peminjaman;
 use App\Models\Pengunjung;
 use Illuminate\Support\Carbon;
 use Livewire\Component;
+use App\Models\Kategori;
+use Illuminate\Support\Facades\DB;
 
 class Index extends Component
 {
@@ -113,6 +115,13 @@ class Index extends Component
 
         $cardData = $this->getCardData();
 
+                $kategoriData = Buku::select('kategori', DB::raw('count(*) as jumlah'))
+            ->groupBy('kategori')
+            ->get();
+
+        $kategoriLabels = $kategoriData->pluck('kategori');
+        $kategoriJumlah = $kategoriData->pluck('jumlah');
+
         return view('livewire.user.dashboard.index', compact(
             'bulanLabels',
             'jumlahPengunjungTahunIni',
@@ -121,7 +130,9 @@ class Index extends Component
             'peminjamanTahunLalu',
             'tahunSekarang',
             'tahunSebelumnya',
-            'cardData'
+            'cardData',
+            'kategoriLabels',
+            'kategoriJumlah'
         ))->layout('layouts.user');
     }
 }

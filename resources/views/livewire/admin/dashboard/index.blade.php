@@ -24,6 +24,14 @@
                 <canvas id="statistikChart" class="w-full h-full"></canvas>
             </div>
         </div>
+
+        {{-- Kolom 2: Statistik Kategori Buku --}}
+        <div class="space-y-2">
+            <h3 class="text-xl font-semibold text-gray-800">Statistik Kategori Buku</h3>
+            <div class="bg-white p-4 rounded shadow w-full h-[400px]">
+                <canvas id="kategoriChart" class="w-full h-full"></canvas>
+            </div>
+        </div>
     </div> 
 </div>
 

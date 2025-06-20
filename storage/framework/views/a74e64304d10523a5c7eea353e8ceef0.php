@@ -231,6 +231,13 @@
             </thead>
 
             <tbody class="bg-white divide-y divide-gray-100">
+                <!--[if BLOCK]><![endif]--><?php if($anggota->isEmpty()): ?>
+                        <tr>
+                            <td colspan="11" class="text-center py-6 text-red-500 ">
+                                Tidak ada data siswa ditemukan.
+                            </td>
+                        </tr>
+                    <?php else: ?>
             <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $anggota; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <tr class="hover:bg-gray-50 text-center">
                     <td class="px-4 py-2"><?php echo e($index + 1); ?></td>
@@ -274,6 +281,8 @@
                     </td>
                 </tr>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+            
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
             </tbody>
         </table>
 
