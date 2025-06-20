@@ -19,7 +19,7 @@
     <body class="font-sans antialiased bg-gray-50">
         <div class="min-h-screen flex flex-col sm:flex-row">
             <!-- Sidebar Desktop -->
-            <aside class="hidden sm:block w-64 bg-white border-r">
+            <aside class="hidden lg:block w-64 bg-white border-r">
                 <?php
 $__split = function ($name, $params = []) {
     return [$name, $params];
@@ -41,7 +41,7 @@ if (isset($__slots)) unset($__slots);
             <!-- Main Content Area -->
             <div class="flex-1 flex flex-col min-h-screen bg-white m-2 border border-gray-100 rounded-md">
                 <!-- Mobile Navbar -->
-                <div class="sm:hidden border-b p-4">
+                <div class="lg:hidden border-b p-4">
                     <?php
 $__split = function ($name, $params = []) {
     return [$name, $params];
