@@ -84,8 +84,6 @@ class Index extends Component
 
             session()->flash('message', 'Berhasil meminjam buku: ' . $book->judul);
             $this->loadBooks();
-            // return redirect()->to('peminjaman');
-             // kalau kamu punya method untuk reload data buku
         } else {
             session()->flash('error', 'Stok buku tidak cukup.');
         }
@@ -95,6 +93,6 @@ class Index extends Component
     public function render()
     {
         return view('livewire.user.buku.index')
-            ->layout('layouts.user'); // Ganti sesuai layoutmu
+            ->layout('layouts.user'); 
     }
 }
