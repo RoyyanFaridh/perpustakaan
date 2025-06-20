@@ -57,7 +57,7 @@ class Guru extends Component
     public function store()
     {
         $this->validate(array_merge($this->rules, [
-            'nip' => 'required|numeric|unique:anggota,nis_nip',
+            'nip' => 'required|numeric|unique:members,nis_nip',
             'email' => 'nullable|email|unique:users,email',
             'no_telp' => 'nullable|numeric|digits_between:10,15',
         ]));
