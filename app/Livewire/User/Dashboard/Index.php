@@ -27,26 +27,38 @@ class Index extends Component
         $bulanLaluNum = $bulanLalu->format('m');
         $tahunLalu = $bulanLalu->year;
 
-        $peminjamanBulanIni = Peminjaman::where('user_id', $userId)
+        $peminjamanBulanIni = Peminjaman::whereHas('anggota.user', function ($q) use ($userId) {
+                $q->where('id', $userId);
+            })
             ->whereYear('created_at', $tahunIni)
             ->whereMonth('created_at', $bulanIniNum)
             ->count();
-        $peminjamanBulanLalu = Peminjaman::where('user_id', $userId)
+
+        $peminjamanBulanLalu = Peminjaman::whereHas('anggota.user', function ($q) use ($userId) {
+                $q->where('id', $userId);
+            })
             ->whereYear('created_at', $tahunLalu)
             ->whereMonth('created_at', $bulanLaluNum)
             ->count();
+
         $deltaPeminjaman = $peminjamanBulanIni - $peminjamanBulanLalu;
 
-        $keterlambatanBulanIni = Peminjaman::where('user_id', $userId)
+        $keterlambatanBulanIni = Peminjaman::whereHas('anggota.user', function ($q) use ($userId) {
+                $q->where('id', $userId);
+            })
             ->where('status', 'terlambat')
             ->whereYear('created_at', $tahunIni)
             ->whereMonth('created_at', $bulanIniNum)
             ->count();
-        $keterlambatanBulanLalu = Peminjaman::where('user_id', $userId)
+
+        $keterlambatanBulanLalu = Peminjaman::whereHas('anggota.user', function ($q) use ($userId) {
+                $q->where('id', $userId);
+            })
             ->where('status', 'terlambat')
             ->whereYear('created_at', $tahunLalu)
             ->whereMonth('created_at', $bulanLaluNum)
             ->count();
+
         $deltaKeterlambatan = $keterlambatanBulanIni - $keterlambatanBulanLalu;
 
         return [
@@ -57,7 +69,7 @@ class Index extends Component
                 'periode' => $bulanIni,
                 'delta' => $deltaBuku,
                 'icon' => view('components.icon.books')->render(),
-                'url' => route('user.buku.index'), // ✅ arahkan ke halaman buku
+                'url' => route('user.buku.index'),
             ],
             [
                 'title' => 'Peminjaman Saya',
@@ -66,7 +78,7 @@ class Index extends Component
                 'periode' => $bulanIni,
                 'delta' => $deltaPeminjaman,
                 'icon' => view('components.icon.calendar-clock')->render(),
-                'url' => route('user.peminjaman.index'), // ✅ arahkan ke halaman peminjaman
+                'url' => route('user.peminjaman.index'),
             ],
             [
                 'title' => 'Terlambat Dikembalikan',
@@ -102,12 +114,16 @@ class Index extends Component
                 ->whereMonth('tanggal', $i)
                 ->count();
 
-            $peminjamanTahunIni[] = Peminjaman::where('user_id', $userId)
+            $peminjamanTahunIni[] = Peminjaman::whereHas('anggota.user', function ($q) use ($userId) {
+                    $q->where('id', $userId);
+                })
                 ->whereYear('created_at', $tahunSekarang)
                 ->whereMonth('created_at', $i)
                 ->count();
 
-            $peminjamanTahunLalu[] = Peminjaman::where('user_id', $userId)
+            $peminjamanTahunLalu[] = Peminjaman::whereHas('anggota.user', function ($q) use ($userId) {
+                    $q->where('id', $userId);
+                })
                 ->whereYear('created_at', $tahunSebelumnya)
                 ->whereMonth('created_at', $i)
                 ->count();
@@ -119,9 +135,11 @@ class Index extends Component
         foreach ($kategoriList as $kategori) {
             $dataPerBulan = [];
             for ($i = 1; $i <= 12; $i++) {
-                $dataPerBulan[] = Peminjaman::where('user_id', $userId)
-                    ->whereMonth('created_at', $i)
+                $dataPerBulan[] = Peminjaman::whereHas('anggota.user', function ($q) use ($userId) {
+                        $q->where('id', $userId);
+                    })
                     ->whereYear('created_at', $tahunSekarang)
+                    ->whereMonth('created_at', $i)
                     ->whereHas('buku', function ($query) use ($kategori) {
                         $query->where('kategori', $kategori);
                     })
@@ -133,7 +151,6 @@ class Index extends Component
             ];
         }
 
-        // ✅ Tambahkan pemanggilan getCardData()
         $cardData = $this->getCardData();
 
         return view('livewire.user.dashboard.index', compact(
