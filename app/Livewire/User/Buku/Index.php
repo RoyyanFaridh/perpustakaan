@@ -119,6 +119,5 @@ class Index extends Component
     {
         return view('livewire.user.buku.index')
             ->layout('layouts.user'); 
-
     }
 }
