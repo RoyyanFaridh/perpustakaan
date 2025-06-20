@@ -23,6 +23,6 @@ class DeleteUserForm extends Component
 
     public function render()
     {
-        return view('livewire.admin.profile.delete-user-form')
+        return view('livewire.admin.profile.delete-user-form');
     }
 }

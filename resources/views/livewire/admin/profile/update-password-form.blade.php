@@ -2,11 +2,6 @@
     <h3 class="text-lg font-semibold text-gray-800 mb-2">Ubah Password</h3>
 
     <p class="text-sm text-gray-600 mb-4 flex items-center gap-2">
-        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" stroke-width="2"
-            viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round"
-                d="M12 11c0-1.657-1.343-3-3-3s-3 1.343-3 3m6 0v2a1 1 0 01-1 1H6a1 1 0 01-1-1v-2m6 0h2a1 1 0 001-1V9a1 1 0 00-1-1h-2m-4 0H7a1 1 0 00-1 1v1" />
-        </svg>
         Demi keamanan akun, gunakan password yang kuat dan tidak digunakan di layanan lain.
     </p>
 

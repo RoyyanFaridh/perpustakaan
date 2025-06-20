@@ -1,24 +1,56 @@
 <div class="bg-white p-6 rounded-2xl shadow-md max-w-full">
     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4 sm:gap-0">
         <h2 class="text-lg sm:text-xl font-semibold text-gray-800">Daftar Buku</h2>
-        <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
             <button wire:click="openModal"
                 class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-2 px-3 sm:px-4 rounded-lg text-center">
                     + Tambah Buku
             </button>
         </div>
     </div>
-    <div class="mb-4 flex justify-between items-center">
-        <input 
-            type="text" 
-            wire:model.live.debounce.300ms="search" 
-            placeholder="Cari judul buku..." 
-            class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+
+    <!-- Filter dan Cari -->
+    <div class="flex flex-col gap-4 mb-6">
+
+        <!-- Input Pencarian -->
+        <div>
+            <input type="text" wire:model.live.debounce.300ms="search"
+                placeholder="Cari judul buku..."
+                class="w-full px-3 py-2 text-sm bg-gray-50 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+
+        <!-- Filter Kategori dan Tahun -->
+        <div class="flex flex-col sm:flex-row gap-4">
+            <!-- Kategori -->
+            <div class="w-full sm:w-1/2">
+                <select wire:model.live="filterKategori"
+                    class="w-full px-3 py-2 text-sm bg-gray-50 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="semua">Semua Kategori</option>
+                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $kategoriList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $kat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <option value="<?php echo e($kat); ?>"><?php echo e($kat); ?></option>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                </select>
+            </div>
+
+            <!-- Tahun Terbit -->
+            <div class="w-full sm:w-1/2">
+                <select wire:model.live="filterTahun"
+                    class="w-full px-3 py-2 text-sm bg-gray-50 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="semua">Semua Tahun</option>
+                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $tahunList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tahun): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <option value="<?php echo e($tahun); ?>"><?php echo e($tahun); ?></option>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                </select>
+            </div>
+        </div>
     </div>
+
+
+
 
     <!--[if BLOCK]><![endif]--><?php if($showModal): ?>
     <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm">
-        <div class="bg-white rounded-xl shadow-lg w-full max-w-lg sm:max-w-md max-h-[90vh] overflow-y-auto p-6">
+        <div class="bg-white rounded-xl shadow-lg w-full max-w-lg sm:max-w-md max-h-[90vh] overflow-y-auto p-6 mx-4">
             <h2 class="text-xl font-semibold mb-4"><?php echo e($isEdit ? 'Edit Buku' : 'Tambah Buku'); ?></h2>
 
             <div class="space-y-4 text-sm text-gray-600">
@@ -138,60 +170,26 @@
 
     <!-- Tabel Daftar Buku -->
     <div class="w-full rounded-lg border border-gray-200 shadow-sm overflow-visible">
-        <div class="w-full overflow-x-auto">
-            <table class="w-full text-sm text-left text-gray-700">
+        <div class="w-full overflow-x-auto rounded-lg">
+            <table class="min-w-[1000px] w-full text-sm text-left text-gray-700">
                 <thead class="border-b border-gray-200">
                     <tr>
                         <th class="px-4 py-3 font-semibold text-center">No</th>
                         <th class="px-4 py-3 font-semibold text-center">Judul Buku</th>
                         <th class="px-4 py-3 font-semibold text-center">Deskripsi</th>
-                        <th class="px-4 py-3 font-semibold text-center relative overflow-visible"> <!-- pastikan overflow visible -->
-                            <div class="flex items-center justify-center space-x-2">
-                                <span>Kategori</span>
-                                <button wire:click="toggleKategoriSort" class="border p-1 rounded-lg hover:bg-gray-100 relative z-20">
-                                    <?php if (isset($component)) { $__componentOriginal0daebc5008398ffe6151ed4136821e14 = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal0daebc5008398ffe6151ed4136821e14 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.icon.sort','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('icon.sort'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes([]); ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal0daebc5008398ffe6151ed4136821e14)): ?>
-<?php $attributes = $__attributesOriginal0daebc5008398ffe6151ed4136821e14; ?>
-<?php unset($__attributesOriginal0daebc5008398ffe6151ed4136821e14); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal0daebc5008398ffe6151ed4136821e14)): ?>
-<?php $component = $__componentOriginal0daebc5008398ffe6151ed4136821e14; ?>
-<?php unset($__componentOriginal0daebc5008398ffe6151ed4136821e14); ?>
-<?php endif; ?>
-                                </button>
+                        <th class="px-4 py-3 font-semibold cursor-pointer select-none" wire:click="sortBy('kategori')">
+                            <div class="flex items-center justify-center gap-1 text-sm">
+                                Kategori
+                                <svg class="w-3 h-3 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <!--[if BLOCK]><![endif]--><?php if($sortField === 'kategori' && $sortDirection === 'asc'): ?>
+                                        <path d="M5 12l5-5 5 5H5z" /> 
+                                    <?php elseif($sortField === 'kategori' && $sortDirection === 'desc'): ?>
+                                        <path d="M5 8l5 5 5-5H5z" /> 
+                                    <?php else: ?>
+                                        <path d="M5 8l5 5 5-5H5z" /> 
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                </svg>
                             </div>
-                            <!--[if BLOCK]><![endif]--><?php if($showKategoriDropdown): ?>
-                            <div 
-                                class="absolute top-full mt-2 left-1/2 transform -translate-x-1/2 w-40 max-h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg z-50"
-                                wire:click.away="closeKategoriDropdown">
-                                <ul class="text-sm text-gray-700 font-normal text-center"> <!-- text-center supaya pilihan kategori rata tengah -->
-                                    <li>
-                                        <button wire:click="setKategoriFilter('')" class="block w-full px-4 py-2 hover:bg-gray-100 text-center font-normal">
-                                            Semua Kategori
-                                        </button>
-                                    </li>
-                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $kategoriList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $kategori): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <li>
-                                        <button wire:click="setKategoriFilter('<?php echo e($kategori); ?>')" class="block w-full px-4 py-2 hover:bg-gray-100 text-center font-normal">
-                                            <?php echo e($kategori); ?>
-
-                                        </button>
-                                    </li>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
-                                </ul>
-                            </div>
-                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </th>
                         <th class="px-4 py-3 font-semibold text-center">Penulis</th>
                         <th class="px-4 py-3 font-semibold text-center">Penerbit</th>
@@ -203,7 +201,15 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
+                    <!--[if BLOCK]><![endif]--><?php if($buku->isEmpty()): ?>
+                        <tr>
+                            <td colspan="11" class="text-center py-6 text-red-500 ">
+                                Tidak ada data buku ditemukan.
+                            </td>
+                        </tr>
+                    <?php else: ?>
                     <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $buku; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <tr wire:key="buku-<?php echo e($item->id); ?>">
                         <tr class="hover:bg-gray-50">
                             <td class="px-4 py-2 text-center"><?php echo e($index + 1); ?></td>
 
@@ -327,6 +333,8 @@
                             </td>
                         </tr>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                    
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                 </tbody>
             </table>
         </div>

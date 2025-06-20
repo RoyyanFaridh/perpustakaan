@@ -18,23 +18,34 @@ class Index extends Component
 
     public $search = '';
     public $filterKategori = 'semua';
+    public $filterTahun = 'semua';
     public $sortField = 'judul';
     public $sortDirection = 'asc';
+
     public $kategoriList = [];
+    public $tahunList = [];
 
     public function mount()
     {
         $this->kategoriList = Buku::select('kategori')->distinct()->pluck('kategori')->toArray();
+        $this->tahunList = Buku::select('tahun_terbit')->distinct()->orderBy('tahun_terbit', 'desc')->pluck('tahun_terbit')->toArray();
     }
 
     public function render()
     {
         $query = Buku::query();
 
+        // Filter berdasarkan kategori
         if ($this->filterKategori !== 'semua') {
             $query->where('kategori', $this->filterKategori);
         }
 
+        // Filter berdasarkan tahun
+        if ($this->filterTahun !== 'semua') {
+            $query->where('tahun_terbit', $this->filterTahun);
+        }
+
+        // Filter berdasarkan pencarian
         if ($this->search) {
             $query->where(function ($q) {
                 $q->where('judul', 'like', '%' . $this->search . '%')
@@ -44,6 +55,7 @@ class Index extends Component
             });
         }
 
+        // Sorting
         $query->orderBy($this->sortField, $this->sortDirection);
 
         return view('livewire.admin.buku.index', [
@@ -103,7 +115,7 @@ class Index extends Component
         $this->deskripsi = $buku->deskripsi;
         $this->jumlah_stok = $buku->jumlah_stok;
         $this->lokasi_rak = $buku->lokasi_rak;
-        $this->cover = null; // reset untuk upload baru
+        $this->cover = null;
 
         $this->isEdit = true;
         $this->showModal = true;
@@ -147,6 +159,7 @@ class Index extends Component
             Storage::disk('public')->delete($buku->cover);
         }
         $buku->delete();
+
         session()->flash('message', 'Buku berhasil dihapus!');
     }
 
@@ -188,8 +201,8 @@ class Index extends Component
         if ($this->sortField === $field) {
             $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
         } else {
-            $this->sortDirection = 'asc';
             $this->sortField = $field;
+            $this->sortDirection = 'asc';
         }
     }
 }

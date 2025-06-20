@@ -17,38 +17,40 @@
         </div>
 
         <!-- Filter dan Pencarian -->
-        <div class="flex flex-col sm:flex-row gap-4 mb-6">
-            <!-- Filter Kelas -->
-            <div class="relative w-full sm:w-1/3">
-                <label class="block mb-1 text-sm font-medium text-gray-700">Filter Kelas</label>
-                <select wire:model.live="kelas"
-                        class="block w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                    <option value="semua">Semua Kelas</option>
-                    <option value="7">Kelas 7</option>
-                    <option value="8">Kelas 8</option>
-                    <option value="9">Kelas 9</option>
-                </select>
-            </div>
-
-            <!-- Filter Status -->
-            <div class="relative w-full sm:w-1/3">
-                <label class="block mb-1 text-sm font-medium text-gray-700">Filter Status</label>
-                <select wire:model.live="filterStatus"
-                        class="block w-full appearance-none bg-white border border-gray-300 rounded-lg px-4 py-2 pr-10 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                    <option value="semua">Semua Status</option>
-                    <option value="active">Aktif</option>
-                    <option value="inactive">Tidak Aktif</option>
-                </select>
-            </div>
-
+        <div class="flex flex-col gap-4 mb-6">
             <!-- Pencarian -->
-            <div class="w-full sm:w-1/3">
-                <label class="block mb-1 text-sm font-medium text-gray-700">Cari Siswa</label>
+            <div class="w-full">
                 <input type="text" wire:model.live.debounce.300ms="search"
-                       placeholder="Cari nama siswa..."
-                       class="w-full px-4 py-2 pr-10 text-sm bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    placeholder="Cari nama siswa..."
+                    class="w-full px-4 py-2 text-sm bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            </div>
+
+            <!-- Filter Status & Kelas - tetap sejajar bahkan di mobile -->
+            <div class="flex flex-row gap-4">
+                <!-- Filter Kelas -->
+                <div class="w-1/2">
+                    <select wire:model.live="kelas"
+                            class="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="semua">Semua Kelas</option>
+                        <option value="7">Kelas 7</option>
+                        <option value="8">Kelas 8</option>
+                        <option value="9">Kelas 9</option>
+                    </select>
+                </div>
+
+                <!-- Filter Status -->
+                <div class="w-1/2">
+                    <select wire:model.live="filterStatus"
+                            class="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="semua">Semua Status</option>
+                        <option value="active">Aktif</option>
+                        <option value="inactive">Tidak Aktif</option>
+                    </select>
+                </div>
             </div>
         </div>
+
+
 
         
         @if($showModal)

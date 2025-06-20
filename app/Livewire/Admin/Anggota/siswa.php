@@ -16,7 +16,7 @@ class Siswa extends Component
     public $showModal = false;
     public $isEdit = false;
     public $nama, $status, $role = 'siswa', $nis, $kelas, $jenis_kelamin, $alamat, $no_telp, $email, $selectedId;
-    public $filterStatus = 'semua';
+    public $filterStatus;
     public $sortField = 'nama';
     public $sortDirection = 'asc';
     public $old_nis;
@@ -29,6 +29,13 @@ class Siswa extends Component
         'jenis_kelamin' => 'required',
         'alamat' => 'required',
     ];
+
+    public function mount()
+    {
+        $this->filterStatus = 'semua';
+        $this->kelas = 'semua';
+        $this->status = 'active';
+    }
 
     public function render()
     {
@@ -82,7 +89,7 @@ class Siswa extends Component
                 'password' => Hash::make($plainPassword),
                 'is_default_password' => true,
                 'no_telp' => $this->no_telp,
-                'status' => $this->status, // ✅ status ikut disimpan
+                'status' => $this->status,
             ]);
 
             $user->assignRole($this->role);
@@ -99,7 +106,7 @@ class Siswa extends Component
         $this->nama = $data->nama;
         $this->status = $data->status;
         $this->nis = $data->nis_nip;
-        $this->old_nis = $data->nis_nip; // simpan NIS lama
+        $this->old_nis = $data->nis_nip;
         $this->kelas = $data->kelas;
         $this->jenis_kelamin = $data->jenis_kelamin;
         $this->alamat = $data->alamat;
@@ -108,7 +115,6 @@ class Siswa extends Component
         $this->showModal = true;
         $this->isEdit = true;
     }
-
 
     public function update()
     {
@@ -128,7 +134,6 @@ class Siswa extends Component
                 'email' => $this->email,
             ]);
 
-            // cari berdasarkan NIS lama
             $user = User::where('nis_nip', $this->old_nis)->first();
             if ($user) {
                 $user->update([
@@ -136,7 +141,7 @@ class Siswa extends Component
                     'email' => $this->email,
                     'no_telp' => $this->no_telp,
                     'status' => $this->status,
-                    'nis_nip' => $this->nis, // update NIS jika berubah
+                    'nis_nip' => $this->nis,
                 ]);
             }
         }
@@ -145,20 +150,16 @@ class Siswa extends Component
         $this->dispatch('anggota-updated');
     }
 
-
     public function delete($id)
     {
         $anggota = Anggota::findOrFail($id);
 
         DB::transaction(function () use ($anggota) {
-            
-            // Hapus user yang terhubung dengan nis_nip
             $user = User::where('nis_nip', $anggota->nis_nip)->first();
             if ($user) {
                 $user->delete();
             }
 
-            // Hapus anggota
             $anggota->delete();
         });
 
@@ -168,9 +169,9 @@ class Siswa extends Component
     private function resetInput()
     {
         $this->nama = '';
-        $this->status = 'active'; // default status valid
+        $this->status = 'active';
         $this->nis = '';
-        $this->kelas = '';
+        $this->kelas = 'semua'; // default ke 'semua'
         $this->jenis_kelamin = '';
         $this->alamat = '';
         $this->no_telp = '';
@@ -200,10 +201,9 @@ class Siswa extends Component
         }
     }
 
-
     public function exportSiswa()
     {
-        return \Maatwebsite\Excel\Facades\Excel::download(
+        return Excel::download(
             new Export(
                 'siswa',
                 $this->filterStatus,

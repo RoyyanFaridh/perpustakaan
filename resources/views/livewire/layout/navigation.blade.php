@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto flex items-center justify-between px-4 py-3 sm:py-4">
 
         <!-- Sidebar Desktop -->
-        <aside class="hidden sm:flex min-h-screen bg-gray-50 w-64 flex-col fixed inset-y-0 left-0 p-4 border-r overflow-auto">
+        <aside class="hidden lg:flex min-h-screen bg-gray-50 w-64 flex-col fixed inset-y-0 left-0 p-4 border-r overflow-auto z-40">
             <!-- Logo -->
             <div class="h-16 flex items-center justify-center border-b mb-4">
                 <a href="{{ route('admin.dashboard') }}">
@@ -81,7 +81,7 @@
         </aside>
 
         <!-- Mobile Navbar -->
-        <div class="flex items-center justify-between w-full sm:hidden">
+        <div class="flex items-center justify-between w-full lg:hidden">
             <a href="{{ route('admin.dashboard') }}" class="text-lg font-semibold text-gray-800">
                 <x-application-logo class="h-8 w-auto inline-block" />
             </a>
@@ -100,7 +100,7 @@
         </div>
 
         <!-- Mobile Dropdown Menu -->
-        <div x-show="open" x-transition class="absolute right-4 top-20 w-64 bg-white rounded-lg shadow-lg z-50 border sm:hidden">
+        <div x-show="open" x-transition class="absolute right-4 top-20 w-64 bg-white rounded-lg shadow-lg z-50 border lg:hidden">
             <div class="px-4 py-3 space-y-2">
                 <a href="{{ route('admin.dashboard') }}"
                     class="block px-3 py-2 rounded hover:bg-gray-100 transition {{ request()->routeIs('admin.dashboard') ? 'font-semibold bg-gray-200' : '' }}">

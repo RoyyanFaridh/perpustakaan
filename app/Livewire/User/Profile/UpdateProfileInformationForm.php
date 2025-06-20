@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 
-class UpdateProfileInformation extends Component
+class UpdateProfileInformationForm extends Component
 {
     public string $name = '';
     public string $email = '';
