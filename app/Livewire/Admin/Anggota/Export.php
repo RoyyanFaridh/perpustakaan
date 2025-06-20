@@ -15,10 +15,10 @@ class Export implements FromCollection, WithHeadings
 
     public function __construct($role, $filterStatus = 'semua', $kelas = null, $search = '')
     {
-        $this->role = $role;
+        $this->role         = $role;
         $this->filterStatus = $filterStatus;
-        $this->kelas = $kelas;
-        $this->search = $search;
+        $this->kelas        = $kelas;
+        $this->search       = $search;
     }
 
     public function collection()
@@ -28,29 +28,26 @@ class Export implements FromCollection, WithHeadings
             ->when($this->filterStatus !== 'semua', fn($q) => $q->where('status', $this->filterStatus))
             ->when($this->search, fn($q) => $q->where('nama', 'like', '%' . $this->search . '%'));
 
-        // Jika siswa, tambahkan filter kelas
         if ($this->role === 'siswa' && $this->kelas && $this->kelas !== 'semua') {
             $query->where('kelas', $this->kelas);
         }
 
-        $anggota = $query->get();
-
-        return $anggota->map(function ($item) {
+        return $query->get()->map(function ($item) {
             $password = $item->status === 'inactive' ? '' : $item->plain_password;
 
             $base = [
-                'nama' => $item->nama,
-                'status' => $item->status,
-                'nis_nip' => $item->nis_nip,
-                'jenis_kelamin' => $item->jenis_kelamin,
-                'alamat' => $item->alamat,
-                'no_telp' => $item->no_telp,
-                'email' => $item->email,
+                'nama'           => $item->nama,
+                'status'         => $item->status,
+                'nis_nip'        => $item->nis_nip,
+                'jenis_kelamin'  => $item->jenis_kelamin,
+                'alamat'         => $item->alamat,
+                'no_telp'        => $item->no_telp,
+                'email'          => $item->email,
                 'plain_password' => $password,
             ];
 
             if ($this->role === 'siswa') {
-                $base = array_merge(['kelas' => $item->kelas], $base); // tambahkan di awal
+                $base = array_merge(['kelas' => $item->kelas], $base); // Tambahkan 'kelas' di awal
             }
 
             return $base;
@@ -71,7 +68,7 @@ class Export implements FromCollection, WithHeadings
         ];
 
         if ($this->role === 'siswa') {
-            array_splice($base, 1, 0, ['Kelas']); // Tambahkan 'Kelas' setelah 'Nama'
+            array_splice($base, 1, 0, ['Kelas']); // Sisipkan 'Kelas' setelah 'Nama'
         }
 
         return $base;

@@ -5,10 +5,23 @@
         </div>
     @endif
 
-    <!-- Judul -->
-    <h2 class="text-xl font-semibold text-gray-800">Daftar Peminjaman</h2>
+    <!-- Judul dan Tombol Pengingat -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <h2 class="text-xl font-semibold text-gray-800">Daftar Peminjaman</h2>
 
-        <!-- Input Pencarian -->
+        <!-- Tombol dan Catatan -->
+        <div class="w-full sm:w-52 text-center">
+            <button wire:click="kirimSemuaPengingat"
+                class="bg-red-500 hover:bg-red-600 text-white text-sm px-4 py-2 rounded-md shadow-sm transition w-full">
+                Pengingat
+            </button>
+            <p class="mt-1 text-xs text-gray-500 italic whitespace-nowrap">
+                *Broadcast pengingat &lt; 3 hari
+            </p>
+        </div>
+    </div>
+
+    <!-- Input Pencarian -->
     <div class="w-full">
         <input 
             type="text" 
@@ -17,37 +30,18 @@
             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-blue-500 shadow-sm">
     </div>
 
-
-    <!-- Filter & Tombol Pengingat -->
-    <div class="flex flex-row items-center justify-between flex-wrap gap-4 mt-2">
-        <!-- Filter Status -->
+    <!-- Filter Status -->
+    <div class="flex justify-start mt-2">
         <div class="relative w-36">
             <select wire:model.live="filterStatus"
                 class="w-full appearance-none border border-gray-300 rounded-md px-4 py-2 pr-8 text-sm shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white">
-                <option value="">Semua</option>
+                <option value="">Semua Status</option>
                 <option value="booking">Booking</option>
                 <option value="dipinjam">Dipinjam</option>
                 <option value="dikembalikan">Dikembalikan</option>
             </select>
-            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-
-            </div>
-        </div>
-
-        <!-- Tombol Kirim Semua Pengingat -->
-        <div class="ml-auto self-center text-right">
-            <div class="inline-block">
-                <button wire:click="kirimSemuaPengingat"
-                    class="bg-red-500 hover:bg-red-600 text-white text-sm px-4 py-2 rounded-md shadow-sm transition w-full">
-                    Pengingat
-                </button>
-                <p class="mt-1 text-xs text-gray-500 italic text-center w-full">
-                    *Broadcast pengingat &lt; 3 hari
-                </p>
-            </div>
         </div>
     </div>
-
 
     <!-- Modal -->
     @if($showModal)
