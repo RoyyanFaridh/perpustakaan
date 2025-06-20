@@ -118,10 +118,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.user.buku.index')
-<<<<<<< HEAD
             ->layout('layouts.user'); 
-=======
-            ->layout('layouts.user');
->>>>>>> 5e1953fdd9352d0e09388f41404839cd0d514fb9
+
     }
 }

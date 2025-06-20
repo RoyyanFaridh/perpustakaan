@@ -26,7 +26,6 @@ use App\Livewire\Admin\Profile\Index as ProfileIndex;
 use App\Livewire\User\Dashboard\Index as DashboardIndexUser;
 use App\Livewire\User\Buku\Index as BukuIndexUser;
 use App\Livewire\User\Peminjaman\Index as PeminjamanIndexUser;
-use App\Livewire\Admin\Peminjaman\Index;
 use App\Livewire\User\Profile\Index as ProfileIndexUser;
 
 
@@ -41,10 +40,6 @@ Route::get('/test-email', function () {
 Route::get('/cek-waktu', function () {
     return now()->toDateTimeString();
 });
-
-
-
-Route::get('/admin/peminjaman', Index::class);
 
 // Public welcome
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
