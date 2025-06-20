@@ -6,7 +6,6 @@
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>" />
     <title><?php echo e(config('app.name', 'Laravel')); ?></title>
 
-        <title><?php echo e(config('app.name', 'Perpustakaan Digital SMP Negeri 12 Yogyakarta')); ?></title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net" />
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -77,5 +76,4 @@ if (isset($__slots)) unset($__slots);
         </div>
     </div>
 </body>
-</html>
-<?php /**PATH D:\Perkuliahan Duniawi\New folder\New folder\perpustakaan\resources\views/layouts/app.blade.php ENDPATH**/ ?>
+</html><?php /**PATH D:\Perkuliahan Duniawi\New folder\New folder\perpustakaan\resources\views/layouts/app.blade.php ENDPATH**/ ?>

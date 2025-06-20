@@ -27,11 +27,11 @@
             </div>
         </div>
 
-        {{-- Kolom 2: Statistik Kategori Buku --}}
+        <!-- Kolom 2: Riwayat Peminjaman Berdasarkan Kategori -->
         <div class="space-y-2">
-            <h3 class="text-xl font-semibold text-gray-800">Statistik Kategori Buku</h3>
+            <h3 class="text-xl font-semibold text-gray-800">Riwayat Peminjaman Berdasarkan Kategori</h3>
             <div class="bg-white p-4 rounded shadow w-full h-[400px]">
-                <canvas id="kategoriChart" class="w-full h-full"></canvas>
+                <canvas id="kategoriLineChart" class="w-full h-full"></canvas>
             </div>
         </div>
     </div> 
@@ -102,41 +102,41 @@
     });
 </script>
 <script>
-    const kategoriCtx = document.getElementById('kategoriChart').getContext('2d');
+    const kategoriLineCtx = document.getElementById('kategoriLineChart').getContext('2d');
+    const bulanLabels = @json($bulanLabels);
+    const kategoriDataSet = @json($kategoriPeminjamanData);
 
-    const labels = @json($kategoriLabels->isEmpty() ? ['Belum Ada Data'] : $kategoriLabels);
-    const dataJumlah = @json($kategoriJumlah->isEmpty() ? [1] : $kategoriJumlah);
-
-    const baseColors = [
-      '96, 165, 250',    // biru muda
-      '245, 158, 11',    // oranye terang
-      '16, 185, 129',    // hijau toska
-      '239, 68, 68',     // merah terang
-      '139, 92, 246',    // ungu gelap
-      '244, 114, 182',   // pink cerah
-      '255, 99, 132',    // merah muda
-      '54, 162, 235',    // biru klasik
-      '255, 206, 86',    // kuning cerah
-      '75, 192, 192'     // hijau laut
+    const warnaDasar = [
+        '255, 99, 132',
+        '54, 162, 235',
+        '255, 206, 86',
+        '75, 192, 192',
+        '153, 102, 255',
+        '255, 159, 64',
+        '16, 185, 129',
+        '239, 68, 68'
     ];
 
-    const backgroundColors = dataJumlah.map((_, i) => `rgba(${baseColors[i % baseColors.length]}, 0.4)`);
-    const borderColors = dataJumlah.map((_, i) => `rgba(${baseColors[i % baseColors.length]}, 1)`);
+    const kategoriLineData = {
+        labels: bulanLabels,
+        datasets: kategoriDataSet.map((item, idx) => ({
+            label: item.kategori,
+            data: item.data,
+            borderColor: `rgba(${warnaDasar[idx % warnaDasar.length]}, 1)`,
+            backgroundColor: `rgba(${warnaDasar[idx % warnaDasar.length]}, 0.2)`,
+            borderWidth: 2,
+            pointRadius: 4,
+            tension: 0.4,
+            fill: true
+        }))
+    };
 
-    new Chart(kategoriCtx, {
-        type: 'doughnut',
-        data: {
-            labels: labels,
-            datasets: [{
-                data: dataJumlah,
-                backgroundColor: backgroundColors,
-                borderColor: borderColors,
-                borderWidth: 2
-            }]
-        },
+    new Chart(kategoriLineCtx, {
+        type: 'line',
+        data: kategoriLineData,
         options: {
             responsive: true,
-            maintainAspectRatio: false, // <== tambahkan ini
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     position: 'bottom',
@@ -144,6 +144,25 @@
                         color: '#374151',
                         font: { weight: 'bold' }
                     }
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false
+                }
+            },
+            interaction: {
+                mode: 'nearest',
+                intersect: false
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: '#6B7280' },
+                    grid: { color: '#E5E7EB' }
+                },
+                x: {
+                    ticks: { color: '#6B7280' },
+                    grid: { display: false }
                 }
             }
         }

@@ -7,8 +7,6 @@ use App\Models\Peminjaman;
 use App\Models\Pengunjung;
 use Illuminate\Support\Carbon;
 use Livewire\Component;
-use App\Models\Kategori;
-use Illuminate\Support\Facades\DB;
 
 class Index extends Component
 {
@@ -113,14 +111,28 @@ class Index extends Component
                 ->count();
         }
 
+        $kategoriList = Buku::distinct()->pluck('kategori');
+        $kategoriPeminjamanData = [];
+
+        foreach ($kategoriList as $kategori) {
+            $dataPerBulan = [];
+            for ($i = 1; $i <= 12; $i++) {
+                $dataPerBulan[] = Peminjaman::where('user_id', $userId)
+                    ->whereMonth('created_at', $i)
+                    ->whereYear('created_at', $tahunSekarang)
+                    ->whereHas('buku', function ($query) use ($kategori) {
+                        $query->where('kategori', $kategori);
+                    })
+                    ->count();
+            }
+            $kategoriPeminjamanData[] = [
+                'kategori' => $kategori,
+                'data' => $dataPerBulan,
+            ];
+        }
+
+        // ✅ Tambahkan pemanggilan getCardData()
         $cardData = $this->getCardData();
-
-                $kategoriData = Buku::select('kategori', DB::raw('count(*) as jumlah'))
-            ->groupBy('kategori')
-            ->get();
-
-        $kategoriLabels = $kategoriData->pluck('kategori');
-        $kategoriJumlah = $kategoriData->pluck('jumlah');
 
         return view('livewire.user.dashboard.index', compact(
             'bulanLabels',
@@ -131,9 +143,7 @@ class Index extends Component
             'tahunSekarang',
             'tahunSebelumnya',
             'cardData',
-            'kategoriLabels',
-            'kategoriJumlah'
+            'kategoriPeminjamanData',
         ))->layout('layouts.user');
     }
 }
-
