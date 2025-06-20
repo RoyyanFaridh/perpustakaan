@@ -20,7 +20,7 @@
       </div>
 
       <nav class="hidden md:flex space-x-6 text-sm text-gray-700">
-        <template x-for="item in ['#beranda', '#statistik', '#informasi', '#berita', '#kontak']">
+        <template x-for="item in ['#beranda', '#statistik', '#informasi', '#kontak']">
           <a :href="item" :class="{ 'font-bold text-blue-800': active === item }" @click="active = item" class="transition hover:text-blue-600 capitalize" x-text="item.replace('#','')"></a>
         </template>
       </nav>
@@ -42,7 +42,7 @@
     </div>
 
     <div x-show="open" x-transition x-cloak class="md:hidden mt-2 space-y-1 px-4 pb-4 border-t border-gray-200 bg-white">
-      <template x-for="item in ['#beranda', '#statistik', '#informasi', '#berita', '#kontak']">
+      <template x-for="item in ['#beranda', '#statistik', '#informasi', '#kontak']">
         <a :href="item" @click="active = item; open = false" :class="{ 'font-bold text-blue-800': active === item }" class="block py-2 px-3 rounded hover:bg-gray-100 transition capitalize" x-text="item.replace('#','')"></a>
       </template>
     </div>
@@ -146,27 +146,6 @@
     </div>
   </section>
 
-  <section id="berita" class="relative z-10 px-10 py-16 bg-white text-gray-800 scroll-mt-24 border-t border-gray-200">
-    <div class="max-w-6xl mx-auto">
-      <h2 class="text-4xl font-bold text-blue-800 mb-8 text-center md:text-left relative inline-block">
-        Berita Terkini
-        <span class="block w-16 h-1 bg-blue-800 mt-2 rounded-full"></span>
-      </h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <?php $__empty_1 = true; $__currentLoopData = $berita; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-          <div class="p-5 bg-blue-50 border-l-4 border-blue-400 rounded shadow-sm">
-            <a href="<?php echo e($item['link']); ?>" target="_blank" class="text-blue-800 font-semibold text-lg hover:underline">
-              [<?php echo e($item['sumber']); ?>] <?php echo e($item['judul']); ?>
-
-            </a>
-            <p class="text-sm text-gray-600 mt-1"><?php echo e($item['tanggal']); ?></p>
-          </div>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-          <p class="text-gray-500">Tidak ada berita tersedia.</p>
-        <?php endif; ?>
-      </div>
-    </div>
-  </section>
 
   <script>
     const ctx = document.getElementById('statistikChart').getContext('2d');

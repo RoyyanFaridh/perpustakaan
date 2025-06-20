@@ -122,34 +122,6 @@ class WelcomeController extends Controller
 
         $cardData = $this->getCardData();
 
-        // ✅ Ambil Berita dari RSS
-        $berita = [];
-        $feeds = [
-            'CNN Indonesia' => 'https://www.cnnindonesia.com/nasional/rss',
-            'Kompas' => 'https://www.kompas.com/edu/rss'
-        ];
-
-        foreach ($feeds as $sumber => $url) {
-            try {
-                $xml = simplexml_load_file($url);
-                if ($xml && isset($xml->channel->item)) {
-                    foreach ($xml->channel->item as $item) {
-                        $berita[] = [
-                            'sumber' => $sumber,
-                            'judul' => (string) $item->title,
-                            'link' => (string) $item->link,
-                            'tanggal' => date('d M Y', strtotime((string) $item->pubDate)),
-                        ];
-                    }
-                }
-            } catch (\Exception $e) {
-                // Optional: log error or skip
-            }
-        }
-
-        // Ambil 5 berita terbaru
-        usort($berita, fn($a, $b) => strtotime($b['tanggal']) - strtotime($a['tanggal']));
-        $berita = array_slice($berita, 0, 5);
 
         return view('pages.welcome', compact(
             'bulanLabels',
@@ -162,7 +134,6 @@ class WelcomeController extends Controller
             'totalPeminjaman',
             'totalKeterlambatan',
             'cardData',
-            'berita',
             'kategoriLabels',
             'kategoriJumlah'
         ));
