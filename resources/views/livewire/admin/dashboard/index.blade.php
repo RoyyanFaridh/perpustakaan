@@ -117,8 +117,8 @@
       '75, 192, 192'     // hijau laut
     ];
 
-    const backgroundColors = dataJumlah.map((_, i) => `rgba(${baseColors[i % baseColors.length]}, 0.4)`);
-    const borderColors = dataJumlah.map((_, i) => `rgba(${baseColors[i % baseColors.length]}, 1)`);
+    const backgroundColors = dataJumlah.map((_, i) => rgba(${baseColors[i % baseColors.length]}, 0.4));
+    const borderColors = dataJumlah.map((_, i) => rgba(${baseColors[i % baseColors.length]}, 1));
 
     new Chart(kategoriCtx, {
         type: 'doughnut',

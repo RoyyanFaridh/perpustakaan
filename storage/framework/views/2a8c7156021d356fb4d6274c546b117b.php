@@ -70,7 +70,7 @@
 
   <section class="relative z-10 px-16 py-2 bg-gray-200 min-h-[250px]">
     <div class="absolute bottom-0 left-0 w-full h-14 bg-gradient-to-b from-transparent to-white pointer-events-none"></div>
-    <div class="flex flex-wrap gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
       <?php $__currentLoopData = $cardData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $card): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <?php if (isset($component)) { $__componentOriginal53747ceb358d30c0105769f8471417f6 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal53747ceb358d30c0105769f8471417f6 = $attributes; } ?>
@@ -223,16 +223,39 @@
   </script>
   <script>
     const kategoriCtx = document.getElementById('kategoriChart').getContext('2d');
+
+    // Data dari backend
+    const labels = <?php echo json_encode($kategoriLabels->isEmpty() ? ['Belum Ada Data'] : $kategoriLabels, 15, 512) ?>;
+    const dataJumlah = <?php echo json_encode($kategoriJumlah->isEmpty() ? [1] : $kategoriJumlah, 15, 512) ?>;
+
+    // Warna dasar dalam format RGB
+    const baseColors = [
+      '96, 165, 250',    // biru muda
+      '245, 158, 11',    // oranye terang
+      '16, 185, 129',    // hijau toska
+      '239, 68, 68',     // merah terang
+      '139, 92, 246',    // ungu gelap
+      '244, 114, 182',   // pink cerah
+      '255, 99, 132',    // merah muda (pink-merah)
+      '54, 162, 235',    // biru klasik
+      '255, 206, 86',    // kuning cerah
+      '75, 192, 192'     // hijau laut (teal)
+    ];
+
+    // Buat warna transparan untuk isi dan solid untuk border
+    const backgroundColors = dataJumlah.map((_, i) => `rgba(${baseColors[i % baseColors.length]}, 0.3)`); // transparan
+    const borderColors = dataJumlah.map((_, i) => `rgba(${baseColors[i % baseColors.length]}, 1)`);     // solid
+
+    // Inisialisasi Chart
     new Chart(kategoriCtx, {
       type: 'doughnut',
       data: {
-        labels: <?php echo json_encode($kategoriLabels->isEmpty() ? ['Belum Ada Data'] : $kategoriLabels, 15, 512) ?>,
+        labels: labels,
         datasets: [{
-          data: <?php echo json_encode($kategoriJumlah->isEmpty() ? [1] : $kategoriJumlah, 15, 512) ?>,
-          backgroundColor: [
-            '#60A5FA', '#F59E0B', '#10B981', '#EF4444', '#8B5CF6', '#F472B6'
-          ],
-          borderWidth: 1
+          data: dataJumlah,
+          backgroundColor: backgroundColors,
+          borderColor: borderColors,
+          borderWidth: 2
         }]
       },
       options: {
@@ -240,13 +263,15 @@
         plugins: {
           legend: {
             position: 'bottom',
-            labels: { font: { weight: 'bold' }, color: '#374151' }
+            labels: {
+              font: { weight: 'bold' },
+              color: '#374151'
+            }
           }
         }
       }
     });
   </script>
-
 
   <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::scripts(); ?>
 

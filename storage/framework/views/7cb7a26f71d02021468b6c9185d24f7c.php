@@ -36,6 +36,14 @@
                 <canvas id="statistikChart" class="w-full h-full"></canvas>
             </div>
         </div>
+
+        
+        <div class="space-y-2">
+            <h3 class="text-xl font-semibold text-gray-800">Statistik Kategori Buku</h3>
+            <div class="bg-white p-4 rounded shadow w-full h-[400px]">
+                <canvas id="kategoriChart" class="w-full h-full"></canvas>
+            </div>
+        </div>
     </div> 
 </div>
 
@@ -121,8 +129,8 @@
       '75, 192, 192'     // hijau laut
     ];
 
-    const backgroundColors = dataJumlah.map((_, i) => `rgba(${baseColors[i % baseColors.length]}, 0.4)`);
-    const borderColors = dataJumlah.map((_, i) => `rgba(${baseColors[i % baseColors.length]}, 1)`);
+    const backgroundColors = dataJumlah.map((_, i) => rgba(${baseColors[i % baseColors.length]}, 0.4));
+    const borderColors = dataJumlah.map((_, i) => rgba(${baseColors[i % baseColors.length]}, 1));
 
     new Chart(kategoriCtx, {
         type: 'doughnut',

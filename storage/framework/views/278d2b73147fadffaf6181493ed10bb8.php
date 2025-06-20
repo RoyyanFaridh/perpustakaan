@@ -76,5 +76,4 @@ if (isset($__slots)) unset($__slots);
         </div>
     </div>
 </body>
-</html>
-<?php /**PATH C:\Users\ASUS\perpustakaan\resources\views/layouts/app.blade.php ENDPATH**/ ?>
+</html><?php /**PATH C:\Users\ASUS\perpustakaan\resources\views/layouts/app.blade.php ENDPATH**/ ?>

@@ -33,7 +33,6 @@ class Index extends Component
     { 
         $this->loadBooks();
     }
-
     
 
     public function sortBy($field)

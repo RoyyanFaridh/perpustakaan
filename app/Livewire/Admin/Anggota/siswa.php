@@ -9,12 +9,14 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Livewire\Admin\Anggota\Export;
 
 class Siswa extends Component
 {
     public $search = '';
     public $showModal = false;
     public $isEdit = false;
+
     public $nama, $status, $role = 'siswa', $nis, $kelas, $jenis_kelamin, $alamat, $no_telp, $email, $selectedId;
     public $filterStatus;
     public $sortField = 'nama';
@@ -22,12 +24,12 @@ class Siswa extends Component
     public $old_nis;
 
     protected $rules = [
-        'nama' => 'required',
-        'status' => 'required',
-        'nis' => 'required|numeric',
-        'kelas' => 'required',
-        'jenis_kelamin' => 'required',
-        'alamat' => 'required',
+        'nama'           => 'required',
+        'status'         => 'required',
+        'nis'            => 'required|numeric',
+        'kelas'          => 'required',
+        'jenis_kelamin'  => 'required',
+        'alamat'         => 'required',
     ];
 
     public function mount()
@@ -47,7 +49,7 @@ class Siswa extends Component
             ->get();
 
         return view('livewire.admin.anggota.siswa', [
-            'anggota' => $anggota, 
+            'anggota' => $anggota,
         ])->layout('layouts.app');
     }
 
@@ -65,34 +67,38 @@ class Siswa extends Component
 
     public function store()
     {
-        $this->validate();
-        $plainPassword = Str::random(8);
+        $this->validate(array_merge($this->rules, [
+            'nis'   => 'required|numeric|unique:anggota,nis_nip',
+            'email' => 'nullable|email|unique:users,email',
+            'no_telp' => 'nullable|numeric|digits_between:10,15',
+        ]));
 
-        DB::transaction(function () use ($plainPassword) {
+        $plainPassword = Str::random(8);
+        $email = $this->email ?: null;
+
+        DB::transaction(function () use ($plainPassword, $email) {
             Anggota::create([
-                'nama' => $this->nama,
-                'status' => $this->status,
-                'role' => $this->role,
-                'nis_nip' => $this->nis,
-                'kelas' => $this->kelas,
-                'jenis_kelamin' => $this->jenis_kelamin,
-                'alamat' => $this->alamat,
-                'no_telp' => $this->no_telp,
-                'email' => $this->email,
+                'nama'           => $this->nama,
+                'status'         => $this->status,
+                'role'           => $this->role,
+                'nis_nip'        => $this->nis,
+                'kelas'          => $this->kelas,
+                'jenis_kelamin'  => $this->jenis_kelamin,
+                'alamat'         => $this->alamat,
+                'no_telp'        => $this->no_telp,
+                'email'          => $email,
                 'plain_password' => $plainPassword,
             ]);
 
-            $user = User::create([
-                'name' => $this->nama,
-                'nis_nip' => $this->nis,
-                'email' => $this->email,
-                'password' => Hash::make($plainPassword),
+            User::create([
+                'name'                => $this->nama,
+                'nis_nip'             => $this->nis,
+                'email'               => $email,
+                'password'            => Hash::make($plainPassword),
                 'is_default_password' => true,
-                'no_telp' => $this->no_telp,
-                'status' => $this->status,
-            ]);
-
-            $user->assignRole($this->role);
+                'no_telp'             => $this->no_telp,
+                'status'              => $this->status,
+            ])->assignRole($this->role);
         });
 
         $this->closeModal();
@@ -102,46 +108,51 @@ class Siswa extends Component
     public function edit($id)
     {
         $data = Anggota::findOrFail($id);
-        $this->selectedId = $id;
-        $this->nama = $data->nama;
-        $this->status = $data->status;
-        $this->nis = $data->nis_nip;
-        $this->old_nis = $data->nis_nip;
-        $this->kelas = $data->kelas;
-        $this->jenis_kelamin = $data->jenis_kelamin;
-        $this->alamat = $data->alamat;
-        $this->no_telp = $data->no_telp;
-        $this->email = $data->email;
-        $this->showModal = true;
-        $this->isEdit = true;
+        $this->selectedId     = $id;
+        $this->nama           = $data->nama;
+        $this->status         = $data->status;
+        $this->nis            = $data->nis_nip;
+        $this->old_nis        = $data->nis_nip;
+        $this->kelas          = $data->kelas;
+        $this->jenis_kelamin  = $data->jenis_kelamin;
+        $this->alamat         = $data->alamat;
+        $this->no_telp        = $data->no_telp;
+        $this->email          = $data->email;
+        $this->showModal      = true;
+        $this->isEdit         = true;
     }
 
     public function update()
     {
-        $this->validate();
+        $this->validate(array_merge($this->rules, [
+            'nis'   => 'required|numeric|unique:anggota,nis_nip,' . $this->selectedId,
+            'email' => 'nullable|email|unique:users,email,' . optional(User::where('nis_nip', $this->old_nis)->first())->id,
+        ]));
+
+        $email = $this->email ?: null;
 
         if ($this->selectedId) {
             $anggota = Anggota::find($this->selectedId);
             $anggota->update([
-                'nama' => $this->nama,
-                'status' => $this->status,
-                'role' => $this->role,
-                'nis_nip' => $this->nis,
-                'kelas' => $this->kelas,
+                'nama'          => $this->nama,
+                'status'        => $this->status,
+                'role'          => $this->role,
+                'nis_nip'       => $this->nis,
+                'kelas'         => $this->kelas,
                 'jenis_kelamin' => $this->jenis_kelamin,
-                'alamat' => $this->alamat,
-                'no_telp' => $this->no_telp,
-                'email' => $this->email,
+                'alamat'        => $this->alamat,
+                'no_telp'       => $this->no_telp,
+                'email'         => $email,
             ]);
 
             $user = User::where('nis_nip', $this->old_nis)->first();
             if ($user) {
                 $user->update([
-                    'name' => $this->nama,
-                    'email' => $this->email,
-                    'no_telp' => $this->no_telp,
-                    'status' => $this->status,
-                    'nis_nip' => $this->nis,
+                    'name'     => $this->nama,
+                    'email'    => $email,
+                    'no_telp'  => $this->no_telp,
+                    'status'   => $this->status,
+                    'nis_nip'  => $this->nis,
                 ]);
             }
         }
@@ -168,16 +179,16 @@ class Siswa extends Component
 
     private function resetInput()
     {
-        $this->nama = '';
-        $this->status = 'active';
-        $this->nis = '';
-        $this->kelas = 'semua'; // default ke 'semua'
-        $this->jenis_kelamin = '';
-        $this->alamat = '';
-        $this->no_telp = '';
-        $this->email = '';
-        $this->selectedId = null;
-        $this->role = 'siswa';
+        $this->nama           = '';
+        $this->status         = 'active';
+        $this->nis            = '';
+        $this->kelas          = 'semua';
+        $this->jenis_kelamin  = '';
+        $this->alamat         = '';
+        $this->no_telp        = '';
+        $this->email          = '';
+        $this->selectedId     = null;
+        $this->role           = 'siswa';
     }
 
     public function sortBy($field)
@@ -204,12 +215,7 @@ class Siswa extends Component
     public function exportSiswa()
     {
         return Excel::download(
-            new Export(
-                'siswa',
-                $this->filterStatus,
-                $this->kelas,
-                $this->search
-            ),
+            new Export('siswa', $this->filterStatus, $this->kelas, $this->search),
             'data-siswa-terfilter.xlsx'
         );
     }
