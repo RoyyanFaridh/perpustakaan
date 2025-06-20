@@ -1,25 +1,41 @@
-<div class="bg-white p-6 rounded-2xl shadow-md">
-    <div class="flex justify-between items-center mb-6">
-        <h2 class="text-xl font-semibold text-gray-800">Daftar Buku</h2>
-    </div>
-    <div class="mb-6">
-        <input 
-            type="text" 
-            wire:model.debounce.300ms="search" 
-            placeholder="Cari judul buku..." 
-            class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 focus:outline-none">
+<div class="p-6 space-y-6 max-w-7xl mx-auto">
+    <!-- Judul & Filter -->
+    <div class="bg-white shadow-md rounded-xl p-6 space-y-4">
+        <h2 class="text-2xl font-semibold text-gray-800">📚 Daftar Buku</h2>
 
+        <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+            <!-- Filter Kategori (kiri) -->
+            <div class="w-full sm:w-1/2">
+                <label class="block mb-1 text-sm font-medium text-gray-600">Kategori</label>
+                <select wire:model.live="kategori"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="semua">Semua Kategori</option>
+                    @foreach($kategoriList as $kat)
+                        <option value="{{ $kat }}">{{ $kat }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <!-- Pencarian (kanan) -->
+            <div class="w-full sm:w-1/2">
+                <label class="block mb-1 text-sm font-medium text-gray-600">Cari Judul</label>
+                <input type="text" wire:model.live.debounce.300ms="search"
+                    placeholder="Contoh: Laskar Pelangi"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+        </div>
+   
+        <!-- Flash Message -->
         @if(session()->has('message'))
-            <div class="mb-4 p-3 bg-green-100 text-green-700 rounded">
+            <div class="p-3 rounded bg-green-100 text-green-700">
                 {{ session('message') }}
             </div>
         @endif
-
         @if(session()->has('error'))
-            <div class="mb-4 p-3 bg-red-100 text-red-700 rounded">
+            <div class="p-3 rounded bg-red-100 text-red-700">
                 {{ session('error') }}
             </div>
-@endif
+        @endif
     </div>
 
     <!-- Grid Daftar Buku -->
@@ -81,24 +97,13 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
-                <div class="mt-4">
-                @if($item->jumlah_stok > 0)
-                    <button 
-                        wire:click="pinjam({{ $item->id }})" 
-                        class="w-full bg-white border border-gray-200 rounded-2xl shadow-sm p-2 hover:bg-green-100 text-green-700 rounded-full">
-                        Pinjam Buku
-                    </button>
-                @else
-                    <button 
-                        disabled 
-                        class="bg-gray-400 cursor-not-allowed text-white px-4 py-2 rounded-lg shadow-sm">
-                        Stok Habis
-                    </button>
-                @endif
-            </div>
-            </div>
-        @endforeach
-    </div>
+            @endforeach
+        </div>
+    @else
+        <div class="text-center py-20 text-gray-500">
+            <p class="text-lg font-medium">Tidak ada buku ditemukan.</p>
+            <p class="text-sm text-gray-400">Silakan coba kategori lain atau ubah kata kunci pencarian.</p>
+        </div>
+    @endif
 </div>

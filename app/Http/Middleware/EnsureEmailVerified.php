@@ -11,6 +11,17 @@ class EnsureEmailVerified
     {
         $user = auth()->user();
 
+        // ✅ Bypass verifikasi email untuk akun seeder
+        $whitelistedEmails = [
+            'guru@example.com',
+            'siswa@example.com',
+        ];
+
+        if ($user && in_array($user->email, $whitelistedEmails)) {
+            return $next($request); // Langsung lolos
+        }
+
+        // Cek email terverifikasi
         if ($user && !$user->hasVerifiedEmail()) {
             return redirect()->route('setup.verify-email');
         }
@@ -18,4 +29,3 @@ class EnsureEmailVerified
         return $next($request);
     }
 }
-

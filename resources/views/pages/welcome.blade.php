@@ -84,19 +84,34 @@
   </section>
 
   <section id="statistik" class="relative z-10 px-6 md:px-20 py-20 bg-white text-gray-800">
-    <div class="absolute bottom-0 left-0 w-full h-14 bg-gradient-to-b from-white to-gray-200 pointer-events-none"></div>
-    <div class="max-w-4xl mx-auto">
+    <div class="max-w-6xl mx-auto">
       <div class="relative mb-6">
         <h2 class="text-4xl font-bold text-blue-800 inline-block relative">
           <span class="absolute -bottom-1 left-0 w-16 h-1 bg-blue-800 rounded-full"></span>
-          Statistik Pengunjung
+          Statistik
         </h2>
       </div>
-      <div class="bg-gray-100 shadow-lg rounded-lg p-6 h-[400px] flex items-center justify-center">
-        <canvas id="statistikChart" class="w-full h-full"></canvas>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Grafik Pengunjung -->
+        <div class="bg-gray-100 shadow-lg rounded-lg p-6 h-[400px] flex flex-col justify-center">
+          <h3 class="text-lg font-semibold text-center text-gray-700 mb-2">Statistik Pengunjung</h3>
+          <div class="h-full flex items-center justify-center">
+            <canvas id="statistikChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Grafik Buku per Kategori -->
+        <div class="bg-gray-100 shadow-lg rounded-lg p-6 h-[400px] flex flex-col justify-center">
+          <h3 class="text-lg font-semibold text-center text-gray-700 mb-2">Koleksi Buku</h3>
+          <div class="h-full flex items-center justify-center">
+            <canvas id="kategoriChart"></canvas>
+          </div>
+        </div>
       </div>
+
     </div>
   </section>
+
 
   <section id="informasi" class="relative z-10 px-10 py-12 bg-gradient-to-b from-gray-200 via-white to-gray-200 text-gray-800 scroll-mt-24">
     <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
@@ -192,6 +207,32 @@
       }
     });
   </script>
+  <script>
+    const kategoriCtx = document.getElementById('kategoriChart').getContext('2d');
+    new Chart(kategoriCtx, {
+      type: 'doughnut',
+      data: {
+        labels: @json($kategoriLabels->isEmpty() ? ['Belum Ada Data'] : $kategoriLabels),
+        datasets: [{
+          data: @json($kategoriJumlah->isEmpty() ? [1] : $kategoriJumlah),
+          backgroundColor: [
+            '#60A5FA', '#F59E0B', '#10B981', '#EF4444', '#8B5CF6', '#F472B6'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: { font: { weight: 'bold' }, color: '#374151' }
+          }
+        }
+      }
+    });
+  </script>
+
 
   @livewireScripts
 

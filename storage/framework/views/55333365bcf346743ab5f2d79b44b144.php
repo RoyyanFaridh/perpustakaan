@@ -86,7 +86,6 @@
                     <th class="px-4 py-3 font-semibold">Tanggal Pinjam</th>
                     <th class="px-4 py-3 font-semibold">Tanggal Kembali</th>
                     <th class="px-4 py-3 font-semibold">Status</th>
-                    <th class="px-4 py-3 text-center font-semibold">Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -108,21 +107,7 @@
 
                                 </span>
                             </td>
-                            <td class="px-4 py-2 text-center space-x-2">
-                                <!--[if BLOCK]><![endif]--><?php if(strtolower($item->status) === 'booking'): ?>
-                                    <button wire:click="setujui(<?php echo e($item->id); ?>)"
-                                        class="px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded text-xs">
-                                        Setujui
-                                    </button>
-                                <?php elseif(strtolower($item->status) === 'dipinjam'): ?>
-                                    <button wire:click="kembalikan(<?php echo e($item->id); ?>)"
-                                        class="px-2 py-1 bg-green-500 hover:bg-green-600 text-white rounded text-xs">
-                                        Dikembalikan
-                                    </button>
-                                <?php else: ?>
-                                    <span class="text-green-600 text-xs">Sudah dikembalikan</span>
-                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                            </td>
+                            
 
 
                         </tr>
