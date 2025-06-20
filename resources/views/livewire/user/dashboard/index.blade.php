@@ -5,14 +5,27 @@
     <div class="flex flex-wrap md:flex-nowrap gap-4 mb-4">
         @foreach($cardData as $card)
             <div class="w-full md:w-1/3">
-                <x-card
-                    :title="$card['title']"
-                    :bgColor="$card['bgColor']"
-                    :value="$card['value']"
-                    :periode="$card['periode']"
-                    :delta="$card['delta']"
-                    :icon="$card['icon']"
-                />
+                @if (!empty($card['url']))
+                    <a href="{{ $card['url'] }}" class="block hover:opacity-90 transition duration-200">
+                        <x-card
+                            :title="$card['title']"
+                            :bgColor="$card['bgColor']"
+                            :value="$card['value']"
+                            :periode="$card['periode']"
+                            :delta="$card['delta']"
+                            :icon="$card['icon']"
+                        />
+                    </a>
+                @else
+                    <x-card
+                        :title="$card['title']"
+                        :bgColor="$card['bgColor']"
+                        :value="$card['value']"
+                        :periode="$card['periode']"
+                        :delta="$card['delta']"
+                        :icon="$card['icon']"
+                    />
+                @endif
             </div>
         @endforeach
     </div>

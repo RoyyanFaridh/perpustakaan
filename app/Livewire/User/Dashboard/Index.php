@@ -57,6 +57,7 @@ class Index extends Component
                 'periode' => $bulanIni,
                 'delta' => $deltaBuku,
                 'icon' => view('components.icon.books')->render(),
+                'url' => route('user.buku.index'), // ✅ arahkan ke halaman buku
             ],
             [
                 'title' => 'Peminjaman Saya',
@@ -65,6 +66,7 @@ class Index extends Component
                 'periode' => $bulanIni,
                 'delta' => $deltaPeminjaman,
                 'icon' => view('components.icon.calendar-clock')->render(),
+                'url' => route('user.peminjaman.index'), // ✅ arahkan ke halaman peminjaman
             ],
             [
                 'title' => 'Terlambat Dikembalikan',
