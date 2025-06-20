@@ -45,9 +45,6 @@
         </div>
     </div>
 
-
-
-
     @if($showModal)
     <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm">
         <div class="bg-white rounded-xl shadow-lg w-full max-w-lg sm:max-w-md max-h-[90vh] overflow-y-auto p-6 mx-4">
@@ -56,33 +53,51 @@
             <div class="space-y-4 text-sm text-gray-600">
                 <!-- Cover Buku -->
                 <div>
-                    <label for="cover" class="block text-black text-xs mb-1">Cover Buku</label>
+                    <label for="cover" class="block text-black text-xs mb-1">Cover Buku <span class="text-red-500">*</span></label>
                     <input type="file" wire:model="cover" id="cover"
                         class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:ring focus:ring-blue-100 focus:outline-none">
+                    @error('cover') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+
+                    @if ($isEdit && $existingCover && !$cover)
+                        <div class="mt-2">
+                            <p class="text-xs text-gray-500 mb-1">Cover saat ini:</p>
+                            <img src="{{ asset('storage/' . $existingCover) }}" alt="Cover lama"
+                                class="w-32 h-48 object-cover rounded-md border">
+                        </div>
+                    @endif
+
+                    @if ($cover)
+                        <div class="mt-2">
+                            <p class="text-xs text-gray-500 mb-1">Preview cover baru:</p>
+                            <img src="{{ $cover->temporaryUrl() }}" alt="Preview Cover"
+                                class="w-32 h-48 object-cover rounded-md border">
+                        </div>
+                    @endif
                 </div>
 
                 <!-- Judul -->
                 <div>
-                    <label for="judul" class="block text-black text-xs mb-1">Judul</label>
+                    <label for="judul" class="block text-black text-xs mb-1">Judul <span class="text-red-500">*</span></label>
                     <input type="text" wire:model="judul" id="judul"
-                        class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm"
-                        placeholder=" " />
+                        class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm" />
+                    @error('judul') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                 </div>
-                
+
                 <!-- Deskripsi -->
                 <div>
                     <label for="deskripsi" class="block text-black text-xs mb-1">Deskripsi Buku</label>
                     <textarea wire:model="deskripsi" id="deskripsi"
                         class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm"
-                        placeholder="" rows="3" style="resize: none;"></textarea>
+                        rows="3" style="resize: none;"></textarea>
+                    @error('deskripsi') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                 </div>
 
                 <!-- Kategori -->
                 <div>
-                    <label for="kategori" class="block text-black text-xs mb-1">Kategori</label>
+                    <label for="kategori" class="block text-black text-xs mb-1">Kategori <span class="text-red-500">*</span></label>
                     <select wire:model="kategori" id="kategori"
                         class="w-full text-black border border-gray-100 shadow-sm rounded-md p-2 focus:ring focus:ring-blue-100 focus:outline-none">
-                        <option value="" disabled selected></option>
+                        <option value="" disabled selected>Pilih kategori</option>
                         <option value="Fiksi">Fiksi</option>
                         <option value="Non-Fiksi">Non-Fiksi</option>
                         <option value="Biografi">Biografi</option>
@@ -94,57 +109,63 @@
                         <option value="Agama">Agama</option>
                         <option value="Sosial">Sosial</option>
                     </select>
+                    @error('kategori') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                 </div>
 
                 <!-- Penulis & Penerbit -->
                 <div class="flex flex-wrap sm:flex-nowrap space-x-0 sm:space-x-2">
                     <div class="w-full sm:w-1/2">
-                        <label for="penulis" class="block text-black text-xs mb-1">Penulis</label>
+                        <label for="penulis" class="block text-black text-xs mb-1">Penulis <span class="text-red-500">*</span></label>
                         <input type="text" wire:model="penulis" id="penulis"
                             class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:ring focus:ring-blue-100 focus:outline-none">
+                        @error('penulis') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
                     <div class="w-full sm:w-1/2">
-                        <label for="penerbit" class="block text-black text-xs mb-1">Penerbit</label>
+                        <label for="penerbit" class="block text-black text-xs mb-1">Penerbit <span class="text-red-500">*</span></label>
                         <input type="text" wire:model="penerbit" id="penerbit"
                             class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:ring focus:ring-blue-100 focus:outline-none">
+                        @error('penerbit') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
                 </div>
 
                 <!-- Tahun Terbit & ISBN -->
                 <div class="flex flex-wrap sm:flex-nowrap space-x-0 sm:space-x-2">
                     <div class="w-full sm:w-1/2">
-                        <label for="tahun_terbit" class="block text-black text-xs mb-1">Tahun Terbit</label>
+                        <label for="tahun_terbit" class="block text-black text-xs mb-1">Tahun Terbit <span class="text-red-500">*</span></label>
                         <select wire:model="tahun_terbit" id="tahun_terbit"
                             class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:ring focus:ring-blue-100 focus:outline-none">
-                            <option value="" disabled selected></option>
+                            <option value="" disabled selected>Pilih tahun</option>
                             @for ($year = date('Y'); $year >= 1900; $year--)
                                 <option value="{{ $year }}">{{ $year }}</option>
                             @endfor
                         </select>
+                        @error('tahun_terbit') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
                     <div class="w-full sm:w-1/2">
-                        <label for="isbn" class="block text-black text-xs mb-1">ISBN</label>
-                        <input type="number" wire:model="isbn" id="isbn"
+                        <label for="isbn" class="block text-black text-xs mb-1">ISBN <span class="text-red-500">*</span></label>
+                        <input type="text" wire:model="isbn" id="isbn"
                             class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:ring focus:ring-blue-100 focus:outline-none">
+                        @error('isbn') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
                 </div>
 
-                <!--Jumlah stok & Lokasi rak -->
+                <!-- Jumlah stok & Lokasi rak -->
                 <div class="flex flex-wrap sm:flex-nowrap space-x-0 sm:space-x-2">
                     <div class="w-full sm:w-1/2">
-                        <label for="jumlah_stok" class="block text-black text-xs mb-1">Jumlah Stok</label>
-                        <input type="number" id="jumlah_stok" wire:model="jumlah_stok" 
-                            class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm" 
-                            placeholder=" " />
+                        <label for="jumlah_stok" class="block text-black text-xs mb-1">Jumlah Stok <span class="text-red-500">*</span></label>
+                        <input type="number" id="jumlah_stok" wire:model="jumlah_stok"
+                            class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm" />
+                        @error('jumlah_stok') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
                     <div class="w-full sm:w-1/2">
-                        <label for="lokasi_rak" class="block text-black text-xs mb-1">Lokasi Rak</label>
-                        <input type="text" id="lokasi_rak" wire:model="lokasi_rak" 
-                            class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm" 
-                            placeholder=" " />
+                        <label for="lokasi_rak" class="block text-black text-xs mb-1">Lokasi Rak <span class="text-red-500">*</span></label>
+                        <input type="text" id="lokasi_rak" wire:model="lokasi_rak"
+                            class="w-full border border-gray-100 shadow-sm rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-100 focus:outline-none text-sm" />
+                        @error('lokasi_rak') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
                 </div>
             </div>
+
 
             <div class="flex justify-end space-x-2 mt-6">
                 <button wire:click="closeModal"

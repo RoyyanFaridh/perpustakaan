@@ -56,31 +56,36 @@ class Guru extends Component
 
     public function store()
     {
-        $this->validate();
+        $this->validate(array_merge($this->rules, [
+            'nip' => 'required|numeric|unique:anggota,nis_nip',
+            'email' => 'nullable|email|unique:users,email',
+            'no_telp' => 'nullable|numeric|digits_between:10,15',
+        ]));
+
         $plainPassword = Str::random(8);
         $email = $this->email ?: null;
 
         DB::transaction(function () use ($plainPassword, $email) {
             Anggota::create([
-                'nama'            => $this->nama,
-                'status'          => $this->status,
-                'role'            => $this->role,
-                'nis_nip'         => $this->nip,
-                'jenis_kelamin'   => $this->jenis_kelamin,
-                'alamat'          => $this->alamat,
-                'no_telp'         => $this->no_telp,
-                'email'           => $email,
-                'plain_password'  => $plainPassword,
+                'nama'           => $this->nama,
+                'status'         => $this->status,
+                'role'           => $this->role,
+                'nis_nip'        => $this->nip,
+                'jenis_kelamin'  => $this->jenis_kelamin,
+                'alamat'         => $this->alamat,
+                'no_telp'        => $this->no_telp,
+                'email'          => $email,
+                'plain_password' => $plainPassword,
             ]);
 
             User::create([
-                'name'               => $this->nama,
-                'nis_nip'            => $this->nip,
-                'email'              => $email,
-                'password'           => Hash::make($plainPassword),
-                'is_default_password'=> true,
-                'no_telp'            => $this->no_telp,
-                'status'             => $this->status,
+                'name'                => $this->nama,
+                'nis_nip'             => $this->nip,
+                'email'               => $email,
+                'password'            => Hash::make($plainPassword),
+                'is_default_password' => true,
+                'no_telp'             => $this->no_telp,
+                'status'              => $this->status,
             ])->assignRole($this->role);
         });
 
@@ -108,7 +113,11 @@ class Guru extends Component
 
     public function update()
     {
-        $this->validate();
+        $this->validate(array_merge($this->rules, [
+            'nip' => 'required|numeric|unique:anggota,nis_nip,' . $this->selectedId,
+            'email' => 'nullable|email|unique:users,email,' . optional(User::where('nis_nip', $this->old_nip)->first())->id,
+        ]));
+
         $email = $this->email ?: null;
 
         if ($this->selectedId) {
@@ -139,6 +148,7 @@ class Guru extends Component
         $this->closeModal();
         $this->dispatch('anggota-updated');
     }
+
 
     public function delete($id)
     {

@@ -144,9 +144,10 @@
                         class="block px-3 py-2 rounded hover:bg-gray-100">Profile</a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <x-dropdown-link as="button" class="text-red-500 hover:text-red-700 w-full text-start">
+                        <button type="submit"
+                            class="block w-full px-3 py-2 text-left text-red-500 hover:text-red-700 hover:bg-gray-100 rounded transition">
                             Log Out
-                        </x-dropdown-link>
+                        </button>
                     </form>
                 </div>
             </div>

@@ -13,6 +13,8 @@ class Index extends Component
 
     public $judul, $kategori, $penulis, $penerbit, $tahun_terbit, $isbn, $cover, $deskripsi, $jumlah_stok, $lokasi_rak;
     public $bukuId;
+    public $existingCover;
+
     public $isEdit = false;
     public $showModal = false;
 
@@ -115,6 +117,7 @@ class Index extends Component
         $this->deskripsi = $buku->deskripsi;
         $this->jumlah_stok = $buku->jumlah_stok;
         $this->lokasi_rak = $buku->lokasi_rak;
+        $this->existingCover = $buku->cover;
         $this->cover = null;
 
         $this->isEdit = true;
@@ -165,7 +168,7 @@ class Index extends Component
 
     private function validateData()
     {
-        $this->validate([
+        $rules = [
             'judul' => 'required|string|max:255',
             'kategori' => 'required|string|max:100',
             'penulis' => 'required|string|max:100',
@@ -175,8 +178,19 @@ class Index extends Component
             'deskripsi' => 'nullable|string|max:1000',
             'jumlah_stok' => 'required|integer|min:0',
             'lokasi_rak' => 'required|string|max:50',
-            'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+        ];
+
+        if ($this->isEdit) {
+            // Hanya validasi cover jika ada input baru
+            if ($this->cover) {
+                $rules['cover'] = 'image|mimes:jpeg,png,jpg,gif|max:2048';
+            }
+        } else {
+            // Tambah data: wajib upload cover
+            $rules['cover'] = 'required|image|mimes:jpeg,png,jpg,gif|max:2048';
+        }
+
+        $this->validate($rules);
     }
 
     private function resetForm()
