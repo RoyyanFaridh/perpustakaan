@@ -123,7 +123,7 @@ class Index extends Component
 
         $kategoriLabels = $kategoriData->pluck('kategori');
         $kategoriJumlah = $kategoriData->pluck('jumlah');
-
+        
         return view('livewire.admin.dashboard.index', compact(
             'bulanLabels',
             'jumlahPengunjungTahunIni',

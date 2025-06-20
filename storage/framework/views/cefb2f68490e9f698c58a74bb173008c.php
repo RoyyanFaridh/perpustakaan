@@ -4,7 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>" />
-    <title><?php echo e(config('app.name', 'Laravel')); ?></title>
+
+    <title><?php echo e(config('app.name', 'Perpustakaan Digital SMP Negeri 12 Yogyakarta')); ?></title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net" />
@@ -18,14 +19,14 @@
 <body class="font-sans antialiased bg-gray-50">
     <div class="min-h-screen flex flex-col sm:flex-row">
         <!-- Sidebar Desktop -->
-        <aside class="hidden lg:block w-64 bg-white border-r">
+        <aside class="hidden sm:block w-64 bg-white border-r">
             <?php
 $__split = function ($name, $params = []) {
     return [$name, $params];
 };
-[$__name, $__params] = $__split('layout.navigation', ['desktop' => true]);
+[$__name, $__params] = $__split('layout.user-navigation', ['desktop' => true]);
 
-$__html = app('livewire')->mount($__name, $__params, 'lw-2487691127-0', $__slots ?? [], get_defined_vars());
+$__html = app('livewire')->mount($__name, $__params, 'lw-2999163272-0', $__slots ?? [], get_defined_vars());
 
 echo $__html;
 
@@ -38,17 +39,16 @@ if (isset($__slots)) unset($__slots);
         </aside>
 
         <!-- Main Content Area -->
-        <div class="flex-1 flex flex-col min-h-screen bg-white m-2 border border-gray-100 rounded-md overflow-hidden">
-            
+        <div class="flex-1 flex flex-col min-h-screen bg-white m-2 border border-gray-100 rounded-md">
             <!-- Mobile Navbar -->
-            <div class="lg:hidden border-b p-4 relative z-50">
+            <div class="sm:hidden border-b p-4">
                 <?php
 $__split = function ($name, $params = []) {
     return [$name, $params];
 };
-[$__name, $__params] = $__split('layout.navigation', ['mobile' => true]);
+[$__name, $__params] = $__split('layout.user-navigation', ['mobile' => true]);
 
-$__html = app('livewire')->mount($__name, $__params, 'lw-2487691127-1', $__slots ?? [], get_defined_vars());
+$__html = app('livewire')->mount($__name, $__params, 'lw-2999163272-1', $__slots ?? [], get_defined_vars());
 
 echo $__html;
 
@@ -69,11 +69,14 @@ if (isset($__slots)) unset($__slots);
             <?php endif; ?>
 
             <!-- Page Content -->
-            <main class="flex-1 p-4 overflow-auto">
+            <main class="flex-grow p-4 overflow-auto">
                 <?php echo e($slot); ?>
 
             </main>
         </div>
     </div>
+
+    <?php echo $__env->yieldPushContent('scripts'); ?>
 </body>
-</html><?php /**PATH D:\Perkuliahan Duniawi\New folder\New folder\perpustakaan\resources\views/layouts/app.blade.php ENDPATH**/ ?>
+</html>
+<?php /**PATH D:\Perkuliahan Duniawi\New folder\New folder\perpustakaan\resources\views/layouts/user.blade.php ENDPATH**/ ?>
