@@ -1,7 +1,7 @@
 <div class="bg-white p-6 rounded-2xl shadow-md max-w-full">
     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4 sm:gap-0">
         <h2 class="text-lg sm:text-xl font-semibold text-gray-800">Daftar Buku</h2>
-        <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
             <button wire:click="openModal"
                 class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-2 px-3 sm:px-4 rounded-lg text-center">
                     + Tambah Buku
@@ -9,28 +9,48 @@
         </div>
     </div>
 
-    <!-- Filter dan Sort -->
-    <div class="flex flex-col sm:flex-row gap-4 mb-6">
-        <div class="relative w-full sm:w-1/3">
-            <label class="block mb-1 text-sm font-medium text-gray-700">Filter Kategori</label>
-            <select wire:model.live="kategori" class="block w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="semua">Semua Kategori</option>
-                @foreach($kategoriList as $kat)
-                    <option value="{{ $kat }}">{{ $kat }}</option>
-                @endforeach
-            </select>
+    <!-- Filter dan Cari -->
+    <div class="flex flex-col gap-4 mb-6">
+
+        <!-- Input Pencarian -->
+        <div>
+            <input type="text" wire:model.live.debounce.300ms="search"
+                placeholder="Cari judul buku..."
+                class="w-full px-3 py-2 text-sm bg-gray-50 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
 
-        <div class="w-full sm:w-2/3">
-            <label class="block mb-1 text-sm font-medium text-gray-700">Cari Judul</label>
-            <input type="text" wire:model.live.debounce.300ms="search" placeholder="Cari judul buku..."
-                class="w-full px-4 py-2 text-sm bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <!-- Filter Kategori dan Tahun -->
+        <div class="flex flex-col sm:flex-row gap-4">
+            <!-- Kategori -->
+            <div class="w-full sm:w-1/2">
+                <select wire:model.live="filterKategori"
+                    class="w-full px-3 py-2 text-sm bg-gray-50 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="semua">Semua Kategori</option>
+                    @foreach($kategoriList as $kat)
+                        <option value="{{ $kat }}">{{ $kat }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <!-- Tahun Terbit -->
+            <div class="w-full sm:w-1/2">
+                <select wire:model.live="filterTahun"
+                    class="w-full px-3 py-2 text-sm bg-gray-50 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="semua">Semua Tahun</option>
+                    @foreach($tahunList as $tahun)
+                        <option value="{{ $tahun }}">{{ $tahun }}</option>
+                    @endforeach
+                </select>
+            </div>
         </div>
     </div>
 
+
+
+
     @if($showModal)
     <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm">
-        <div class="bg-white rounded-xl shadow-lg w-full max-w-lg sm:max-w-md max-h-[90vh] overflow-y-auto p-6">
+        <div class="bg-white rounded-xl shadow-lg w-full max-w-lg sm:max-w-md max-h-[90vh] overflow-y-auto p-6 mx-4">
             <h2 class="text-xl font-semibold mb-4">{{ $isEdit ? 'Edit Buku' : 'Tambah Buku' }}</h2>
 
             <div class="space-y-4 text-sm text-gray-600">
@@ -150,8 +170,8 @@
 
     <!-- Tabel Daftar Buku -->
     <div class="w-full rounded-lg border border-gray-200 shadow-sm overflow-visible">
-        <div class="w-full overflow-x-auto">
-            <table class="w-full text-sm text-left text-gray-700">
+        <div class="w-full overflow-x-auto rounded-lg">
+            <table class="min-w-[1000px] w-full text-sm text-left text-gray-700">
                 <thead class="border-b border-gray-200">
                     <tr>
                         <th class="px-4 py-3 font-semibold text-center">No</th>

@@ -2,30 +2,29 @@
 
 namespace App\Livewire\Admin\Anggota;
 
+use Livewire\Component;
 use App\Models\User;
 use App\Models\Anggota;
-use Livewire\Component;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use App\Models\Anggota as AnggotaModel;
 
 class Index extends Component
 {
     public $anggota;
-    public $nama, $nis, $nip, $alamat, $no_telp, $email;
-    public $status = '';
-    public $role = '';
-    public $kelas = '';
-    public $jenis_kelamin = '';
 
     public $anggotaId;
     public $isEdit = false;
     public $showModal = false;
-    public $search = '';
-    
 
-    public $roleFilter; // Tambahan: role dari URL
+    public $search = '';
+    public $roleFilter = null;
+
+    public $nama, $status = '', $role = '', $kelas = '';
+    public $jenis_kelamin = '';
+    public $alamat, $no_telp, $email;
+    public $nis, $nip;
+
     protected $listeners = ['deleteConfirmed' => 'delete'];
 
     public function mount()
@@ -34,57 +33,46 @@ class Index extends Component
             $this->roleFilter = 'siswa';
         } elseif (request()->routeIs('anggota.guru')) {
             $this->roleFilter = 'guru';
-        } else {
-            $this->roleFilter = null;
         }
     }
 
     public function render()
     {
-        $query = AnggotaModel::query()
-            ->where(function ($query) {
-                $query->where('nama', 'like', '%' . $this->search . '%')
-                      ->orWhere('nis_nip', 'like', '%' . $this->search . '%')
-                      ->orWhere('email', 'like', '%' . $this->search . '%');
+        $query = Anggota::query()
+            ->when($this->roleFilter, fn($q) => $q->where('role', $this->roleFilter))
+            ->where(function ($q) {
+                $q->where('nama', 'like', '%' . $this->search . '%')
+                  ->orWhere('nis_nip', 'like', '%' . $this->search . '%')
+                  ->orWhere('email', 'like', '%' . $this->search . '%');
             });
-
-        if ($this->roleFilter) {
-            $query->where('role', $this->roleFilter);
-        }
 
         $this->anggota = $query->get();
 
-        // return view('livewire.admin.anggota.index')->layout('layouts.app');
-    }   
+        return view('livewire.admin.anggota.index')->layout('layouts.app');
+    }
 
     protected function rules()
     {
-        $uniqueNisRule = 'unique:members,nis_nip';
-        $uniqueNipRule = 'unique:members,nis_nip';
-
-        if ($this->anggotaId) {
-            $uniqueNisRule .= ',' . $this->anggotaId;
-            $uniqueNipRule .= ',' . $this->anggotaId;
-        }
-
         $rules = [
-            'nama' => 'required|string|max:255',
-            'status' => 'required|in:active,inactive',
-            'jenis_kelamin' => 'required|in:L,P',
-            'alamat' => 'required|string|max:255',
-            // 'no_telp' => 'required|string|max:20',
-            // 'email' => 'required|email|max:255',
-            'role' => 'required|in:siswa,guru',
+            'nama'           => 'required|string|max:255',
+            'status'         => 'required|in:active,inactive',
+            'role'           => 'required|in:siswa,guru',
+            'jenis_kelamin'  => 'required|in:L,P',
+            'alamat'         => 'required|string|max:255',
         ];
 
+        $uniqueNisRule = 'unique:members,nis_nip';
+        if ($this->anggotaId) {
+            $uniqueNisRule .= ',' . $this->anggotaId;
+        }
+
         if ($this->role === 'siswa') {
-            $rules['nis'] = ['required', 'numeric', $uniqueNisRule];
+            $rules['nis']   = ['required', 'numeric', $uniqueNisRule];
             $rules['kelas'] = 'required|in:7,8,9';
-            $this->nip = null;
-        } elseif ($this->role === 'guru') {
-            $rules['nip'] = ['required', 'numeric', $uniqueNipRule];
-            $this->nis = null;
-            $this->kelas = null;
+        }
+
+        if ($this->role === 'guru') {
+            $rules['nip'] = ['required', 'numeric', $uniqueNisRule];
         }
 
         return $rules;
@@ -92,34 +80,33 @@ class Index extends Component
 
     public function store()
     {
-        $plainPassword = Str::random(8);
-
         $this->validate();
+        $plainPassword = Str::random(8);
+        $nis_nip = $this->role === 'siswa' ? $this->nis : $this->nip;
 
-        DB::transaction(function () use ($plainPassword){
-            AnggotaModel::create([
-                'nama' => $this->nama,
-                'status' => $this->status,
-                'role' => $this->role,
-                'nis_nip' => $this->nis_nip,
-                'kelas' => $this->kelas,
-                'jenis_kelamin' => $this->jenis_kelamin,
-                'alamat' => $this->alamat,
-                'no_telp' => $this->no_telp,
-                'email' => $this->email,
+        DB::transaction(function () use ($plainPassword, $nis_nip) {
+            Anggota::create([
+                'nama'           => $this->nama,
+                'status'         => $this->status,
+                'role'           => $this->role,
+                'nis_nip'        => $nis_nip,
+                'kelas'          => $this->role === 'siswa' ? $this->kelas : null,
+                'jenis_kelamin'  => $this->jenis_kelamin,
+                'alamat'         => $this->alamat,
+                'no_telp'        => $this->no_telp,
+                'email'          => $this->email,
                 'plain_password' => $plainPassword,
             ]);
-            // Simpan akun user login
+
             $user = User::create([
-                'name' => $this->nama,
-                'nis_nip' => $this->nis_nip,
-                'email' => $this->email,
-                'password' => Hash::make($plainPassword),
-                'is_default_password' => true,
-                'no_telp' => $this->no_telp,
+                'name'               => $this->nama,
+                'nis_nip'            => $nis_nip,
+                'email'              => $this->email,
+                'password'           => Hash::make($plainPassword),
+                'is_default_password'=> true,
+                'no_telp'            => $this->no_telp,
             ]);
 
-            // Beri role
             $user->assignRole($this->role);
         });
 
@@ -130,39 +117,41 @@ class Index extends Component
 
     public function edit($id)
     {
-        $anggota = AnggotaModel::findOrFail($id);
+        $anggota = Anggota::findOrFail($id);
 
-        $this->anggotaId = $anggota->id;
-        $this->nama = $anggota->nama;
-        $this->status = $anggota->status;
-        $this->role = $anggota->role;
-        $this->nis = $anggota->role === 'siswa' ? $anggota->nis_nip : '';
-        $this->nip = $anggota->role === 'guru' ? $anggota->nis_nip : '';
-        $this->kelas = $anggota->kelas;
-        $this->jenis_kelamin = $anggota->jenis_kelamin;
-        $this->alamat = $anggota->alamat;
-        $this->no_telp = $anggota->no_telp;
-        $this->email = $anggota->email;
+        $this->anggotaId      = $anggota->id;
+        $this->nama           = $anggota->nama;
+        $this->status         = $anggota->status;
+        $this->role           = $anggota->role;
+        $this->nis            = $anggota->role === 'siswa' ? $anggota->nis_nip : '';
+        $this->nip            = $anggota->role === 'guru' ? $anggota->nis_nip : '';
+        $this->kelas          = $anggota->kelas;
+        $this->jenis_kelamin  = $anggota->jenis_kelamin;
+        $this->alamat         = $anggota->alamat;
+        $this->no_telp        = $anggota->no_telp;
+        $this->email          = $anggota->email;
 
-        $this->isEdit = true;
-        $this->showModal = true;
+        $this->isEdit         = true;
+        $this->showModal      = true;
     }
 
     public function update()
     {
         $this->validate();
 
-        $anggota = AnggotaModel::findOrFail($this->anggotaId);
+        $anggota = Anggota::findOrFail($this->anggotaId);
+        $nis_nip = $this->role === 'siswa' ? $this->nis : $this->nip;
+
         $anggota->update([
-            'nama' => $this->nama,
-            'status' => $this->status,
-            'role' => $this->role,
-            'nis_nip' => $this->role === 'siswa' ? $this->nis : $this->nip,
-            'kelas' => $this->role === 'siswa' ? $this->kelas : null,
+            'nama'          => $this->nama,
+            'status'        => $this->status,
+            'role'          => $this->role,
+            'nis_nip'       => $nis_nip,
+            'kelas'         => $this->role === 'siswa' ? $this->kelas : null,
             'jenis_kelamin' => $this->jenis_kelamin,
-            'alamat' => $this->alamat,
-            'no_telp' => $this->no_telp,
-            'email' => $this->email,
+            'alamat'        => $this->alamat,
+            'no_telp'       => $this->no_telp,
+            'email'         => $this->email,
         ]);
 
         session()->flash('message', 'Anggota berhasil diperbarui!');
@@ -177,14 +166,11 @@ class Index extends Component
         $anggota = Anggota::findOrFail($id);
 
         DB::transaction(function () use ($anggota) {
-            
-            // Hapus user yang terhubung dengan nis_nip
             $user = User::where('nis_nip', $anggota->nis_nip)->first();
             if ($user) {
                 $user->delete();
             }
 
-            // Hapus anggota
             $anggota->delete();
         });
 
@@ -193,18 +179,19 @@ class Index extends Component
 
     public function resetForm()
     {
-        $this->nama = '';
-        $this->status = '';
-        $this->nis = '';
-        $this->nip = '';
-        $this->kelas = '';
-        $this->jenis_kelamin = '';
-        $this->alamat = '';
-        $this->no_telp = '';
-        $this->email = '';
-        $this->role = '';
-        $this->anggotaId = null;
-        $this->isEdit = false;
+        $this->anggotaId      = null;
+        $this->isEdit         = false;
+
+        $this->nama           = '';
+        $this->status         = '';
+        $this->role           = '';
+        $this->kelas          = '';
+        $this->nis            = '';
+        $this->nip            = '';
+        $this->jenis_kelamin  = '';
+        $this->alamat         = '';
+        $this->no_telp        = '';
+        $this->email          = '';
     }
 
     public function openModal()

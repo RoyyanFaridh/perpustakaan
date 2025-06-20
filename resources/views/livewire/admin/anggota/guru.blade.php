@@ -17,24 +17,23 @@
         </div>
 
         <!-- Filter dan Pencarian -->
-        <div class="flex flex-col sm:flex-row gap-4 mb-6">
-            <div class="relative w-full sm:w-1/3">
-                <label class="block mb-1 text-sm font-medium text-gray-700">Filter Status</label>
+        <div class="flex flex-col gap-4 mb-6">
+            <div class="w-full">
+                <input type="text" wire:model.live.debounce.300ms="search"
+                    placeholder="Cari nama guru..."
+                    class="w-full px-4 py-2 text-sm bg-gray-50 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            
+            <div class="w-full sm:w-1/3">
                 <select wire:model.live="filterStatus"
-                        class="block w-full appearance-none bg-white border border-gray-300 rounded-lg px-4 py-2 pr-10 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    class="w-full px-3 py-2 text-sm bg-gray-50 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <option value="semua">Semua Status</option>
                     <option value="active">Aktif</option>
                     <option value="inactive">Tidak Aktif</option>
                 </select>
             </div>
-
-            <div class="w-full sm:w-2/3">
-                <label class="block mb-1 text-sm font-medium text-gray-700">Cari Guru</label>
-                <input type="text" wire:model.live.debounce.300ms="search"
-                placeholder="Cari nama guru..."
-                class="w-full px-4 py-2 pr-10 text-sm bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-            </div>
         </div>
+
         
         @if($showModal)
         <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm">

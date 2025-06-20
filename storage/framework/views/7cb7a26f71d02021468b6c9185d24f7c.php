@@ -28,11 +28,6 @@
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
     </div>
 
-
-
-
-
-
     <div class="font-bold text-3xl text-gray-900 mb-4 ml-2">
         <?php echo e(__("Statistik Pengunjung")); ?>
 

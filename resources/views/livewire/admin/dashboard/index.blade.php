@@ -16,11 +16,6 @@
         @endforeach
     </div>
 
-
-
-
-
-
     <div class="font-bold text-3xl text-gray-900 mb-4 ml-2">
         {{ __("Statistik Pengunjung") }}
     </div>
