@@ -16,14 +16,15 @@
         @endforeach
     </div>
 
-    <div class="font-bold text-3xl text-gray-900 mb-4 ml-2">
-        {{ __("Statistik Pengunjung") }}
-    </div>
-
-    {{-- Chart --}}
-    <div class="bg-white p-6 rounded shadow w-full">
-        <canvas id="statistikChart" class="w-full h-96 sm:h-80 md:h-96"></canvas>
-    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+        {{-- Kolom 1: Statistik Pengunjung --}}
+        <div class="space-y-2">
+            <h3 class="text-xl font-semibold text-gray-800">Statistik Pengunjung</h3>
+            <div class="bg-white p-4 rounded shadow w-full h-[400px]">
+                <canvas id="statistikChart" class="w-full h-full"></canvas>
+            </div>
+        </div>
+    </div> 
 </div>
 
 <script>
@@ -84,6 +85,54 @@
                 x: {
                     ticks: { color: '#6B7280' },
                     grid: { display: false }
+                }
+            }
+        }
+    });
+</script>
+<script>
+    const kategoriCtx = document.getElementById('kategoriChart').getContext('2d');
+
+    const labels = @json($kategoriLabels->isEmpty() ? ['Belum Ada Data'] : $kategoriLabels);
+    const dataJumlah = @json($kategoriJumlah->isEmpty() ? [1] : $kategoriJumlah);
+
+    const baseColors = [
+      '96, 165, 250',    // biru muda
+      '245, 158, 11',    // oranye terang
+      '16, 185, 129',    // hijau toska
+      '239, 68, 68',     // merah terang
+      '139, 92, 246',    // ungu gelap
+      '244, 114, 182',   // pink cerah
+      '255, 99, 132',    // merah muda
+      '54, 162, 235',    // biru klasik
+      '255, 206, 86',    // kuning cerah
+      '75, 192, 192'     // hijau laut
+    ];
+
+    const backgroundColors = dataJumlah.map((_, i) => `rgba(${baseColors[i % baseColors.length]}, 0.4)`);
+    const borderColors = dataJumlah.map((_, i) => `rgba(${baseColors[i % baseColors.length]}, 1)`);
+
+    new Chart(kategoriCtx, {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: dataJumlah,
+                backgroundColor: backgroundColors,
+                borderColor: borderColors,
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false, // <== tambahkan ini
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: '#374151',
+                        font: { weight: 'bold' }
+                    }
                 }
             }
         }

@@ -9,6 +9,7 @@ use App\Models\Peminjaman;
 use App\Models\Pengunjung;
 use Illuminate\Support\Carbon;
 use Livewire\Component;
+use Illuminate\Support\Facades\DB;
 
 class Index extends Component
 {
@@ -115,6 +116,13 @@ class Index extends Component
         $totalKeterlambatan = Peminjaman::whereColumn('tanggal_kembali', '>', 'batas_pengembalian')->count();
 
         $cardData = $this->getCardData();
+        
+        $kategoriData = Buku::select('kategori', DB::raw('count(*) as jumlah'))
+            ->groupBy('kategori')
+            ->get();
+
+        $kategoriLabels = $kategoriData->pluck('kategori');
+        $kategoriJumlah = $kategoriData->pluck('jumlah');
 
         return view('livewire.admin.dashboard.index', compact(
             'bulanLabels',
@@ -126,7 +134,9 @@ class Index extends Component
             'totalAnggota',
             'totalPeminjaman',
             'totalKeterlambatan',
-            'cardData'
+            'cardData',
+            'kategoriLabels',
+            'kategoriJumlah'
         ))->layout('layouts.app');
     }
 }
