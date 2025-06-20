@@ -106,6 +106,7 @@ class Index extends Component
         ]);
 
         $this->loadKategoriList();
+        $this->mount();
 
         session()->flash('message', 'Buku berhasil ditambahkan!');
         $this->closeModal();
