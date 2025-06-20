@@ -4,14 +4,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>" />
-
     <title><?php echo e(config('app.name', 'Perpustakaan Digital SMP Negeri 12 Yogyakarta')); ?></title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net" />
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-    <!-- Scripts -->
+    <!-- Styles & Scripts -->
     <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="//unpkg.com/alpinejs" defer></script>
@@ -19,7 +18,7 @@
 <body class="font-sans antialiased bg-gray-50">
     <div class="min-h-screen flex flex-col sm:flex-row">
         <!-- Sidebar Desktop -->
-        <aside class="hidden sm:block w-64 bg-white border-r">
+        <aside class="hidden lg:block w-64 bg-white border-r">
             <?php
 $__split = function ($name, $params = []) {
     return [$name, $params];
@@ -39,9 +38,10 @@ if (isset($__slots)) unset($__slots);
         </aside>
 
         <!-- Main Content Area -->
-        <div class="flex-1 flex flex-col min-h-screen bg-white m-2 border border-gray-100 rounded-md">
+        <div class="flex-1 flex flex-col min-h-screen bg-white m-2 border border-gray-100 rounded-md overflow-hidden">
+            
             <!-- Mobile Navbar -->
-            <div class="sm:hidden border-b p-4">
+            <div class="lg:hidden border-b p-4 relative z-50">
                 <?php
 $__split = function ($name, $params = []) {
     return [$name, $params];
@@ -69,14 +69,12 @@ if (isset($__slots)) unset($__slots);
             <?php endif; ?>
 
             <!-- Page Content -->
-            <main class="flex-grow p-4 overflow-auto">
+            <main class="flex-1 p-4 overflow-y-auto">
                 <?php echo e($slot); ?>
 
             </main>
         </div>
     </div>
-
-    <?php echo $__env->yieldPushContent('scripts'); ?>
 </body>
 </html>
 <?php /**PATH C:\Users\ASUS\perpustakaan\resources\views/layouts/user.blade.php ENDPATH**/ ?>
