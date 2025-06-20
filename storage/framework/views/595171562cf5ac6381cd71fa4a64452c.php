@@ -70,19 +70,18 @@
 
   <section class="relative z-10 px-16 py-2 bg-gray-200 min-h-[250px]">
     <div class="absolute bottom-0 left-0 w-full h-14 bg-gradient-to-b from-transparent to-white pointer-events-none"></div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-        <?php $__currentLoopData = $cardData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $card): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <a href="<?php echo e($card['url'] ?? '#'); ?>">
-                <?php if (isset($component)) { $__componentOriginal53747ceb358d30c0105769f8471417f6 = $component; } ?>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
+      <?php $__currentLoopData = $cardData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $card): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <?php if (isset($component)) { $__componentOriginal53747ceb358d30c0105769f8471417f6 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal53747ceb358d30c0105769f8471417f6 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.card','data' => ['title' => $card['title'],'bgColor' => $card['bgColor'],'value' => $card['value'],'periode' => $card['periode'],'delta' => $card['delta'],'icon' => $card['icon']]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.card','data' => ['title' => $card['title'],'value' => $card['value'],'periode' => $card['periode'] ?? null,'delta' => $card['delta'] ?? null,'icon' => $card['icon'] ?? null,'bgColor' => $card['bgColor'] ?? '#f43f5e']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('card'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['title' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['title']),'bgColor' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['bgColor']),'value' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['value']),'periode' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['periode']),'delta' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['delta']),'icon' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['icon'])]); ?>
+<?php $component->withAttributes(['title' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['title']),'value' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['value']),'periode' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['periode'] ?? null),'delta' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['delta'] ?? null),'icon' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['icon'] ?? null),'bgColor' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($card['bgColor'] ?? '#f43f5e')]); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal53747ceb358d30c0105769f8471417f6)): ?>
@@ -93,25 +92,39 @@
 <?php $component = $__componentOriginal53747ceb358d30c0105769f8471417f6; ?>
 <?php unset($__componentOriginal53747ceb358d30c0105769f8471417f6); ?>
 <?php endif; ?>
-            </a>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+      <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     </div>
   </section>
 
   <section id="statistik" class="relative z-10 px-6 md:px-20 py-20 bg-white text-gray-800">
-    <div class="absolute bottom-0 left-0 w-full h-14 bg-gradient-to-b from-white to-gray-200 pointer-events-none"></div>
-    <div class="max-w-4xl mx-auto">
+    <div class="max-w-6xl mx-auto">
       <div class="relative mb-6">
         <h2 class="text-4xl font-bold text-blue-800 inline-block relative">
           <span class="absolute -bottom-1 left-0 w-16 h-1 bg-blue-800 rounded-full"></span>
-          Statistik Pengunjung
+          Statistik
         </h2>
       </div>
-      <div class="bg-gray-100 shadow-lg rounded-lg p-6 h-[400px] flex items-center justify-center">
-        <canvas id="statistikChart" class="w-full h-full"></canvas>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Grafik Pengunjung -->
+        <div class="bg-gray-100 shadow-lg rounded-lg p-6 h-[400px] flex flex-col justify-center">
+          <h3 class="text-lg font-semibold text-center text-gray-700 mb-2">Statistik Pengunjung</h3>
+          <div class="h-full flex items-center justify-center">
+            <canvas id="statistikChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Grafik Buku per Kategori -->
+        <div class="bg-gray-100 shadow-lg rounded-lg p-6 h-[400px] flex flex-col justify-center">
+          <h3 class="text-lg font-semibold text-center text-gray-700 mb-2">Koleksi Buku</h3>
+          <div class="h-full flex items-center justify-center">
+            <canvas id="kategoriChart"></canvas>
+          </div>
+        </div>
       </div>
+
     </div>
   </section>
+
 
   <section id="informasi" class="relative z-10 px-10 py-12 bg-gradient-to-b from-gray-200 via-white to-gray-200 text-gray-800 scroll-mt-24">
     <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
@@ -203,6 +216,57 @@
           x: {
             ticks: { color: '#6B7280' },
             grid: { display: false }
+          }
+        }
+      }
+    });
+  </script>
+  <script>
+    const kategoriCtx = document.getElementById('kategoriChart').getContext('2d');
+
+    // Data dari backend
+    const labels = <?php echo json_encode($kategoriLabels->isEmpty() ? ['Belum Ada Data'] : $kategoriLabels, 15, 512) ?>;
+    const dataJumlah = <?php echo json_encode($kategoriJumlah->isEmpty() ? [1] : $kategoriJumlah, 15, 512) ?>;
+
+    // Warna dasar dalam format RGB
+    const baseColors = [
+      '96, 165, 250',    // biru muda
+      '245, 158, 11',    // oranye terang
+      '16, 185, 129',    // hijau toska
+      '239, 68, 68',     // merah terang
+      '139, 92, 246',    // ungu gelap
+      '244, 114, 182',   // pink cerah
+      '255, 99, 132',    // merah muda (pink-merah)
+      '54, 162, 235',    // biru klasik
+      '255, 206, 86',    // kuning cerah
+      '75, 192, 192'     // hijau laut (teal)
+    ];
+
+    // Buat warna transparan untuk isi dan solid untuk border
+    const backgroundColors = dataJumlah.map((_, i) => `rgba(${baseColors[i % baseColors.length]}, 0.3)`); // transparan
+    const borderColors = dataJumlah.map((_, i) => `rgba(${baseColors[i % baseColors.length]}, 1)`);     // solid
+
+    // Inisialisasi Chart
+    new Chart(kategoriCtx, {
+      type: 'doughnut',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: dataJumlah,
+          backgroundColor: backgroundColors,
+          borderColor: borderColors,
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              font: { weight: 'bold' },
+              color: '#374151'
+            }
           }
         }
       }

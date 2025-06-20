@@ -2,8 +2,11 @@
 
 namespace App\Livewire\User\Buku;
 
-use Livewire\Component;
 use App\Models\Buku;
+use Livewire\Component;
+use App\Models\Peminjaman;
+use Illuminate\Support\Facades\Auth;
+
 
 class Index extends Component
 {
@@ -13,6 +16,7 @@ class Index extends Component
     public $kategoriList = [];
     public $sortField = 'judul';
     public $sortDirection = 'asc';
+    public $bookId;
 
     public function mount()
     {
@@ -26,6 +30,46 @@ class Index extends Component
     }
 
     public function updatedKategori()
+    { 
+        $this->loadBooks();
+    }
+
+    
+
+    public function sortBy($field)
+    {
+        if ($this->sortField === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortField = $field;
+            $this->sortDirection = 'asc';
+        }
+
+        $this->loadBooks();
+    }
+
+    public function loadBooks()
+    {
+        $query = Buku::query();
+
+        if ($this->kategori !== 'semua') {
+            $query->where('kategori', $this->kategori);
+        }
+
+        if (!empty($this->search)) {
+            $query->where(function ($q) {
+                $q->where('judul', 'like', '%' . $this->search . '%')
+                  ->orWhere('penulis', 'like', '%' . $this->search . '%')
+                  ->orWhere('penerbit', 'like', '%' . $this->search . '%')
+                  ->orWhere('isbn', 'like', '%' . $this->search . '%');
+            });
+        }
+
+        $query->orderBy($this->sortField, $this->sortDirection);
+        $this->books = $query->get();
+    }
+
+    public function pinjam($bookId)
     {
         $user = Auth::user();
 
@@ -76,43 +120,11 @@ class Index extends Component
 
             session()->flash('message', 'Berhasil meminjam buku: ' . $book->judul);
             $this->loadBooks();
+            // return redirect()->to('peminjaman');
+             // kalau kamu punya method untuk reload data buku
         } else {
             session()->flash('error', 'Stok buku tidak cukup.');
         }
-        $this->loadBooks();
-    }
-
-    public function sortBy($field)
-    {
-        if ($this->sortField === $field) {
-            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
-        } else {
-            $this->sortField = $field;
-            $this->sortDirection = 'asc';
-        }
-
-        $this->loadBooks();
-    }
-
-    public function loadBooks()
-    {
-        $query = Buku::query();
-
-        if ($this->kategori !== 'semua') {
-            $query->where('kategori', $this->kategori);
-        }
-
-        if (!empty($this->search)) {
-            $query->where(function ($q) {
-                $q->where('judul', 'like', '%' . $this->search . '%')
-                  ->orWhere('penulis', 'like', '%' . $this->search . '%')
-                  ->orWhere('penerbit', 'like', '%' . $this->search . '%')
-                  ->orWhere('isbn', 'like', '%' . $this->search . '%');
-            });
-        }
-
-        $query->orderBy($this->sortField, $this->sortDirection);
-        $this->books = $query->get();
     }
 
     public function render()
