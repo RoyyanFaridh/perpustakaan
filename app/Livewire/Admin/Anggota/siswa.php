@@ -22,6 +22,8 @@ class Siswa extends Component
     public $sortField = 'nama';
     public $sortDirection = 'asc';
     public $old_nis;
+    protected $listeners = ['anggotaDeleted' => '$refresh'];
+
 
     protected $rules = [
         'nama'           => 'required',
@@ -186,6 +188,7 @@ class Siswa extends Component
         });
 
         session()->flash('message', 'Anggota dan akun user berhasil dihapus!');
+        $this->dispatch('anggotaDeleted');
     }
 
     public function exportSiswa()

@@ -26,6 +26,8 @@ class Index extends Component
 
     public $kategoriList = [];
     public $tahunList = [];
+    protected $listeners = ['bukuDeleted' => '$refresh'];
+
 
     public function mount()
     {
@@ -173,6 +175,7 @@ class Index extends Component
         $buku->delete();
 
         session()->flash('message', 'Buku berhasil dihapus!');
+        $this->dispatch('bukuDeleted');
     }
 
     private function validateData()

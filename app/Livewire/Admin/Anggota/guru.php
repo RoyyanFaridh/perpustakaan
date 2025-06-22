@@ -22,6 +22,8 @@ class Guru extends Component
     public $sortField = 'nama';
     public $sortDirection = 'asc';
     public $old_nip;
+    protected $listeners = ['anggotaDeleted' => '$refresh'];
+
 
     protected $rules = [
         'nama'           => 'required',
@@ -175,6 +177,7 @@ class Guru extends Component
         });
 
         session()->flash('message', 'Anggota dan akun user berhasil dihapus!');
+        $this->dispatch('anggotaDeleted');
     }
 
     public function sortBy($field)
