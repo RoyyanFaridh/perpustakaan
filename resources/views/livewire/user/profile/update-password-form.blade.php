@@ -1,4 +1,4 @@
-<div>
+<form wire:submit.prevent="updatePassword">
     {{-- Current Password --}}
     <div>
         <x-input-label for="current_password" :value="('Password Saat Ini')" />
@@ -33,9 +33,9 @@
             <input
                 id="new_password"
                 type="password"
-                wire:model="new_password"
+                wire:model="password"
                 class="block mt-1 w-full text-sm pr-10 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                name="new_password"
+                name="password"
                 required
                 autocomplete="new-password"
             />
@@ -50,7 +50,7 @@
                 </svg>
             </button>
         </div>
-        <x-input-error :messages="$errors->get('new_password')" class="mt-1 text-xs" />
+        <x-input-error :messages="$errors->get('password')" class="mt-1 text-xs" />
     </div>
 
     {{-- Confirm Password --}}
@@ -60,9 +60,9 @@
             <input
                 id="confirm_password"
                 type="password"
-                wire:model="confirm_password"
+                wire:model="password_confirmation"
                 class="block mt-1 w-full text-sm pr-10 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                name="confirm_password"
+                name="password_confirmation"
                 required
                 autocomplete="new-password"
             />
@@ -77,7 +77,7 @@
                 </svg>
             </button>
         </div>
-        <x-input-error :messages="$errors->get('confirm_password')" class="mt-1 text-xs" />
+        <x-input-error :messages="$errors->get('password_confirmation')" class="mt-1 text-xs" />
     </div>
 
     {{-- Submit Button --}}
@@ -87,8 +87,9 @@
             Simpan Perubahan
         </button>
     </div>
-</div>
+</form>
 
+{{-- Toggle Password Visibility --}}
 <script>
 function togglePassword(inputId, iconId) {
     const input = document.getElementById(inputId);

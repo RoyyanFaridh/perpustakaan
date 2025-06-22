@@ -35,7 +35,21 @@ class Export implements FromCollection, WithHeadings
         return $query->get()->map(function ($item) {
             $password = $item->status === 'inactive' ? '' : $item->plain_password;
 
-            $base = [
+            if ($this->role === 'siswa') {
+                return [
+                    'nama'           => $item->nama,
+                    'kelas'          => $item->kelas,
+                    'status'         => $item->status,
+                    'nis_nip'        => $item->nis_nip,
+                    'jenis_kelamin'  => $item->jenis_kelamin,
+                    'alamat'         => $item->alamat,
+                    'no_telp'        => $item->no_telp,
+                    'email'          => $item->email,
+                    'plain_password' => $password,
+                ];
+            }
+
+            return [
                 'nama'           => $item->nama,
                 'status'         => $item->status,
                 'nis_nip'        => $item->nis_nip,
@@ -45,19 +59,20 @@ class Export implements FromCollection, WithHeadings
                 'email'          => $item->email,
                 'plain_password' => $password,
             ];
-
-            if ($this->role === 'siswa') {
-                $base = array_merge(['kelas' => $item->kelas], $base); // Tambahkan 'kelas' di awal
-            }
-
-            return $base;
         });
     }
 
     public function headings(): array
     {
-        $base = [
+        $headings = [
             'Nama',
+        ];
+
+        if ($this->role === 'siswa') {
+            $headings[] = 'Kelas';
+        }
+
+        $headings = array_merge($headings, [
             'Status',
             $this->role === 'siswa' ? 'NIS' : 'NIP',
             'Jenis Kelamin',
@@ -65,12 +80,8 @@ class Export implements FromCollection, WithHeadings
             'No Telepon',
             'Email',
             'Password Default',
-        ];
+        ]);
 
-        if ($this->role === 'siswa') {
-            array_splice($base, 1, 0, ['Kelas']); // Sisipkan 'Kelas' setelah 'Nama'
-        }
-
-        return $base;
+        return $headings;
     }
 }

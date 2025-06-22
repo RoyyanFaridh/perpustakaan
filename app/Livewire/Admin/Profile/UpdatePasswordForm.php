@@ -35,7 +35,9 @@ class UpdatePasswordForm extends Component
 
         $this->reset(['current_password', 'password', 'password_confirmation']);
 
-        $this->dispatch('password-updated')->self();
+        // Dispatch event to show success message
+        $this->dispatch('password-updated');
+        $this->dispatch('notify', message: 'Password berhasil diperbarui');
     }
 
     /**

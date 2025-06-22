@@ -5,7 +5,6 @@ namespace App\Livewire\User\Profile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
-use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 
 class UpdatePasswordForm extends Component
@@ -14,29 +13,38 @@ class UpdatePasswordForm extends Component
     public string $password = '';
     public string $password_confirmation = '';
 
+    /**
+     * Update the authenticated user's password.
+     */
     public function updatePassword(): void
     {
-        try {
-            $validated = $this->validate([
-                'current_password' => ['required', 'string', 'current_password'],
-                'password' => ['required', 'string', Password::defaults(), 'confirmed'],
-            ]);
-        } catch (ValidationException $e) {
-            $this->reset('current_password', 'password', 'password_confirmation');
-            throw $e;
-        }
-
-        Auth::user()->update([
-            'password' => Hash::make($validated['password']),
+        $this->validate([
+            'current_password' => ['required', 'current_password'],
+            'password' => ['required', Password::defaults(), 'confirmed'],
         ]);
 
-        $this->reset('current_password', 'password', 'password_confirmation');
+        $user = Auth::user();
 
+        if (!$user) {
+            abort(403, 'User not authenticated');
+        }
+
+        $user->update([
+            'password' => Hash::make($this->password),
+        ]);
+
+        $this->reset(['current_password', 'password', 'password_confirmation']);
+
+        // Dispatch event to show success message
         $this->dispatch('password-updated');
+        $this->dispatch('notify', message: 'Password berhasil diperbarui');
     }
 
+    /**
+     * Render the password update form view.
+     */
     public function render()
     {
-        return view('livewire.user.profile.update-password-form')->layout('layouts.user');
+        return view('livewire.user.profile.update-password-form');
     }
 }

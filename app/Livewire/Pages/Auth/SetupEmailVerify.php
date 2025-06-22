@@ -19,28 +19,32 @@ class SetupEmailVerify extends Component
     {
         $user = Auth::user();
 
+        // Cek kalau email tidak berubah dan sudah verified
+        if ($user->email === $this->email && $user->hasVerifiedEmail()) {
+            $this->message = 'Email sudah diverifikasi dan tidak perlu dikirim ulang.';
+            return;
+        }
+
         $this->validate([
             'email' => 'required|email|unique:users,email,' . $user->id,
         ]);
 
-        if ($user) {
-            // Update email user jika berbeda
-            if ($user->email !== $this->email) {
-                $user->email = $this->email;
-                $user->email_verified_at = null; // reset status verified
-                $user->save();
-            }
+        // Jika email berubah, reset status verifikasi
+        if ($user->email !== $this->email) {
+            $user->email = $this->email;
+            $user->email_verified_at = null;
+            $user->save();
+        }
 
-            if (!$user->hasVerifiedEmail()) {
-                $user->sendEmailVerificationNotification();
-                $this->message = 'Link verifikasi telah dikirim ulang ke email Anda.';
-            } else {
-                $this->message = 'Email sudah diverifikasi.';
-            }
+        // Kirim ulang email verifikasi jika belum terverifikasi
+        if (!$user->hasVerifiedEmail()) {
+            $user->sendEmailVerificationNotification();
+            $this->message = 'Link verifikasi telah dikirim ulang ke email Anda.';
         } else {
-            $this->message = 'User tidak ditemukan.';
+            $this->message = 'Email sudah diverifikasi.';
         }
     }
+
 
     public function render()
     {

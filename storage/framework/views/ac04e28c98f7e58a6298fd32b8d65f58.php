@@ -217,5 +217,4 @@ function togglePassword(inputId, iconId) {
         icon.classList.remove('text-blue-500');
     }
 }
-</script>
-<?php /**PATH C:\Users\ASUS\perpustakaan\resources\views/livewire/user/profile/update-password-form.blade.php ENDPATH**/ ?>
+</script><?php /**PATH C:\Users\ASUS\perpustakaan\resources\views\livewire/user/profile/update-password-form.blade.php ENDPATH**/ ?>

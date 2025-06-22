@@ -52,7 +52,7 @@
     <div class="absolute bottom-0 left-0 w-full h-12 bg-gradient-to-b from-transparent to-gray-200 pointer-events-none"></div>
     <div class="mx-auto px-6 lg:px-16 flex flex-col lg:flex-row items-start relative z-10">
       <div class="w-full lg:w-2/3 text-center lg:text-left px-10 lg:pr-2 lg:mr-2 space-y-10 order-2 lg:order-1">
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-blue-800">
+        <h1 class="text-4xl md:text-5xl lg:text-7xl font-bold leading-tight text-blue-800">
           Sistem Informasi Perpustakaan<br class="hidden md:block">SMP Negeri 12 Yogyakarta
         </h1>
         <p class="text-gray-600 max-w-2xl mx-auto lg:mx-0 text-lg lg:text-xl">
@@ -123,7 +123,7 @@
       </div>
 
     </div>
-  </section>
+  </section>
 
 
   <section id="informasi" class="relative z-10 px-10 py-12 bg-gradient-to-b from-gray-200 via-white to-gray-200 text-gray-800 scroll-mt-24">
@@ -201,56 +201,76 @@
     });
   </script>
   <script>
-    const kategoriCtx = document.getElementById('kategoriChart').getContext('2d');
+  function forceKategoriResize(chartInstance, canvasId) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas || !chartInstance) return;
 
-    // Data dari backend
-    const labels = <?php echo json_encode($kategoriLabels->isEmpty() ? ['Belum Ada Data'] : $kategoriLabels, 15, 512) ?>;
-    const dataJumlah = <?php echo json_encode($kategoriJumlah->isEmpty() ? [1] : $kategoriJumlah, 15, 512) ?>;
+    // Resize otomatis ketika ukuran kontainer berubah
+    const observer = new ResizeObserver(() => {
+      chartInstance.resize();
+    });
+    observer.observe(canvas.parentElement);
 
-    // Warna dasar dalam format RGB
-    const baseColors = [
-      '96, 165, 250',    // biru muda
-      '245, 158, 11',    // oranye terang
-      '16, 185, 129',    // hijau toska
-      '239, 68, 68',     // merah terang
-      '139, 92, 246',    // ungu gelap
-      '244, 114, 182',   // pink cerah
-      '255, 99, 132',    // merah muda (pink-merah)
-      '54, 162, 235',    // biru klasik
-      '255, 206, 86',    // kuning cerah
-      '75, 192, 192'     // hijau laut (teal)
-    ];
+    // Resize juga saat window di-resize atau zoom
+    window.addEventListener('resize', () => {
+      chartInstance.resize();
+    });
+  }
 
-    // Buat warna transparan untuk isi dan solid untuk border
-    const backgroundColors = dataJumlah.map((_, i) => `rgba(${baseColors[i % baseColors.length]}, 0.3)`); // transparan
-    const borderColors = dataJumlah.map((_, i) => `rgba(${baseColors[i % baseColors.length]}, 1)`);     // solid
+  const kategoriCtx = document.getElementById('kategoriChart').getContext('2d');
 
-    // Inisialisasi Chart
-    new Chart(kategoriCtx, {
-      type: 'doughnut',
-      data: {
-        labels: labels,
-        datasets: [{
-          data: dataJumlah,
-          backgroundColor: backgroundColors,
-          borderColor: borderColors,
-          borderWidth: 2
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'bottom',
-            labels: {
-              font: { weight: 'bold' },
-              color: '#374151'
-            }
+  // Data dari backend
+  const labels = <?php echo json_encode($kategoriLabels->isEmpty() ? ['Belum Ada Data'] : $kategoriLabels, 15, 512) ?>;
+  const dataJumlah = <?php echo json_encode($kategoriJumlah->isEmpty() ? [1] : $kategoriJumlah, 15, 512) ?>;
+
+  // Warna dasar RGB
+  const baseColors = [
+    '96, 165, 250',    // biru muda
+    '245, 158, 11',    // oranye terang
+    '16, 185, 129',    // hijau toska
+    '239, 68, 68',     // merah terang
+    '139, 92, 246',    // ungu gelap
+    '244, 114, 182',   // pink cerah
+    '255, 99, 132',    // merah muda
+    '54, 162, 235',    // biru klasik
+    '255, 206, 86',    // kuning cerah
+    '75, 192, 192'     // hijau laut
+  ];
+
+  // Generate warna transparan untuk isi dan solid untuk outline
+  const backgroundColors = dataJumlah.map((_, i) => `rgba(${baseColors[i % baseColors.length]}, 0.3)`);
+  const borderColors = dataJumlah.map((_, i) => `rgba(${baseColors[i % baseColors.length]}, 1)`);
+
+  // Inisialisasi Chart
+  const kategoriChart = new Chart(kategoriCtx, {
+    type: 'doughnut',
+    data: {
+      labels: labels,
+      datasets: [{
+        data: dataJumlah,
+        backgroundColor: backgroundColors, // isi transparan
+        borderColor: borderColors,         // outline solid
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            font: { weight: 'bold' },
+            color: '#374151'
           }
         }
       }
-    });
-  </script>
+    }
+  });
+
+  // Aktifkan auto resize
+  forceKategoriResize(kategoriChart, 'kategoriChart');
+</script>
 
   <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::scripts(); ?>
 

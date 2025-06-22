@@ -30,7 +30,11 @@ class SetupPassword extends Component
             ]);
         }
 
-        return redirect()->route('setup.verify-email')->with('success', 'Password berhasil diubah. Silakan untuk verifikasi email.');
+        if ($user->hasVerifiedEmail()) {
+            return redirect()->route('user.dashboard')->with('success', 'Password berhasil diubah. Selamat datang!');
+        } else {
+            return redirect()->route('setup.verify-email')->with('success', 'Password berhasil diubah. Silakan untuk verifikasi email.');
+        }
     }
 
 

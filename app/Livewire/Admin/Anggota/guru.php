@@ -34,8 +34,8 @@ class Guru extends Component
     public function render()
     {
         $anggota = Anggota::where('role', 'guru')
-            ->when($this->filterStatus !== 'semua', fn ($q) => $q->where('status', $this->filterStatus))
-            ->when($this->search, fn ($q) => $q->where('nama', 'like', '%' . $this->search . '%'))
+            ->when($this->filterStatus !== 'semua', fn($q) => $q->where('status', $this->filterStatus))
+            ->when($this->search, fn($q) => $q->where('nama', 'like', '%' . $this->search . '%'))
             ->orderBy($this->sortField, $this->sortDirection)
             ->get();
 
@@ -66,6 +66,7 @@ class Guru extends Component
         $email = $this->email ?: null;
 
         DB::transaction(function () use ($plainPassword, $email) {
+            // Simpan ke tabel anggota
             Anggota::create([
                 'nama'           => $this->nama,
                 'status'         => $this->status,
@@ -78,7 +79,8 @@ class Guru extends Component
                 'plain_password' => $plainPassword,
             ]);
 
-            User::create([
+            // Simpan ke tabel user
+            $user = User::create([
                 'name'                => $this->nama,
                 'nis_nip'             => $this->nip,
                 'email'               => $email,
@@ -86,7 +88,13 @@ class Guru extends Component
                 'is_default_password' => true,
                 'no_telp'             => $this->no_telp,
                 'status'              => $this->status,
-            ])->assignRole($this->role);
+            ]);
+
+            $user->assignRole($this->role);
+
+            if ($email) {
+                $user->markEmailAsVerified(); // ← auto verified
+            }
         });
 
         $this->closeModal();
@@ -97,18 +105,18 @@ class Guru extends Component
     {
         $data = Anggota::findOrFail($id);
 
-        $this->selectedId      = $id;
-        $this->nama            = $data->nama;
-        $this->status          = $data->status;
-        $this->role            = $data->role;
-        $this->nip             = $data->nis_nip;
-        $this->old_nip         = $data->nis_nip;
-        $this->jenis_kelamin   = $data->jenis_kelamin;
-        $this->alamat          = $data->alamat;
-        $this->no_telp         = $data->no_telp;
-        $this->email           = $data->email;
-        $this->isEdit          = true;
-        $this->showModal       = true;
+        $this->selectedId     = $id;
+        $this->nama           = $data->nama;
+        $this->status         = $data->status;
+        $this->role           = $data->role;
+        $this->nip            = $data->nis_nip;
+        $this->old_nip        = $data->nis_nip;
+        $this->jenis_kelamin  = $data->jenis_kelamin;
+        $this->alamat         = $data->alamat;
+        $this->no_telp        = $data->no_telp;
+        $this->email          = $data->email;
+        $this->isEdit         = true;
+        $this->showModal      = true;
     }
 
     public function update()
@@ -142,13 +150,16 @@ class Guru extends Component
                     'status'   => $this->status,
                     'nis_nip'  => $this->nip,
                 ]);
+
+                if ($email && !$user->hasVerifiedEmail()) {
+                    $user->markEmailAsVerified();
+                }
             }
         }
 
         $this->closeModal();
         $this->dispatch('anggota-updated');
     }
-
 
     public function delete($id)
     {
