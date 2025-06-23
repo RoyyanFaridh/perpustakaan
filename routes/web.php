@@ -2,12 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
-use Livewire\Volt\Volt;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use App\Livewire\Pages\Auth\SetupPassword;
 use App\Livewire\Pages\Auth\SetupEmailVerify;
+use Illuminate\Support\Facades\Artisan;
 
 // Admin
 use App\Livewire\Admin\Dashboard\Index as DashboardIndex;
@@ -101,6 +101,11 @@ Route::get('/test-email-brevo', function () {
     });
 
     return 'Email sedang dikirim...';
+});
+
+Route::get('/make-link', function () {
+    Artisan::call('storage:link');
+    return 'Storage link created';
 });
 
 use Illuminate\Support\Facades\Auth;

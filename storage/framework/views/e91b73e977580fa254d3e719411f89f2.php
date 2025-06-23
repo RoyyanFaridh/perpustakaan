@@ -309,7 +309,8 @@
 <?php $component = $__componentOriginal218c5c64b059a605cc15629404be144b; ?>
 <?php unset($__componentOriginal218c5c64b059a605cc15629404be144b); ?>
 <?php endif; ?>
-                            <span class="ml-4" x-text="<?php echo \Illuminate\Support\Js::from(auth()->user()->name)->toHtml() ?>"></span>
+                            
+                            <span class="ml-4" x-text="<?php echo \Illuminate\Support\Js::from(auth()->check() ? auth()->user()->name : 'Guest')->toHtml() ?>"></span>
                             <svg class="w-4 h-4 ml-4 transform transition-transform duration-200" :class="{ 'rotate-180': anggotaOpen }"
                                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path d="M19 9l-7 7-7-7" />
